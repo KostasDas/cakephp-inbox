@@ -1,0 +1,122 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: SummitThinDisplay;
+    src: url("../font/SummitLight-Display.otf");
+}
+
+.input-section {
+    position: relative;
+}
+
+body {
+   background: snow;
+}
+.custom-input {
+    margin: 0.5em 0 0.5em 0;
+    padding: 1em 1em 1em 1em;
+    display: block;
+    width: 100%;
+    border: none;
+    border-bottom: 3px double #757575;
+    transition: 0.5s ease all;
+    -moz-transition: 0.5s ease all;
+    -webkit-transition: 0.5s ease all;
+}
+
+.custom-label {
+    color: #c0a16b;
+    pointer-events: none;
+    font-size: 130%;
+    position: absolute;
+    top: 1em;
+    left: 0.4em;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+.custom-input:focus {
+    outline: none;
+}
+
+.custom-input:required {
+    box-shadow: none;
+}
+
+.custom-input:focus ~ .custom-label, .custom-input:valid ~ .custom-label {
+    color: #2aabd2;
+    top: -0.5em;
+    left: 0.8em;
+    font-size: 85%;
+}
+
+.tab-head {
+    font-family: SummitThinDisplay, sans-serif;
+    font-size: 200%;
+    /*margin: 1em 0 0 0;*/
+}
+
+.custom-btn {
+    background-color: #8c8b8b;
+    color: whitesmoke;
+}
+
+.custom-btn:hover {
+    background-color: whitesmoke;
+    color: black;
+    border-color: black;
+}
+
+.ctm-select-box {
+    margin: 1.2em 0 0 0;
+}
+
+.soldier-photo {
+    margin: 0 auto;
+}
+
+.ctm-container {
+    margin: 1em 0 1em 0;
+    /*border: 5px solid #333;*/
+    overflow: auto
+}
+
+.info-img {
+    float: left;
+}
+
+.info-content {
+    margin: 0 0 0 1em;
+}
+
+.info-label {
+    text-align: right;
+}
+
+#soldiersTable tr:hover {
+    cursor: pointer;
+}
+
+.dataTables_wrapper .dt-buttons {
+    float: none;
+    text-align: center;
+}
+
+#soldiersTable {
+    /*border: none;*/
+}
+
+#soldiersTable tr:last-child td:not(.options) {
+    /* <---- options will be the class for last column */
+    /*border-bottom: 1px solid;*/
+}
+
+#soldiersTable .options {
+    /*background: white;*/
+    /*border: none;*/
+}
+
+.hidden {
+    /*display: none;*/
+}

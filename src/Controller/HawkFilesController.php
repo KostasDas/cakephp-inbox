@@ -10,7 +10,7 @@ use App\Controller\AppController;
  *
  * @method \App\Model\Entity\HawkFile[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class HawkFilesController extends AppController
+class HawkFilesController extends ApiController
 {
 
     /**
@@ -25,21 +25,14 @@ class HawkFilesController extends AppController
         $this->set('authUser', $this->Auth->user());
         $this->set(compact('hawkFiles'));
     }
-
     /**
-     * View method
+     * @param null $file_id
      *
-     * @param string|null $id Hawk File id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
+     **/
+    public function view($file_id = null)
     {
-        $hawkFile = $this->HawkFiles->get($id, [
-            'contain' => []
-        ]);
-
-        $this->set('hawkFile', $hawkFile);
+        $hawkFile = $this->HawkFiles->get($file_id);
+        return $this->getResponse()->withFile($hawkFile->location);
     }
 
     /**
@@ -86,6 +79,25 @@ class HawkFilesController extends AppController
         $this->set(compact('hawkFile'));
     }
 
+    private function loadOptions()
+    {
+        $types = $this->HawkFiles->find('list', [
+            'keyField' => 'type',
+            'valueField' => 'type'
+        ])->distinct();
+        $senders =$this->HawkFiles->find('list', [
+            'keyField' => 'sender',
+            'valueField' => 'sender'
+        ])->distinct();
+        $offices =$this->HawkFiles->find('list', [
+            'keyField' => 'office',
+            'valueField' => 'office'
+        ])->distinct();
+
+        $this->set(compact('types', 'senders', 'offices'));
+
+    }
+
     /**
      * Delete method
      *
@@ -104,5 +116,52 @@ class HawkFilesController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function inbox ()
+    {
+        $hawkFiles = $this->paginate($this->HawkFiles);
+
+        $this->set('authUser', $this->Auth->user());
+        $this->set(compact('hawkFiles'));
+    }
+
+    public function types()
+    {
+        $types = $this->HawkFiles->find()
+            ->select(['type'])
+            ->order(['type' => 'ASC'])
+            ->distinct()
+            ->toArray();
+
+        $this->set('types', $types);
+    }
+    public function senders()
+    {
+        $senders = $this->HawkFiles->find()
+            ->select(['sender'])
+            ->order(['sender' => 'ASC'])
+            ->distinct()
+            ->toArray();
+
+        $this->set('senders', $senders);
+    }
+    public function offices()
+    {
+        $offices = $this->HawkFiles->find()
+            ->select(['office'])
+            ->order(['office' => 'ASC'])
+            ->distinct()
+            ->toArray();
+
+        $this->set('offices', $offices);
+    }
+
+    public function download($file_id)
+    {
+        $hawkFile = $this->HawkFiles->get($file_id);
+        return $this->getResponse()->withFile($hawkFile->location, [
+            'download' => true
+        ]);
     }
 }

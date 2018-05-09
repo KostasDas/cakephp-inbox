@@ -9,6 +9,7 @@
     echo $this->Html->css('bulma');
     echo $this->Html->css('flash');
     echo $this->Html->script('all');
+    echo $this->Html->script('jQuery/jquery-2.2.4.min');
 
 
     echo $this->fetch('meta');
