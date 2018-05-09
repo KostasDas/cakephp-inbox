@@ -11,7 +11,6 @@ use Cake\Http\Response;
  */
 class ApiController extends AppController
 {
-    protected $isJson = false;
 
     public function initialize()
     {
@@ -28,9 +27,6 @@ class ApiController extends AppController
 
     public function beforeRender(Event $event)
     {
-        if ($this->getRequest()->getParam('_ext') === 'json') {
-            $this->isJson = True;
-        }
         $this->set('_serialize', true);
     }
 

@@ -98,32 +98,12 @@ class HawkFilesController extends ApiController
 
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Hawk File id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $hawkFile = $this->HawkFiles->get($id);
-        if ($this->HawkFiles->delete($hawkFile)) {
-            $this->Flash->success(__('The hawk file has been deleted.'));
-        } else {
-            $this->Flash->error(__('The hawk file could not be deleted. Please, try again.'));
-        }
-
-        return $this->redirect(['action' => 'index']);
-    }
-
     public function inbox ()
     {
-        $hawkFiles = $this->paginate($this->HawkFiles);
+        $files = $this->HawkFiles->find('search', ['search' => $this->request->getQueryParams()]);
 
+        $this->set(compact('files'));
         $this->set('authUser', $this->Auth->user());
-        $this->set(compact('hawkFiles'));
     }
 
     public function types()

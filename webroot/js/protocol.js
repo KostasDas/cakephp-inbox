@@ -106,9 +106,9 @@ function getFiles(filters) {
           "searchable": false,
           "sClass": 'options text-center',
           "render": function (data, type, full) {
-            return '<div><a class="h3 well-sm" href=hawk-files/download/' + data + '><span data-toggle="tooltip" title="Λήψη" class="glyphicon glyphicon-download"></span></a>' +
-              '<a class="h3 well-sm" target="_blank" href=hawk-files/view/' + data + '><span data-toggle="tooltip" title="Προβολή" class="glyphicon glyphicon-eye-open"></span></a>' +
-              '<a class="h3 well-sm" href=hawk-files/edit/' + data + '><span data-toggle="tooltip" title="Επεξεργασία" class="glyphicon glyphicon-pencil"> </span></a></div>';
+            return '<div><a class="h3 well-sm" href=hawk-files/download/' + data + '><span data-toggle="tooltip" title="Λήψη" class="icon"> <i class="fas fa-arrow-down"></i></span></a>' +
+              '<a class="h3 well-sm" target="_blank" href=hawk-files/view/' + data + '><span data-toggle="tooltip" title="Προβολή" class="icon"><i class="fas fa-eye"></i></span></a>' +
+              '<a class="h3 well-sm" href=hawk-files/edit/' + data + '><span data-toggle="tooltip" title="Επεξεργασία" class="icon"><i class="fas fa-pencil"></i> </span></a></div>';
           }
         }],
       "columnDefs": [

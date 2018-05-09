@@ -50,13 +50,13 @@ echo $this->Flash->render();
                         </select>
                     </div>
                 </div>
-                <div class="column">
-                    <label for="s_created_after" class="col-2 col-form-label">Από:</label>
-                    <input id="s_created_after" class="form-control" type="date">
+                <div class="column is-block">
+                    <label for="s_created_after" class="label">Από:</label>
+                    <input id="s_created_after" class="input" type="date">
                 </div>
                 <div class="column">
-                    <label for="s_created_before" class="col-2 col-form-label">Εώς</label>
-                    <input id="s_created_before" class="form-control" type="date">
+                    <label for="s_created_before" class="label">Εώς:</label>
+                    <input id="s_created_before" class="input" type="date">
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -80,7 +80,6 @@ echo $this->Html->script([
     'dataTables/datatables.min',
     'protocol',
     'dateFunctions',
-//    'font-awesome-all'
 ]);
 
 ?>
