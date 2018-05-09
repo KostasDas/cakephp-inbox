@@ -118,31 +118,47 @@ function getFiles(filters) {
       ],
       buttons: [{
         extend: 'copy',
+        className : 'button is-info',
+        init: function(api, node, config) {
+          $(node).removeClass('dt-button')
+        },
         exportOptions: {
           columns: [1, 2, 3, 4, 5, 6, 7]
         }
       }, {
         extend: 'excel',
+        className : 'button is-info',
+        init: function(api, node, config) {
+          $(node).removeClass('dt-button')
+        },
         exportOptions: {
           columns: [1, 2, 3, 4, 5, 6, 7]
         }
       }, {
         extend: 'pdf',
+        className : 'button is-info',
+        init: function(api, node, config) {
+          $(node).removeClass('dt-button')
+        },
         exportOptions: {
           columns: [1, 2, 3, 4, 5, 6, 7]
         }
       }, {
         extend: 'print',
+        className : 'button is-info',
+        init: function(api, node, config) {
+          $(node).removeClass('dt-button')
+        },
         exportOptions: {
           columns: [1, 2, 3, 4, 5, 6, 7]
         }
       }],
-      dom: "<'row'<'col-md-4'l><'col-md-3'B><'col-md-5'f>>" +
-      "<'row'<'col-md-12'tr>>" +
-      "<'row'<'col-md-5'i><'col-md-7'p>>"
+      dom: "<'columns'<'column'l><'column'B><'column'f>>" +
+      "<'columns'<'column'tr>>" +
+      "<'columns'<'column'i><'column'p>>"
     });
-
   });
+
 }
 
 

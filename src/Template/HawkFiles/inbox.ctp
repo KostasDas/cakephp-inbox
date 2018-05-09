@@ -8,11 +8,11 @@ echo $this->Html->css([
 ]);
 echo $this->Flash->render();
 ?>
-<div class="container">
     <section class="section">
         <h3 class="title is-4 card-footer-item">Πρωτόκολλο εισερχομένων 180 ΜΚ/Β HAWK</h3>
+        <div class="notification"><?= $this->Html->link('Προσθήκη', ['controller' => 'hawkFiles', 'action' => 'add']) ?></div>
 
-        <form class="form-horizontal box">
+        <form class="form-horizontal box" style="background-color: oldlace">
 
             <div class="columns">
                 <div class="column">
@@ -66,12 +66,9 @@ echo $this->Flash->render();
     <hr>
     <div class="clearfix"></div>
 
-    <div class="row">
+    <div class="columns is-block-widescreen">
         <table id="protocolTable" class="table table-hover table-dark text-center"></table>
     </div>
-
-    <br>
-</div>
 
 <?php
 

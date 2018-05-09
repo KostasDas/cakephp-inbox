@@ -3,7 +3,7 @@
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ληξιαρχείο 180 ΜΚ/Β HAWK</title>
+    <title>Γραμματεία</title>
     <?php
     echo $this->Html->meta('icon');
     echo $this->Html->css('bulma');
