@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +7,7 @@
     <?php
     echo $this->Html->meta('icon');
     echo $this->Html->css('bulma');
+    echo $this->Html->css('flash');
     echo $this->Html->script('all');
 
 
@@ -18,10 +18,28 @@
 </head>
 <body>
 <section class="section">
-    <nav class="navbar is-black is-fixed-top" role="navigation" aria-label="main navigation">
+    <nav style="margin-bottom: 5%" class="navbar is-black is-fixed-top" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <?= $this->Html->link('Εισερχόμενα', ['controller' => 'HawkFiles', 'action' => 'inbox'], ['class' => 'navbar-item']) ?>
-            <?= $this->Html->link('Εξερχόμενα', ['controller' => 'HawkFiles', 'action' => 'outbox'], ['class' => 'navbar-item']) ?>
+            <?= $this->Html->link('Εισερχόμενα', ['controller' => 'HawkFiles', 'action' => 'inbox'],
+                ['class' => 'navbar-item']) ?>
+            <?= $this->Html->link('Εξερχόμενα', ['controller' => 'HawkFiles', 'action' => 'outbox'],
+                ['class' => 'navbar-item']) ?>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-end">
+                <?php
+                if ($this->request->getParam('action') != 'login') {
+                    $link = empty($authUser) ?
+                        $this->Html->link('Σύνδεση', ['controller' => 'users', 'action' => 'login'],
+                            ['class' => 'navbar-item'])
+                        :
+                        $this->Html->link('Αποσύνδεση', ['controller' => 'users', 'action' => 'logout'],
+                            ['class' => 'navbar-item']);
+                    echo $link;
+                }
+                ?>
+            </div>
+
         </div>
     </nav>
     <?= $this->Flash->render() ?>

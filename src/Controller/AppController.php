@@ -48,7 +48,7 @@ class AppController extends Controller
         $this->loadComponent('Auth', [
             'loginRedirect' => [
                 'controller' => 'HawkFiles',
-                'action' => 'index'
+                'action' => 'inbox'
             ],
             'logoutRedirect' => [
                 'controller' => 'Users',
