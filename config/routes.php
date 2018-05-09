@@ -59,6 +59,8 @@ Router::scope('/', function (RouteBuilder $routes) {
      */
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
 
+    $routes->resources('hawkFiles');
+
     /**
      * Connect catchall routes for all controllers.
      *
