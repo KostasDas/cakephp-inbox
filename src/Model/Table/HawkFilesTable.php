@@ -33,6 +33,7 @@ class HawkFilesTable extends Table
         parent::initialize($config);
 
         $this->setTable('hawk_files');
+        $this->addBehavior('Search.Search');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
@@ -93,5 +94,42 @@ class HawkFilesTable extends Table
             ->notEmpty('location');
 
         return $validator;
+    }
+    /**
+     * @return \Search\Manager
+     */
+    public function searchManager()
+    {
+        $searchManager = $this->behaviors()->Search->searchManager();
+        $searchManager
+            ->like('protocol', [
+                'before' => true,
+                'after'  => true,
+                'field'  => $this->aliasField('protocol'),
+            ])
+            ->like('number', [
+                'before' => true,
+                'after'  => true,
+                'field'  => $this->aliasField('number'),
+            ])
+            ->like('topic', [
+                'before' => true,
+                'after'  => true,
+                'field'  => $this->aliasField('topic'),
+            ])
+            ->add('before', 'Search.Callback', [
+                'callback' => function ($query, $args, $manager) {
+                    return $query->andWhere([$this->aliasField('created') . ' <=' => new Time($args['before'])]);
+                },
+            ])
+            ->add('after', 'Search.Callback', [
+                'callback' => function ($query, $args, $manager) {
+                    return $query->andWhere([$this->aliasField('created') . ' >=' => new Time($args['after'])]);
+                },
+            ])
+            ->value('type')
+            ->value('sender')
+            ->value('office');
+        return $searchManager;
     }
 }
