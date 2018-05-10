@@ -49,19 +49,19 @@ class HawkFilesController extends ApiController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function inboxAdd()
     {
         $hawkFile = $this->HawkFiles->newEntity();
         if ($this->request->is('post')) {
             $hawkFile = $this->HawkFiles->patchEntity($hawkFile, $this->request->getData());
             if ($this->HawkFiles->save($hawkFile)) {
                 $this->Flash->success(__('The hawk file has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The hawk file could not be saved. Please, try again.'));
         }
         $this->set(compact('hawkFile'));
+        $this->render('inboxForm');
     }
 
     /**
