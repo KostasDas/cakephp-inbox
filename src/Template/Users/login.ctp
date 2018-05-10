@@ -3,7 +3,7 @@
     <?php
     echo $this->Form->create();
     ?>
-    <h1 style="margin-top: 20%" class="subtitle is-centered notification"> Γραμματεία 180 MK/B HAWK </h1>
+    <h1 style="margin-top: 20%" class="subtitle is-centered notification is-info"> Γραμματεία 180 MK/B HAWK </h1>
     <?php
     echo $this->Form->control('username', [
         'label' => 'Όνομα χρήστη',

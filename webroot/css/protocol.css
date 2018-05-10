@@ -1,16 +1,11 @@
 @charset "UTF-8";
 
-@font-face {
-    font-family: SummitThinDisplay;
-    src: url("../font/SummitLight-Display.otf");
-}
-
 .input-section {
     position: relative;
 }
 
-body {
-   background: snow;
+html {
+    background: snow;
 }
 .custom-input {
     margin: 0.5em 0 0.5em 0;

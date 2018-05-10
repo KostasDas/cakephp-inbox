@@ -11,8 +11,7 @@ echo $this->Flash->render();
 
     <section class="section">
         <h3 class="title is-4 card-footer-item">Πρωτόκολλο εισερχομένων 180 ΜΚ/Β HAWK</h3>
-
-        <form class="form-horizontal box" style="background-color: oldlace">
+        <form class="form-horizontal box"">
 
             <div class="columns">
                 <div class="column">

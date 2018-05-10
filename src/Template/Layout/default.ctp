@@ -19,12 +19,22 @@
 </head>
 <body>
 <section class="section">
-    <nav style="margin-bottom: 5%" class="navbar is-black is-fixed-top" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
+    <nav style="margin-bottom: 5%; background-color: seashell" class="navbar card is-fixed-top" role="navigation" aria-label="main navigation">
+        <div class="navbar-item has-dropdown is-hoverable">
             <?= $this->Html->link('Εισερχόμενα', ['controller' => 'HawkFiles', 'action' => 'inbox'],
-                ['class' => 'navbar-item']) ?>
+                ['class' => 'navbar-link']) ?>
+            <div class="navbar-dropdown">
+            <?= $this->Html->link('Προσθήκη', ['controller' => 'HawkFiles', 'action' => 'inboxAdd'],
+                ['class' => 'navbar-link']) ?>
+            </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
             <?= $this->Html->link('Εξερχόμενα', ['controller' => 'HawkFiles', 'action' => 'outbox'],
-                ['class' => 'navbar-item']) ?>
+                ['class' => 'navbar-link']) ?>
+            <div class="navbar-dropdown">
+                <?= $this->Html->link('Προσθήκη', ['controller' => 'HawkFiles', 'action' => 'outboxAdd'],
+                    ['class' => 'navbar-link']) ?>
+            </div>
         </div>
         <div class="navbar-menu">
             <div class="navbar-end">
@@ -40,7 +50,6 @@
                 }
                 ?>
             </div>
-
         </div>
     </nav>
     <?= $this->Flash->render() ?>
