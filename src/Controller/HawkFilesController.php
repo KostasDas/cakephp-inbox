@@ -30,8 +30,6 @@ class HawkFilesController extends ApiController
     public function index()
     {
         $hawkFiles = $this->paginate($this->HawkFiles);
-
-        $this->set('authUser', $this->Auth->user());
         $this->set(compact('hawkFiles'));
     }
     /**

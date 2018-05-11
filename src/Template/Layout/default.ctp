@@ -19,21 +19,32 @@
 </head>
 <body>
 <section class="section">
-    <nav style="margin-bottom: 5%; background-color: seashell" class="navbar card is-fixed-top" role="navigation" aria-label="main navigation">
+    <nav style="margin-bottom: 5%; background-color: seashell" class="navbar card is-fixed-top" role="navigation"
+         aria-label="main navigation">
         <div class="navbar-item has-dropdown is-hoverable">
-            <?= $this->Html->link('Εισερχόμενα', ['controller' => 'HawkFiles', 'action' => 'inbox'],
-                ['class' => 'navbar-link']) ?>
+            <a class="navbar-link">Εισερχόμενα</a>
             <div class="navbar-dropdown">
-            <?= $this->Html->link('Προσθήκη', ['controller' => 'HawkFiles', 'action' => 'inboxAdd'],
-                ['class' => 'navbar-link']) ?>
+                <?= $this->Html->link('Λίστα', ['controller' => 'HawkFiles', 'action' => 'inbox'],
+                    ['class' => 'navbar-item']) ?>
+                <?php
+                if (!empty($authUser)) {
+                    echo $this->Html->link('Προσθήκη', ['controller' => 'HawkFiles', 'action' => 'inboxAdd'],
+                        ['class' => 'navbar-item']);
+                }
+                ?>
             </div>
         </div>
         <div class="navbar-item has-dropdown is-hoverable">
-            <?= $this->Html->link('Εξερχόμενα', ['controller' => 'HawkFiles', 'action' => 'outbox'],
-                ['class' => 'navbar-link']) ?>
+            <a class="navbar-link">Εξερχόμενα</a>
             <div class="navbar-dropdown">
-                <?= $this->Html->link('Προσθήκη', ['controller' => 'HawkFiles', 'action' => 'outboxAdd'],
-                    ['class' => 'navbar-link']) ?>
+                <?= $this->Html->link('Λίστα', ['controller' => 'HawkFiles', 'action' => 'outbox'],
+                    ['class' => 'navbar-item']) ?>
+                <?php
+                if (!empty($authUser)) {
+                    echo $this->Html->link('Προσθήκη', ['controller' => 'HawkFiles', 'action' => 'outboxAdd'],
+                        ['class' => 'navbar-item']);
+                }
+                ?>
             </div>
         </div>
         <div class="navbar-menu">
