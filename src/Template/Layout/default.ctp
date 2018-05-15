@@ -37,6 +37,9 @@
         </div>
         <div class="navbar-menu">
             <div class="navbar-end">
+                <?php if ($authUser) :?>
+                <div class="navbar-item custom-nav">Καλώς ήρθες <?= $authUser['name'] ?></div>
+                <?php endif; ?>
                 <?php
                 if ($this->request->getParam('action') != 'login') {
                     $link = empty($authUser) ?
