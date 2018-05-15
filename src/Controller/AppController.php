@@ -74,9 +74,13 @@ class AppController extends Controller
         return false;
     }
 
+    public function isAdmin($user)
+    {
+        return $user['role'] === 'admin';
+    }
+
     public function beforeFilter(Event $event)
     {
-        $this->Auth->allow(['index', 'view', 'display']);
         $this->set('authUser', $this->Auth->user());
         $this->set('isAdmin', $this->Auth->user()['role'] === 'admin');
     }

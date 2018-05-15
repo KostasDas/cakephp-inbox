@@ -25,40 +25,42 @@ echo $this->Flash->render();
                 </div>
             </div>
 
-            <div class="columns">
-                <div class="column">
-                    <div class="select is-dark is-fullwidth">
-                        <select id="s_user"
-                                data-live-search="true"
-                                title="Χειριστής">
-                            <option value="">Όλοι οι χρήστες</option>
-                        </select>
-                    </div>
-                    <div class="select is-dark is-fullwidth">
-                        <select id="s_type"
-                                data-live-search="true"
-                                title="Επιλέξτε τύπο εγγράφου">
-                            <option value="">Όλοι οι τυποι</option>
-                        </select>
-                    </div>
-                    <div class="select is-dark is-fullwidth">
-                        <select id="s_sender" class="selectpicker"
-                                data-live-search="true"
-                                title="Επιλέξτε Αποστολέα">
-                            <option value="">Όλοι οι αποστολείς</option>
-                        </select>
-                    </div>
+            <div class="clearfix"></div>
+        <div class="columns">
+            <div class="column">
+                <?php if ($isAdmin) :?>
+                <div class="select is-dark is-fullwidth">
+                    <select id="s_user"
+                            data-live-search="true"
+                            title="Χειριστής">
+                        <option value="">Όλοι οι χρήστες</option>
+                    </select>
                 </div>
-                <div class="column is-block">
-                    <label for="s_created_after" class="label">Από:</label>
-                    <input id="s_created_after" class="is-dark input" type="date">
+                <?php endif; ?>
+                <div class="select is-dark is-fullwidth">
+                    <select id="s_type"
+                            data-live-search="true"
+                            title="Επιλέξτε τύπο εγγράφου">
+                        <option value="">Όλοι οι τυποι</option>
+                    </select>
                 </div>
-                <div class="column">
-                    <label for="s_created_before" class="label">Εώς:</label>
-                    <input id="s_created_before" class="is-dark input" type="date">
+                <div class="select is-dark is-fullwidth">
+                    <select id="s_sender" class="selectpicker"
+                            data-live-search="true"
+                            title="Επιλέξτε Αποστολέα">
+                        <option value="">Όλοι οι αποστολείς</option>
+                    </select>
                 </div>
             </div>
-            <div class="clearfix"></div>
+            <div class="column is-block">
+                <label for="s_created_after" class="label">Από:</label>
+                <input id="s_created_after" class="is-dark input" type="date">
+            </div>
+            <div class="column">
+                <label for="s_created_before" class="label">Εώς:</label>
+                <input id="s_created_before" class="is-dark input" type="date">
+            </div>
+        </div>
         </form>
     </section>
 

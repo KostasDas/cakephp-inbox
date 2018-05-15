@@ -22,16 +22,39 @@ class HawkFilesController extends ApiController
     }
 
     /**
+     * @param $user
+     *
+     * @return bool
+     */
+    public function isAuthorized($user)
+    {
+        if (in_array($this->getRequest()->getParam('action'), ['view', 'edit'])) {
+            $file_id = (int)$this->getRequest()->getParam('pass.0');
+            if ($this->HawkFiles->isOwnedBy($file_id, $user['id'])) {
+                return true;
+            }
+        }
+        return parent::isAuthorized($user);
+    }
+
+    /**
      *
      */
     public function index()
     {
         $files = $this->HawkFiles->find('search', ['search' => $this->getRequest()->getQueryParams()])
-            ->contain(['Users']);
+            ->contain(['Users'])
+            ->order(['HawkFiles.created' => 'DESC']);
+
+        if (!$this->isAdmin($this->Auth->user())) {
+            $files->innerJoinWith('Users')
+                ->where(['Users.id' => $this->Auth->user()['id']]);
+        }
 
         $this->set(compact('files'));
         $this->set('authUser', $this->Auth->user());
     }
+
     /**
      * @param null $file_id
      *
@@ -49,16 +72,13 @@ class HawkFilesController extends ApiController
      */
     public function add()
     {
-        if (!$this->isAuthorized($this->Auth->user())) {
-            $this->Flash->error(__('Δεν έχετε δικαίωμα πρόσβασης'));
-            return $this->redirect(['action' => 'index']);
-        }
         $hawkFile = $this->HawkFiles->newEntity();
         if ($this->getRequest()->is('post')) {
             $data = $this->getRequest()->getData();
             $user = $this->HawkFiles->Users->get($data['user_id']);
             $hawkFolder = new HawkFolder(Configure::read('production_path') . DS . $user->username);
-            $data['location'] = $hawkFolder->moveToProduction(new File($data['location']['tmp_name']), $data['location']['name']);
+            $data['location'] = $hawkFolder->moveToProduction(new File($data['location']['tmp_name']),
+                $data['location']['name']);
             $hawkFile = $this->HawkFiles->newEntity($data);
             if ($this->HawkFiles->save($hawkFile)) {
                 $this->createHawkUserEntry($hawkFile->id, $user->id);
@@ -84,16 +104,16 @@ class HawkFilesController extends ApiController
     private function loadOptions()
     {
         $types = $this->HawkFiles->find('list', [
-            'keyField' => 'type',
-            'valueField' => 'type'
+            'keyField'   => 'type',
+            'valueField' => 'type',
         ])->distinct();
-        $senders =$this->HawkFiles->find('list', [
-            'keyField' => 'sender',
-            'valueField' => 'sender'
+        $senders = $this->HawkFiles->find('list', [
+            'keyField'   => 'sender',
+            'valueField' => 'sender',
         ])->distinct();
-        $users =$this->HawkFiles->Users->find('list', [
-            'keyField' => 'id',
-            'valueField' => 'name'
+        $users = $this->HawkFiles->Users->find('list', [
+            'keyField'   => 'id',
+            'valueField' => 'name',
         ]);
 
         $this->set(compact('types', 'senders', 'users'));
@@ -104,15 +124,12 @@ class HawkFilesController extends ApiController
      * Edit method
      *
      * @param string|null $id Hawk File id.
+     *
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {
-        if (!$this->isAuthorized($this->Auth->user())) {
-            $this->Flash->error(__('Δεν έχετε δικαίωμα πρόσβασης'));
-            return $this->redirect(['action' => 'index']);
-        }
         $hawkFile = $this->HawkFiles->get($id);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -120,7 +137,8 @@ class HawkFilesController extends ApiController
             $previousFolder = $user->username;
             $hawkFolder = new HawkFolder(Configure::read('production_path') . DS . $user->username);
             $hawkFolder->delete($hawkFile->location);
-            $data['location'] = $hawkFolder->moveToProduction(new File($data['location']['tmp_name']), $data['location']['name']);
+            $data['location'] = $hawkFolder->moveToProduction(new File($data['location']['tmp_name']),
+                $data['location']['name']);
             $hawkFile = $this->HawkFiles->patchEntity($hawkFile, $data);
             if (in_array('user_id', $hawkFile->getDirty())) {
                 $hawkFolder = new HawkFolder(Configure::read('production_path') . DS . $previousFolder);
@@ -147,6 +165,7 @@ class HawkFilesController extends ApiController
 
         $this->set('types', $types);
     }
+
     public function senders()
     {
         $senders = $this->HawkFiles->find()
@@ -162,7 +181,7 @@ class HawkFilesController extends ApiController
     {
         $hawkFile = $this->HawkFiles->get($file_id);
         return $this->getResponse()->withFile($hawkFile->location, [
-            'download' => true
+            'download' => true,
         ]);
     }
 }

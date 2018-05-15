@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Event\Event;
+use Cake\Http\Exception\UnauthorizedException;
 use Cake\I18n\Time;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -141,5 +143,12 @@ class HawkFilesTable extends Table
             ->value('sender')
             ->value('user');
         return $searchManager;
+    }
+
+    // src/Model/Table/ArticlesTable.php
+
+    public function isOwnedBy($file_id, $user_id)
+    {
+        return $this->HawkUsers->exists(['file_id' => $file_id, 'user_id' => $user_id]);
     }
 }

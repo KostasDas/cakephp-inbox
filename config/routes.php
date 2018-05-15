@@ -53,7 +53,7 @@ Router::scope('/', function (RouteBuilder $routes) {
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
     $routes->setExtensions(['json']);
-    $routes->connect('/', ['controller' => 'Users', 'action' => 'login', 'home']);
+    $routes->connect('/', ['controller' => 'Users', 'action' => 'login']);
 
     $routes->resources('hawkFiles');
     $routes->resources('users');

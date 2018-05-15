@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\HawkFilesTable;
+use Cake\Http\Exception\UnauthorizedException;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -51,6 +52,19 @@ class HawkFilesTableTest extends TestCase
         parent::tearDown();
     }
 
+    // test find as super user
+    // test find as author
+    // test find as not authorized
+
+    /**
+     * @expectedException UnauthorizedException
+     * @expectedExceptionCode 401
+     */
+    public  function testFindNoAuth()
+    {
+        $this->HawkFiles->find()->all();
+    }
+
     /**
      * Test initialize method
      *
@@ -69,5 +83,35 @@ class HawkFilesTableTest extends TestCase
     public function testValidationDefault()
     {
         $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    private  function logInAdmin()
+    {
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 1,
+                    'username' => 'grammateia',
+                ]
+            ]
+        ]);
+    }
+
+    private function logInAuthor($username = '')
+    {
+        if (!empty($username)) {
+            $user = $this->HawkFiles->Users->find()
+                ->where(['username' => $username])
+                ->firstOrFail();
+        }
+
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => $user->id ?? '2',
+                    'username' => $user->username ?? 'diavivaseis'
+                ]
+            ]
+        ]);
     }
 }
