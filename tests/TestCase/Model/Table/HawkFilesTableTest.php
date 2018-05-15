@@ -25,7 +25,9 @@ class HawkFilesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.hawk_files'
+        'app.hawk_files',
+        'app.users',
+        'app.hawk_users'
     ];
 
     /**
@@ -53,9 +55,9 @@ class HawkFilesTableTest extends TestCase
     }
 
     // test find as super user
-    // * test find own files
     // * test find someone elses files
     // * test find many peoples files
+    // * test find files that belong to many people
     // test find as author
     // * find file only belongs to me
     // * find file belongs to me and someone else
@@ -65,7 +67,51 @@ class HawkFilesTableTest extends TestCase
     public function testFindAdminAllFiles()
     {
         $this->logInAdmin();
-        $files = $this->HawkFiles->find()->all();
+        $files = $this->HawkFiles->find()->contain(['Users'])->all();
+
+        //no files belong to super user but he can see all
+        foreach ($files as $file) {
+            $this->assertNotEquals($file->users[0]->username, 'grammateia');
+        }
+
+    }
+
+    public function testFindAdminSpecificFiles()
+    {
+        $this->logInAdmin();
+        $files = $this->HawkFiles->find()
+            ->where(['Users.username' => 'diavivaseis'])
+            ->innerJoinWith('Users')
+            ->contain(['Users'])
+            ->all();
+
+        foreach ($files as $file) {
+            $usernames = [];
+            foreach ($file->users as $user) {
+                $usernames[] = $user->username;
+            }
+            $this->assertTrue(in_array('diavivaseis', $usernames));
+        }
+    }
+
+
+    public function testFindAuthorOwnFiles()
+    {
+
+    }
+
+    public function testFindAuthorSharedFiles()
+    {
+
+    }
+
+    public function testFindAuthorCommonFiles()
+    {
+
+    }
+
+    public function testFindAuthorElsesFiles()
+    {
 
     }
 
@@ -91,13 +137,10 @@ class HawkFilesTableTest extends TestCase
 
     private  function logInAdmin()
     {
-        $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => 1,
-                    'username' => 'grammateia',
-                ]
-            ]
+        $this->HawkFiles->setUser([
+            'id' => 1,
+            'username' => 'grammateia',
+            'role' => 'admin'
         ]);
     }
 
@@ -109,13 +152,7 @@ class HawkFilesTableTest extends TestCase
                 ->firstOrFail();
         }
 
-        $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => $user->id ?? '2',
-                    'username' => $user->username ?? 'diavivaseis'
-                ]
-            ]
-        ]);
+        $user = !empty($user) ? $user->toArray() : ['username' => 'diavivaseis', 'id' => 2, 'role' => 'author'];
+        $this->HawkFiles->setUser($user);
     }
 }

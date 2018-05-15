@@ -97,7 +97,7 @@ function getFiles(filters) {
           return formatDate(data);
         }
       },{
-        title: 'Χειριστής',
+        title: 'Χειριστές',
         "data": 'users[0].name'
       },
         {
