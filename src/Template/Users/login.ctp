@@ -21,3 +21,9 @@
     echo $this->Form->end()
     ?>
 </div>
+
+<style>
+    body {
+        font-size: large;
+    }
+</style>

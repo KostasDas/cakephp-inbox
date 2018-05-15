@@ -19,12 +19,13 @@
 </head>
 <body>
 <section class="section">
-    <nav style="margin-bottom: 5%; background-color: seashell" class="navbar card is-fixed-top" role="navigation"
+    <nav style="margin-bottom: 5%; background-color: black" class="navbar card is-fixed-top" role="navigation"
          aria-label="main navigation">
         <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">Εισερχόμενα</a>
+            <a class="navbar-link custom-nav">Εισερχόμενα</a>
             <div class="navbar-dropdown">
-                <?= $this->Html->link('Λίστα', ['controller' => 'HawkFiles', 'action' => 'inbox'],
+                <?= $this->Html->link('Λίστα',
+                    ['controller' => 'HawkFiles', 'action' => 'inbox'],
                     ['class' => 'navbar-item']) ?>
                 <?php
                 if (!empty($authUser)) {
@@ -35,7 +36,7 @@
             </div>
         </div>
         <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">Εξερχόμενα</a>
+            <a class="navbar-link custom-nav">Εξερχόμενα</a>
             <div class="navbar-dropdown">
                 <?= $this->Html->link('Λίστα', ['controller' => 'HawkFiles', 'action' => 'outbox'],
                     ['class' => 'navbar-item']) ?>
@@ -53,10 +54,10 @@
                 if ($this->request->getParam('action') != 'login') {
                     $link = empty($authUser) ?
                         $this->Html->link('Σύνδεση', ['controller' => 'users', 'action' => 'login'],
-                            ['class' => 'navbar-item'])
+                            ['class' => 'navbar-item custom-nav'])
                         :
                         $this->Html->link('Αποσύνδεση', ['controller' => 'users', 'action' => 'logout'],
-                            ['class' => 'navbar-item']);
+                            ['class' => 'navbar-item custom-nav']);
                     echo $link;
                 }
                 ?>
@@ -70,3 +71,13 @@
 </section>
 </body>
 </html>
+
+<style>
+    .custom-nav {
+        background-color: black !important;
+        color:white !important;
+    }
+    .custom-nav:hover {
+        background-color: black !important;
+    }
+</style>

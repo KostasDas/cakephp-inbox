@@ -2,7 +2,7 @@
 
 <section class="hawkFiles section">
     <div class="columns is-centered">
-        <?= $this->Form->create($hawkFile) ?>
+        <?= $this->Form->create($hawkFile, ['enctype' => 'multipart/form-data']) ?>
         <h3 class="title is-3">Εισαγωγή εισερχομένου</h3>
         <div class="column">
             <?php
@@ -42,7 +42,7 @@
                 'empty' => 'Εισάγετε γραφείο',
             ]);
             ?>
-            <div class="file has-name" style="margin-bottom: 10px">
+            <div class="file is-black has-name required" style="margin-bottom: 10px">
                 <label class="file-label">
                     <input class="file-input" id="file-upload-input" type="file" name="hawk_file">
                     <span class="file-cta">

@@ -40,10 +40,11 @@ function getFiles(filters) {
     jQuery.fn.dataTableExt.oSort["custom-asc"] = function (x, y) {
       return x.localeCompare(y);
     };
+    var user = response.authUser;
 
     // EMPTY AND REFILL DATATABLE
     protocolTable.dataTable({
-      data: response.files,
+      data: response.hawkFiles,
       responsive: true,
       "autoWidth": false,
       "deferRender": true,
@@ -106,9 +107,13 @@ function getFiles(filters) {
           "searchable": false,
           "sClass": 'options text-center',
           "render": function (data, type, full) {
-            return '<div><a class="h3 well-sm" href=hawk-files/download/' + data + '><span data-toggle="tooltip" title="Λήψη" class="icon"> <i class="fas fa-arrow-down"></i></span></a>' +
-              '<a class="h3 well-sm" target="_blank" href=hawk-files/view/' + data + '><span data-toggle="tooltip" title="Προβολή" class="icon"><i class="fas fa-eye"></i></span></a>' +
-              '<a class="h3 well-sm" href=hawk-files/edit/' + data + '><span data-toggle="tooltip" title="Επεξεργασία" class="icon"><i class="fas fa-pencil"></i> </span></a></div>';
+
+            var links = '<div><a class="h3 well-sm" href=/hawk-files/download/' + data + '><span data-toggle="tooltip" title="Λήψη" class="icon"> <i class="fas fa-arrow-down"></i></span></a>' +
+              '<a class="h3 well-sm" target="_blank" href=/hawk-files/view/' + data + '><span data-toggle="tooltip" title="Προβολή" class="icon"><i class="fas fa-eye"></i></span></a>';
+            if (user) {
+              links += '<a class="h3 well-sm" href=/hawk-files/edit/' + data + '><span data-toggle="tooltip" title="Επεξεργασία" class="icon"><i class="fas fa-edit"></i> </span></a></div>';
+            }
+            return links;
           }
         }],
       "columnDefs": [
@@ -116,44 +121,7 @@ function getFiles(filters) {
         {responsivePriority: 2, targets: 1},
         {responsivePriority: 2, targets: 2}
       ],
-      buttons: [{
-        extend: 'copy',
-        className : 'button is-info',
-        init: function(api, node, config) {
-          $(node).removeClass('dt-button')
-        },
-        exportOptions: {
-          columns: [1, 2, 3, 4, 5, 6, 7]
-        }
-      }, {
-        extend: 'excel',
-        className : 'button is-info',
-        init: function(api, node, config) {
-          $(node).removeClass('dt-button')
-        },
-        exportOptions: {
-          columns: [1, 2, 3, 4, 5, 6, 7]
-        }
-      }, {
-        extend: 'pdf',
-        className : 'button is-info',
-        init: function(api, node, config) {
-          $(node).removeClass('dt-button')
-        },
-        exportOptions: {
-          columns: [1, 2, 3, 4, 5, 6, 7]
-        }
-      }, {
-        extend: 'print',
-        className : 'button is-info',
-        init: function(api, node, config) {
-          $(node).removeClass('dt-button')
-        },
-        exportOptions: {
-          columns: [1, 2, 3, 4, 5, 6, 7]
-        }
-      }],
-      dom: "<'columns'<'column'l><'column'B><'column'f>>" +
+      dom: "<'columns'<'column'l><'column'f>>" +
       "<'columns'<'column'tr>>" +
       "<'columns'<'column'i><'column'p>>"
     });

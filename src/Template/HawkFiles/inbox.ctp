@@ -51,11 +51,11 @@ echo $this->Flash->render();
                 </div>
                 <div class="column is-block">
                     <label for="s_created_after" class="label">Από:</label>
-                    <input id="s_created_after" class="input" type="date">
+                    <input id="s_created_after" class="is-dark input" type="date">
                 </div>
                 <div class="column">
                     <label for="s_created_before" class="label">Εώς:</label>
-                    <input id="s_created_before" class="input" type="date">
+                    <input id="s_created_before" class="is-dark input" type="date">
                 </div>
             </div>
             <div class="clearfix"></div>
