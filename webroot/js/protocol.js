@@ -27,7 +27,7 @@ function getFiles(filters) {
   $.ajax({
     // cache: false,
     type: "GET",
-    url: "/hawk-files",
+    url: "/hawk-files/inbox",
     data: filters,
     dataType: "json"
   }).done(function (response) {
@@ -44,7 +44,7 @@ function getFiles(filters) {
 
     // EMPTY AND REFILL DATATABLE
     protocolTable.dataTable({
-      data: response.hawkFiles,
+      data: response.files,
       responsive: true,
       "autoWidth": false,
       "deferRender": true,
