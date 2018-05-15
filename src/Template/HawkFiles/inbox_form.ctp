@@ -1,3 +1,5 @@
+
+
 <section class="hawkFiles section">
     <div class="columns is-centered">
         <?= $this->Form->create($hawkFile) ?>
@@ -65,20 +67,7 @@
         <?= $this->Form->end() ?>
     </div>
 </section>
-<script>
-  $(function() {
-    var input = document.getElementById( 'file-upload-input' );
-    var infoArea = document.getElementById( 'file-upload-name' );
-
-    input.addEventListener( 'change', showFileName );
-
-    function showFileName( event ) {
-
-      var input = event.srcElement;
-
-      var fileName = input.files[0].name;
-
-      infoArea.textContent = fileName;
-    }
-  });
-</script>
+<?php
+echo $this->Html->script('upload');
+echo $this->Html->script('select');
+?>
