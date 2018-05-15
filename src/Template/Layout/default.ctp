@@ -28,7 +28,7 @@
                     ['controller' => 'HawkFiles', 'action' => 'index'],
                     ['class' => 'navbar-item']) ?>
                 <?php
-                if (!empty($authUser)) {
+                if ($isAdmin) {
                     echo $this->Html->link('Προσθήκη', ['controller' => 'HawkFiles', 'action' => 'add'],
                         ['class' => 'navbar-item']);
                 }

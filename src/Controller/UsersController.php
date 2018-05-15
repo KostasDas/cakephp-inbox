@@ -11,7 +11,7 @@ use Cake\Event\Event;
  *
  * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class UsersController extends AppController
+class UsersController extends ApiController
 {
 
 

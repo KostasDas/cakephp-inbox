@@ -48,7 +48,7 @@ class AppController extends Controller
         $this->loadComponent('Auth', [
             'loginRedirect' => [
                 'controller' => 'HawkFiles',
-                'action' => 'inbox'
+                'action' => 'index'
             ],
             'logoutRedirect' => [
                 'controller' => 'Users',
@@ -78,5 +78,6 @@ class AppController extends Controller
     {
         $this->Auth->allow(['index', 'view', 'display']);
         $this->set('authUser', $this->Auth->user());
+        $this->set('isAdmin', $this->Auth->user()['role'] === 'admin');
     }
 }

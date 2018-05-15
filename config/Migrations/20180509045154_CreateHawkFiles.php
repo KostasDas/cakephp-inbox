@@ -21,7 +21,6 @@ class CreateHawkFiles extends AbstractMigration
             'null' => true,
             'default' => 'null'
         ]);
-        $table->addColumn('office', 'string');
         $table->addColumn('location', 'string');
         $table->addColumn('comments', 'text', [
             'null' => true,

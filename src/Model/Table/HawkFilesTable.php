@@ -92,12 +92,6 @@ class HawkFilesTable extends Table
             ->allowEmpty('comments');
 
         $validator
-            ->scalar('office')
-            ->maxLength('office', 255)
-            ->requirePresence('office', 'create')
-            ->notEmpty('office');
-
-        $validator
             ->scalar('location')
             ->maxLength('location', 255)
             ->requirePresence('location', 'create')
@@ -139,7 +133,7 @@ class HawkFilesTable extends Table
             ])
             ->value('type')
             ->value('sender')
-            ->value('office');
+            ->value('user');
         return $searchManager;
     }
 }

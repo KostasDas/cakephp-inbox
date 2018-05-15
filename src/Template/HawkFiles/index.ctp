@@ -28,10 +28,10 @@ echo $this->Flash->render();
             <div class="columns">
                 <div class="column">
                     <div class="select is-dark is-fullwidth">
-                        <select id="s_office"
+                        <select id="s_user"
                                 data-live-search="true"
-                                title="Υπόψιν Γραφείου">
-                            <option value="">Όλα τα γραφεία</option>
+                                title="Χειριστής">
+                            <option value="">Όλοι οι χρήστες</option>
                         </select>
                     </div>
                     <div class="select is-dark is-fullwidth">

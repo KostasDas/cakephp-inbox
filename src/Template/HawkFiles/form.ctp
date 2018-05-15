@@ -37,10 +37,9 @@
                 'options' => ['new' => 'Άλλο'] + $senders->toArray(),
                 'empty' => 'Εισάγετε αποστολέα',
             ]);
-            echo $this->Form->control('office', [
-                'label'        => 'Υπόψιν γραφείου',
-                'options' => ['new' => 'Άλλο'] + $offices->toArray(),
-                'empty' => 'Εισάγετε γραφείο',
+            echo $this->Form->control('user_id', [
+                'label'        => 'Υπόψιν',
+                'empty' => 'Εισάγετε χρήστη',
             ]);
             ?>
             <div class="file is-black has-name required" style="margin-bottom: 10px">

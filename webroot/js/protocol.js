@@ -7,7 +7,7 @@ var topic = $('#s_topic');
 var number = $('#s_number');
 var protocol = $('#s_protocol');
 var created = $('#s_created');
-var office = $('#s_office');
+var user = $('#s_user');
 var before = $('#s_created_before');
 var after = $('#s_created_after');
 
@@ -82,7 +82,7 @@ function getFiles(filters) {
         title: "Τύπος",
         "data": "type"
       }, {
-        title: "Θέμα",
+        title: "Θέμα/Περίληψη",
         "data": "topic"
       }, {
         title: "Αποστολέας",
@@ -97,8 +97,8 @@ function getFiles(filters) {
           return formatDate(data);
         }
       },{
-        title: 'Υπόψιν Γραφείου',
-        "data": 'office'
+        title: 'Χειριστής',
+        "data": 'user.name'
       },
         {
           title: "Ενέργειες",
@@ -152,8 +152,8 @@ function filter() {
   if (created.val() !== '')
     filters.created = created.val();
 
-  if (office.val() !== '')
-    filters.office = office.val();
+  if (user.val() !== '')
+    filters.user = user.val();
 
   if (before.val() !== '')
     filters.before = before.val();
@@ -205,21 +205,21 @@ function fillSenders() {
   });
 }
 
-function fillOffices() {
+function fillUsers() {
   $.ajax({
     // cache: false,
     type: "GET",
-    url: "/hawk-files/offices",
+    url: "/users",
     dataType: "json"
   }).done(function (response) {
 
-    $.each(response.offices, function (index, element) {
-      office.append($("<option></option>")
-        .val(element.office)
-        .text(element.office));
+    $.each(response.users, function (index, element) {
+      user.append($("<option></option>")
+        .val(element.id)
+        .text(element.name));
     });
 
-    office.on('change', function () {
+    user.on('change', function () {
       filter();
     });
   });
@@ -229,7 +229,7 @@ $(document).ready(function () {
 
   fillTypes();
   fillSenders();
-  fillOffices();
+  fillUsers();
 
   $('#s_number, #s_protocol, #s_topic, #s_protocol').on('keyup', function () {
     filter();

@@ -36,7 +36,8 @@ class HawkFilesController extends ApiController
      */
     public function index()
     {
-        $files = $this->HawkFiles->find('search', ['search' => $this->getRequest()->getQueryParams()]);
+        $files = $this->HawkFiles->find('search', ['search' => $this->getRequest()->getQueryParams()])
+        ->contain(['Users']);
 
         $this->set(compact('files'));
         $this->set('authUser', $this->Auth->user());
@@ -118,12 +119,12 @@ class HawkFilesController extends ApiController
             'keyField' => 'sender',
             'valueField' => 'sender'
         ])->distinct();
-        $offices =$this->HawkFiles->find('list', [
-            'keyField' => 'office',
-            'valueField' => 'office'
-        ])->distinct();
+        $users =$this->HawkFiles->Users->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'name'
+        ]);
 
-        $this->set(compact('types', 'senders', 'offices'));
+        $this->set(compact('types', 'senders', 'users'));
 
     }
 
@@ -148,16 +149,6 @@ class HawkFilesController extends ApiController
             ->toArray();
 
         $this->set('senders', $senders);
-    }
-    public function offices()
-    {
-        $offices = $this->HawkFiles->find()
-            ->select(['office'])
-            ->order(['office' => 'ASC'])
-            ->distinct()
-            ->toArray();
-
-        $this->set('offices', $offices);
     }
 
     public function download($file_id)
