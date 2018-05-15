@@ -34,7 +34,7 @@ return
         // Generic input element.
         'input' =>
             '<div class="control has-icons-left has-icons-right">
-                <input class="input type="{{type}}" name="{{name}}"{{attrs}}/>
+                <input class="input is-medium" type="{{type}}" name="{{name}}"{{attrs}}/>
                 <span class="icon is-small is-left">
                   <i class="fas {{icon}}"></i>
                 </span>
