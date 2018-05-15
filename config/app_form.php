@@ -20,7 +20,7 @@ return
         // Error item wrapper.
         'errorItem' => '<li>{{text}}</li>',
         // File input used by file().
-        'file' => '<div class="col-md-4"><input type="file" name="{{name}}"{{attrs}}></div>',
+        'file' => '<div class="upload-btn-wrapper"><input class="btn" type="file" name="{{name}}"{{attrs}}></div>',
         // Fieldset element used by allControls().
         'fieldset' => '<fieldset{{attrs}}>{{content}}</fieldset>',
         // Open tag used by create().
