@@ -1,6 +1,7 @@
 
 
 <section class="hawkFiles section">
+    <?= $this->Element('Buttons/back') ?>
     <div class="columns is-centered">
         <?= $this->Form->create($hawkFile, ['enctype' => 'multipart/form-data']) ?>
         <h3 class="title is-3">Εισαγωγή εισερχομένου</h3>
@@ -44,7 +45,7 @@
             ?>
             <div class="file is-black has-name required" style="margin-bottom: 10px">
                 <label class="file-label">
-                    <input class="file-input" id="file-upload-input" type="file" name="hawk_file">
+                    <input class="file-input" id="file-upload-input" type="file" name="location">
                     <span class="file-cta">
                       <span class="file-icon">
                         <i class="fas fa-upload"></i>

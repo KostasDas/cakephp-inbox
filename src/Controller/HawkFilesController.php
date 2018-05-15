@@ -62,7 +62,7 @@ class HawkFilesController extends ApiController
         if ($this->getRequest()->is('post')) {
             $data = $this->getRequest()->getData();
             $hawkFolder = new HawkFolder(Configure::read('production_path') . DS . $data['office']);
-            $data['location'] = $hawkFolder->moveToProduction(new File($data['hawk_file']['tmp_name']), $data['hawk_file']['name']);
+            $data['location'] = $hawkFolder->moveToProduction(new File($data['location']['tmp_name']), $data['location']['name']);
             $hawkFile = $this->HawkFiles->patchEntity($hawkFile, $data);
             if ($this->HawkFiles->save($hawkFile)) {
                 $this->Flash->success(__('Το αρχείο αποθηκεύτηκε με επιτυχία'));
@@ -82,21 +82,30 @@ class HawkFilesController extends ApiController
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function inboxEdit($id = null)
     {
-        $hawkFile = $this->HawkFiles->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $hawkFile = $this->HawkFiles->patchEntity($hawkFile, $this->request->getData());
-            if ($this->HawkFiles->save($hawkFile)) {
-                $this->Flash->success(__('The hawk file has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+        $hawkFile = $this->HawkFiles->get($id);
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $data = $this->getRequest()->getData();
+            $previousFolder = $hawkFile->office;
+            $hawkFolder = new HawkFolder(Configure::read('production_path') . DS . $data['office']);
+            $hawkFolder->delete($hawkFile->location);
+            $data['location'] = $hawkFolder->moveToProduction(new File($data['location']['tmp_name']), $data['location']['name']);
+            $hawkFile = $this->HawkFiles->patchEntity($hawkFile, $data);
+            if (in_array('office', $hawkFile->getDirty())) {
+                $hawkFolder = new HawkFolder(Configure::read('production_path') . DS . $previousFolder);
+                $hawkFolder->deleteDir();
             }
-            $this->Flash->error(__('The hawk file could not be saved. Please, try again.'));
+            if ($this->HawkFiles->save($hawkFile)) {
+                $this->Flash->success(__('Το αρχείο αποθηκεύτηκε με επιτυχία'));
+                return $this->redirect(['action' => 'inbox']);
+            }
+            dd($hawkFile->getErrors());
+            $this->Flash->error(__('Δεν καταφέραμε να αποθηκεύσουμε το αρχείο. Παρακαλώ προσπαθήστε ξανά'));
         }
+        $this->loadOptions();
         $this->set(compact('hawkFile'));
+        $this->render('inboxForm');
     }
 
     private function loadOptions()
