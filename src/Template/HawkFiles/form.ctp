@@ -1,5 +1,3 @@
-
-
 <section class="hawkFiles section">
     <?= $this->Element('Buttons/back') ?>
     <div class="columns is-centered">
@@ -28,19 +26,23 @@
                 'default'      => '',
             ]);
             echo $this->Form->control('type', [
-                'label'        => 'Τύπος',
+                'label'   => 'Τύπος',
                 'options' => ['new' => 'Άλλο'] + $types->toArray(),
-                'empty' => 'Εισάγετε τύπο',
+                'empty'   => 'Εισάγετε τύπο',
             ]);
             echo $this->Form->control('sender', [
-                'label'        => 'Αποστολέας',
+                'label'   => 'Αποστολέας',
                 'options' => ['new' => 'Άλλο'] + $senders->toArray(),
-                'empty' => 'Εισάγετε αποστολέα',
+                'empty'   => 'Εισάγετε αποστολέα',
             ]);
             echo $this->Form->control('user_id', [
-                'label'        => 'Υπόψιν',
+                'label' => 'Υπόψιν',
                 'empty' => 'Εισάγετε χρήστη',
             ]);
+
+            echo $this->Form->control('comments', [
+                'label' => 'Σχόλια',
+            ])
             ?>
             <div class="file is-black has-name required" style="margin-bottom: 10px">
                 <label class="file-label">

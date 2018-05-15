@@ -39,7 +39,7 @@ class UsersTable extends Table
         $this->addBehavior('Timestamp');
 
         $this->belongsToMany('HawkFiles', [
-            'through' => 'HawkUsers',
+            'joinTable' => 'hawk_users',
         ]);
     }
 

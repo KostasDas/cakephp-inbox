@@ -41,7 +41,13 @@ class HawkFilesTable extends Table
         $this->addBehavior('Timestamp');
 
         $this->belongsToMany('Users', [
-            'through' => 'HawkUsers',
+            'joinTable' => 'hawk_users',
+            'foreignKey' => 'file_id'
+        ]);
+
+        $this->hasMany('HawkUsers', [
+            'table' => 'hawk_users',
+            'foreign_key' => 'file_id',
         ]);
     }
 

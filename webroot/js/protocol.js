@@ -98,7 +98,7 @@ function getFiles(filters) {
         }
       },{
         title: 'Χειριστής',
-        "data": 'user.name'
+        "data": 'users[0].name'
       },
         {
           title: "Ενέργειες",

@@ -68,7 +68,7 @@ return
         // Wrapping container for radio input/label,
         'radioWrapper' => '{{label}}',
         // Textarea input element,
-        'textarea' => '<div class=" col-md-5"><textarea class="form-control" name="{{name}}"{{attrs}}>{{value}}</textarea></div>',
+        'textarea' => '<div class="control"><textarea class="textarea" name="{{name}}"{{attrs}}>{{value}}</textarea></div>',
         // Container for submit buttons.
         'submitContainer' => '<div class="submit">{{content}}</div>',
     ];

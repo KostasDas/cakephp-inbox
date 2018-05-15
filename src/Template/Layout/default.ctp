@@ -22,7 +22,7 @@
     <nav style="margin-bottom: 5%; background-color: black" class="navbar card is-fixed-top" role="navigation"
          aria-label="main navigation">
         <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link custom-nav">Εισερχόμενα</a>
+            <a class="navbar-link custom-nav">Αρχεία</a>
             <div class="navbar-dropdown">
                 <?= $this->Html->link('Λίστα',
                     ['controller' => 'HawkFiles', 'action' => 'index'],
