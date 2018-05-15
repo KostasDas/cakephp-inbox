@@ -2,7 +2,10 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Controller\Helpers\HawkFolder;
+use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Filesystem\File;
 
 /**
  * HawkFiles Controller
@@ -51,13 +54,18 @@ class HawkFilesController extends ApiController
     {
         $hawkFile = $this->HawkFiles->newEntity();
         if ($this->request->is('post')) {
-            $hawkFile = $this->HawkFiles->patchEntity($hawkFile, $this->request->getData());
+            $data = $this->getRequest()->getData();
+            dd($data);
+            $hawkFolder = new HawkFolder(Configure::read('production_path') . DS . $data['office']);
+            $data['location'] = $hawkFolder->moveToProduction(new File($data['file']['tmp_name']), $data['file']['name']);
+            $hawkFile = $this->HawkFiles->patchEntity($hawkFile, $data);
             if ($this->HawkFiles->save($hawkFile)) {
-                $this->Flash->success(__('The hawk file has been saved.'));
+                $this->Flash->success(__('Το αρχείο αποθηκεύτηκε με επιτυχία'));
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The hawk file could not be saved. Please, try again.'));
+            $this->Flash->error(__('Δεν καταφέραμε να αποθηκεύσουμε το αρχείο. Παρακαλώ προσπαθήστε ξανά'));
         }
+        $this->loadOptions();
         $this->set(compact('hawkFile'));
         $this->render('inboxForm');
     }

@@ -42,7 +42,7 @@ return
         // Submit input element.
         'inputSubmit' => '<input type="{{type}}"{{attrs}}/>',
         // Container element used by control().
-        'inputContainer' => '<div class="field {{type}}{{required}}">{{content}}</div>',
+        'inputContainer' => '<div class="field {{required}}">{{content}}</div>',
         // Container element used by control() when a field has an error.
         'inputContainerError' => '<div class="field {{type}}{{required}} error">{{content}}{{error}}</div>',
         // Label element when inputs are not nested inside the label.
@@ -60,7 +60,7 @@ return
         // Option group element used in select pickers.
         'optgroup' => '<optgroup label="{{label}}"{{attrs}}>{{content}}</optgroup>',
         // Select element,
-        'select' => '<div class=" col-md-5"><select class="form-control" name="{{name}}"{{attrs}}>{{content}}</select></div>',
+        'select' => '<div class="is-black is-fullwidth is-rounded select is-medium"><select name="{{name}}"{{attrs}}>{{content}}</select></div>',
         // Multi-select element,
         'selectMultiple' => '<select name="{{name}}[]" multiple="multiple"{{attrs}}>{{content}}</select>',
         // Radio input element,

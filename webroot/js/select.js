@@ -3,6 +3,6 @@
  */
 $('select').change( function () {
   if ($(this).val() === 'new') {
-    $(this).replaceWith('<input class="form-control" type="text" name="'+$(this).attr('name')+'" id="'+$(this).attr('id')+'">');
+    $(this).replaceWith('<input class="input is-medium has-icons-left" type="text" name="'+$(this).attr('name')+'" id="'+$(this).attr('id')+'">');
   }
 });
