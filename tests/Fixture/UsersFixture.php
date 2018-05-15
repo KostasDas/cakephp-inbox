@@ -60,6 +60,16 @@ class UsersFixture extends TestFixture
                 'created' => '2018-05-15 12:03:24',
                 'modified' => '2018-05-15 12:03:24'
 
+            ],
+            [
+                'id' => 3,
+                'name' => '3o Γραφείο',
+                'username' => '3ograf',
+                'password' => '12345',
+                'role' => 'Author',
+                'created' => '2018-05-15 12:03:24',
+                'modified' => '2018-05-15 12:03:24'
+
             ]
         ];
         parent::init();

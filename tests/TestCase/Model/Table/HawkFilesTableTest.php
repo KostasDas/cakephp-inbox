@@ -53,16 +53,20 @@ class HawkFilesTableTest extends TestCase
     }
 
     // test find as super user
+    // * test find own files
+    // * test find someone elses files
+    // * test find many peoples files
     // test find as author
-    // test find as not authorized
+    // * find file only belongs to me
+    // * find file belongs to me and someone else
+    // * find file belongs to me and two more people
+    // * find file belongs to someone else
 
-    /**
-     * @expectedException UnauthorizedException
-     * @expectedExceptionCode 401
-     */
-    public  function testFindNoAuth()
+    public function testFindAdminAllFiles()
     {
-        $this->HawkFiles->find()->all();
+        $this->logInAdmin();
+        $files = $this->HawkFiles->find()->all();
+
     }
 
     /**

@@ -1,8 +1,10 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\User;
 use Cake\Event\Event;
 use Cake\Http\Exception\UnauthorizedException;
+use Cake\Http\Session;
 use Cake\I18n\Time;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -24,6 +26,8 @@ use Cake\Validation\Validator;
  */
 class HawkFilesTable extends Table
 {
+
+    protected $user;
 
     /**
      * Initialize method
@@ -150,5 +154,31 @@ class HawkFilesTable extends Table
     public function isOwnedBy($file_id, $user_id)
     {
         return $this->HawkUsers->exists(['file_id' => $file_id, 'user_id' => $user_id]);
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @param Event        $event
+     * @param Query        $query
+     * @param \ArrayObject $object
+     * @param              $primary
+     *
+     * @return Query
+     */
+    public function beforeFind(Event $event, Query $query, \ArrayObject $object, $primary)
+    {
+        if (empty($this->user)) {
+            throw new UnauthorizedException('Δε μπορείτε να δείτε αρχεία αν δεν συνδεθείτε');
+        }
+        if ($this->user['role'] === 'author') {
+            $query->innerJoinWith('Users')
+                ->where(['Users.id' => $this->user['id']]);
+        }
+
+        return $query;
     }
 }
