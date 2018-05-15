@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\I18n\Time;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -32,8 +33,8 @@ class HawkFilesTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('hawk_files');
         $this->addBehavior('Search.Search');
+        $this->setTable('hawk_files');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 

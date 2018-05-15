@@ -53,18 +53,20 @@ class AppController extends Controller
             'logoutRedirect' => [
                 'controller' => 'Users',
                 'action' => 'login'
-            ]
+            ],
+            'authError' => 'Δεν έχετε δικαίωμα πρόσβασης'
         ]);
         /*
          * Enable the following components for recommended CakePHP security settings.
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html
          */
-        $this->loadComponent('Security');
+//        $this->loadComponent('Security');
         $this->loadComponent('Csrf');
     }
 
     public function beforeFilter(Event $event)
     {
         $this->Auth->allow(['index', 'view', 'display']);
+        $this->set('authUser', $this->Auth->user());
     }
 }
