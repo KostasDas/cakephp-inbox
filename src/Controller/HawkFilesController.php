@@ -32,14 +32,14 @@ class HawkFilesController extends ApiController
     }
 
     /**
-     * Index method
      *
-     * @return \Cake\Http\Response|void
      */
     public function index()
     {
-        $hawkFiles = $this->paginate($this->HawkFiles);
-        $this->set(compact('hawkFiles'));
+        $files = $this->HawkFiles->find('search', ['search' => $this->getRequest()->getQueryParams()]);
+
+        $this->set(compact('files'));
+        $this->set('authUser', $this->Auth->user());
     }
     /**
      * @param null $file_id
@@ -56,7 +56,7 @@ class HawkFilesController extends ApiController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function inboxAdd()
+    public function add()
     {
         $hawkFile = $this->HawkFiles->newEntity();
         if ($this->getRequest()->is('post')) {
@@ -72,7 +72,7 @@ class HawkFilesController extends ApiController
         }
         $this->loadOptions();
         $this->set(compact('hawkFile'));
-        $this->render('inboxForm');
+        $this->render('form');
     }
 
     /**
@@ -82,7 +82,7 @@ class HawkFilesController extends ApiController
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function inboxEdit($id = null)
+    public function edit($id = null)
     {
         $hawkFile = $this->HawkFiles->get($id);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -105,7 +105,7 @@ class HawkFilesController extends ApiController
         }
         $this->loadOptions();
         $this->set(compact('hawkFile'));
-        $this->render('inboxForm');
+        $this->render('form');
     }
 
     private function loadOptions()
@@ -127,13 +127,7 @@ class HawkFilesController extends ApiController
 
     }
 
-    public function inbox ()
-    {
-        $files = $this->HawkFiles->find('search', ['search' => $this->getRequest()->getQueryParams()]);
 
-        $this->set(compact('files'));
-        $this->set('authUser', $this->Auth->user());
-    }
 
     public function types()
     {

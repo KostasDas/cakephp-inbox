@@ -25,24 +25,11 @@
             <a class="navbar-link custom-nav">Εισερχόμενα</a>
             <div class="navbar-dropdown">
                 <?= $this->Html->link('Λίστα',
-                    ['controller' => 'HawkFiles', 'action' => 'inbox'],
+                    ['controller' => 'HawkFiles', 'action' => 'index'],
                     ['class' => 'navbar-item']) ?>
                 <?php
                 if (!empty($authUser)) {
-                    echo $this->Html->link('Προσθήκη', ['controller' => 'HawkFiles', 'action' => 'inboxAdd'],
-                        ['class' => 'navbar-item']);
-                }
-                ?>
-            </div>
-        </div>
-        <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link custom-nav">Εξερχόμενα</a>
-            <div class="navbar-dropdown">
-                <?= $this->Html->link('Λίστα', ['controller' => 'HawkFiles', 'action' => 'outbox'],
-                    ['class' => 'navbar-item']) ?>
-                <?php
-                if (!empty($authUser)) {
-                    echo $this->Html->link('Προσθήκη', ['controller' => 'HawkFiles', 'action' => 'outboxAdd'],
+                    echo $this->Html->link('Προσθήκη', ['controller' => 'HawkFiles', 'action' => 'add'],
                         ['class' => 'navbar-item']);
                 }
                 ?>

@@ -27,7 +27,7 @@ function getFiles(filters) {
   $.ajax({
     // cache: false,
     type: "GET",
-    url: "/hawk-files/inbox",
+    url: "/hawk-files",
     data: filters,
     dataType: "json"
   }).done(function (response) {
