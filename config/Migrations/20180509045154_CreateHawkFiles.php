@@ -23,6 +23,9 @@ class CreateHawkFiles extends AbstractMigration
         ]);
         $table->addColumn('office', 'string');
         $table->addColumn('location', 'string');
+        $table->addColumn('comments', 'text', [
+            'null' => true,
+        ]);
         $table->addColumn('created', 'datetime');
         $table->addColumn('modified', 'datetime');
         $table->create();

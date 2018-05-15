@@ -39,6 +39,10 @@ class HawkFilesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+
+        $this->belongsToMany('Users', [
+            'through' => 'HawkUsers',
+        ]);
     }
 
     /**
@@ -81,6 +85,11 @@ class HawkFilesTable extends Table
             ->scalar('protocol')
             ->maxLength('protocol', 255)
             ->allowEmpty('protocol');
+
+        $validator
+            ->scalar('comments')
+            ->maxLength('comments', 255)
+            ->allowEmpty('comments');
 
         $validator
             ->scalar('office')
