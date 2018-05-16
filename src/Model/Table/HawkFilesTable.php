@@ -145,7 +145,7 @@ class HawkFilesTable extends Table
             ])
             ->value('type')
             ->value('sender')
-            ->value('user');
+            ->value('Users.id');
         return $searchManager;
     }
 
@@ -161,7 +161,7 @@ class HawkFilesTable extends Table
         $this->user = $user;
     }
 
-    public function findShared(Query $query, array $options)
+    public function findShared(Query $query)
     {
         $results = $query->contain('HawkUsers')->all();
         $endSet = new Collection([]);

@@ -21,6 +21,24 @@ class HawkFilesControllerTest extends IntegrationTestCase
         'app.hawk_users'
     ];
 
+
+    //index
+    // visit index not logged in
+    // visit index.json as author/admin
+    // visit index.json with search params as author/admin
+    // visit index as author/admin
+
+    // add
+    // visit add page not logged in
+    // visit add page as author
+    // visit add page as admin
+    // post add as author
+    // post add as not logged in
+    // post add as admin empty data
+    // post add as admin for one user
+    // post add as admin for two users
+    // post add as admin for multiple users
+    // post add as admin
     /**
      * Test index method
      *
