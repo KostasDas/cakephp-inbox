@@ -16,7 +16,9 @@ class HawkFilesControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.hawk_files'
+        'app.hawk_files',
+        'app.users',
+        'app.hawk_users'
     ];
 
     /**

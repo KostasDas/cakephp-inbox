@@ -64,6 +64,21 @@ class HawkUsersFixture extends TestFixture
                 'user_id' => 2,
                 'hawk_file_id' => 3
             ],
+            [
+                'id' => 5,
+                'user_id' => 2,
+                'hawk_file_id' => 4
+            ],
+            [
+                'id' => 6,
+                'user_id' => 3,
+                'hawk_file_id' => 4
+            ],
+            [
+                'id' => 7,
+                'user_id' => 4,
+                'hawk_file_id' => 4
+            ],
         ];
         parent::init();
     }

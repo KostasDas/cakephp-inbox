@@ -81,6 +81,18 @@ class HawkFilesFixture extends TestFixture
                 'created' => '2018-05-09 05:09:53',
                 'modified' => '2018-05-09 05:09:53'
             ],
+            [
+                'id' => 4,
+                'number' => '1234',
+                'type' => 'ΔΒ',
+                'topic' => 'Τεστ4',
+                'sender' => 'ΑΣΔΥΣ/ΔΜΧ',
+                'protocol' => 'QAA',
+                'comments' => '',
+                'location' => '/tmp/test4',
+                'created' => '2018-05-09 05:09:53',
+                'modified' => '2018-05-09 05:09:53'
+            ],
         ];
         parent::init();
     }

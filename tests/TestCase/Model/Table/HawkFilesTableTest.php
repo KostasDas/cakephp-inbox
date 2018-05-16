@@ -69,11 +69,20 @@ class HawkFilesTableTest extends TestCase
         $this->logInAdmin();
         $files = $this->HawkFiles->find()->contain(['Users'])->all();
 
-        //no files belong to super user but he can see all
-        foreach ($files as $file) {
-            $this->assertNotEquals($file->users[0]->username, 'grammateia');
-        }
+        $this->assertTrue($this->hasOtherUserThan('grammateia', $files));
 
+    }
+
+    private function hasOtherUserThan($username, $files)
+    {
+        foreach ($files as $file) {
+            foreach ($file->users as $user) {
+                if ($user->username !== $username) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public function testFindAdminSpecificFiles()
@@ -112,7 +121,7 @@ class HawkFilesTableTest extends TestCase
         }
     }
 
-    public function testFindAuthorSharedFiles()
+    public function testFindAuthorSharedFilesFirstUser()
     {
         $this->logInAuthor('3ograf');
         $files = $this->HawkFiles->find('shared');
@@ -121,6 +130,33 @@ class HawkFilesTableTest extends TestCase
             $this->assertEquals($file->_matchingData['Users']->username, '3ograf');
         }
 
+    }
+
+    public function testFindAuthorSharedFilesSecondUser()
+    {
+        $this->logInAuthor('diavivaseis');
+        $files = $this->HawkFiles->find('shared');
+        foreach ($files as $file) {
+            $this->assertTrue(count($file->hawk_users) >= 2 );
+            $this->assertEquals($file->_matchingData['Users']->username, 'diavivaseis');
+        }
+    }
+    public function testFindAuthorSharedFilesThirdUser()
+    {
+        $this->logInAuthor('2ograf');
+        $files = $this->HawkFiles->find('shared');
+        foreach ($files as $file) {
+            $this->assertTrue(count($file->hawk_users) >= 3 );
+            $this->assertEquals($file->_matchingData['Users']->username, '2ograf');
+        }
+    }
+    public function testFindAuthorSharedFilesAdmin()
+    {
+        $this->logInAuthor('grammateia');
+        $files = $this->HawkFiles->find('shared');
+        foreach ($files as $file) {
+            $this->assertTrue(count($file->hawk_users) >= 2 );
+        }
     }
 
     public function testFindAuthorElsesFiles()
