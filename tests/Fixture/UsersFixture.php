@@ -47,7 +47,7 @@ class UsersFixture extends TestFixture
                 'name' => 'Γραμματεία',
                 'username' => 'grammateia',
                 'password' => '12345',
-                'role' => 'Admin',
+                'role' => 'admin',
                 'created' => '2018-05-15 12:03:24',
                 'modified' => '2018-05-15 12:03:24'
             ],
@@ -56,7 +56,7 @@ class UsersFixture extends TestFixture
                 'name' => 'Διαβιβάσεις',
                 'username' => 'diavivaseis',
                 'password' => '12345',
-                'role' => 'Author',
+                'role' => 'author',
                 'created' => '2018-05-15 12:03:24',
                 'modified' => '2018-05-15 12:03:24'
 
@@ -66,7 +66,7 @@ class UsersFixture extends TestFixture
                 'name' => '3o Γραφείο',
                 'username' => '3ograf',
                 'password' => '12345',
-                'role' => 'Author',
+                'role' => 'author',
                 'created' => '2018-05-15 12:03:24',
                 'modified' => '2018-05-15 12:03:24'
 

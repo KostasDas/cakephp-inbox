@@ -38,11 +38,9 @@ class HawkUsersTable extends Table
         $this->setPrimaryKey('id');
 
         $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('HawkFiles', [
-            'foreignKey' => 'file_id',
             'joinType' => 'INNER'
         ]);
     }
@@ -72,7 +70,7 @@ class HawkUsersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-        $rules->add($rules->existsIn(['file_id'], 'HawkFiles'));
+        $rules->add($rules->existsIn(['hawk_file_id'], 'HawkFiles'));
 
         return $rules;
     }

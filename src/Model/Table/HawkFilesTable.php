@@ -1,13 +1,12 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\User;
+use Cake\Collection\Collection;
 use Cake\Event\Event;
 use Cake\Http\Exception\UnauthorizedException;
-use Cake\Http\Session;
 use Cake\I18n\Time;
 use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
+use Cake\ORM\ResultSet;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -33,6 +32,7 @@ class HawkFilesTable extends Table
      * Initialize method
      *
      * @param array $config The configuration for the Table.
+     *
      * @return void
      */
     public function initialize(array $config)
@@ -47,13 +47,11 @@ class HawkFilesTable extends Table
         $this->addBehavior('Timestamp');
 
         $this->belongsToMany('Users', [
-            'joinTable' => 'hawk_users',
-            'foreignKey' => 'file_id'
+            'joinTable'  => 'hawk_users',
         ]);
 
         $this->hasMany('HawkUsers', [
-            'table' => 'hawk_users',
-            'foreign_key' => 'file_id',
+            'table'       => 'hawk_users',
         ]);
     }
 
@@ -61,6 +59,7 @@ class HawkFilesTable extends Table
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
+     *
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator)
@@ -111,6 +110,7 @@ class HawkFilesTable extends Table
 
         return $validator;
     }
+
     /**
      * @return \Search\Manager
      */
@@ -161,6 +161,18 @@ class HawkFilesTable extends Table
         $this->user = $user;
     }
 
+    public function findShared(Query $query, array $options)
+    {
+        $results = $query->contain('HawkUsers')->all();
+        $endSet = new Collection([]);
+        foreach ($results as $result) {
+            if (count($result->hawk_users) > 1) {
+                $endSet = $endSet->appendItem($result);
+            }
+        }
+        return $endSet;
+    }
+
     /**
      * @param Event        $event
      * @param Query        $query
@@ -174,9 +186,9 @@ class HawkFilesTable extends Table
         if (empty($this->user)) {
             throw new UnauthorizedException('Δε μπορείτε να δείτε αρχεία αν δεν συνδεθείτε');
         }
+
         if ($this->user['role'] === 'author') {
-            $query->innerJoinWith('Users')
-                ->where(['Users.id' => $this->user['id']]);
+            $query->matching('Users')->where(['Users.id' => $this->user['id']]);
         }
 
         return $query;

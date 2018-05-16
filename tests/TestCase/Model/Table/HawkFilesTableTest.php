@@ -97,42 +97,41 @@ class HawkFilesTableTest extends TestCase
 
     public function testFindAuthorOwnFiles()
     {
-
+        $this->logInAuthor('3ograf');
+        $files = $this->HawkFiles->find()
+            ->contain(['Users'])
+            ->all();
+        foreach ($files as $file) {
+            $flag = false;
+            foreach ($file->users as $user) {
+                if ($user->username === '3ograf') {
+                    $flag = true;
+                }
+            }
+            $this->assertTrue($flag);
+        }
     }
 
     public function testFindAuthorSharedFiles()
     {
-
-    }
-
-    public function testFindAuthorCommonFiles()
-    {
+        $this->logInAuthor('3ograf');
+        $files = $this->HawkFiles->find('shared');
+        foreach ($files as $file) {
+            $this->assertTrue(count($file->hawk_users) >= 2);
+            $this->assertEquals($file->_matchingData['Users']->username, '3ograf');
+        }
 
     }
 
     public function testFindAuthorElsesFiles()
     {
+        $this->logInAuthor('3ograf');
+        $files = $this->HawkFiles->find()
+            ->innerJoinWith('Users')
+            ->where(['Users.username' => 'diavivaseis'])
+            ->all();
+        $this->assertEquals(count($files), 0);
 
-    }
-
-    /**
-     * Test initialize method
-     *
-     * @return void
-     */
-    public function testInitialize()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test validationDefault method
-     *
-     * @return void
-     */
-    public function testValidationDefault()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
     }
 
     private  function logInAdmin()

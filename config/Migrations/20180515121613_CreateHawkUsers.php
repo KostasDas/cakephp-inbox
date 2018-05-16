@@ -15,12 +15,12 @@ class CreateHawkUsers extends AbstractMigration
     {
         $table = $this->table('hawk_users');
         $table->addColumn('user_id', 'integer');
-        $table->addColumn('file_id', 'integer');
+        $table->addColumn('hawk_file_id', 'integer');
         $table->addForeignKey('user_id', 'users', 'id', [
             'delete' => 'CASCADE',
             'update' => 'NO_ACTION',
         ]);
-        $table->addForeignKey('file_id', 'hawk_files', 'id', [
+        $table->addForeignKey('hawk_file_id', 'hawk_files', 'id', [
             'delete' => 'CASCADE',
             'update' => 'NO_ACTION',
         ]);

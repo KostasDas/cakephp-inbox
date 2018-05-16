@@ -26,9 +26,7 @@ class HawkUser extends Entity
      * @var array
      */
     protected $_accessible = [
-        'user_id' => true,
-        'file_id' => true,
-        'user' => true,
-        'hawk_file' => true
+        '*' => true,
+        'id' => false
     ];
 }
