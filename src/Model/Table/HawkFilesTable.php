@@ -97,6 +97,11 @@ class HawkFilesTable extends Table
             ->maxLength('protocol', 255)
             ->allowEmpty('protocol');
 
+        $validator->notEmpty('file_type', 'Παρακαλώ διαλέξτε είδος αρχείου')
+            ->add('file_type', 'inList', [
+                'file_type' => ['inList', ['εισερχομενο', 'εξερχομενο']],
+                'message' => 'Παρακαλώ διαλέξτε ένα τύπο αρχείου μεταξύ εισερχόμενου και εξερχόμενου'
+            ]);
         $validator
             ->scalar('comments')
             ->maxLength('comments', 255)
@@ -144,6 +149,7 @@ class HawkFilesTable extends Table
                 },
             ])
             ->value('type')
+            ->value('file_type')
             ->value('sender')
             ->value('Users.id');
         return $searchManager;

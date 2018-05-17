@@ -25,10 +25,18 @@
                 ],
                 'default'      => '',
             ]);
-            echo $this->Form->control('type', [
-                'label'   => 'Τύπος',
-                'options' => ['new' => 'Άλλο'] + $types->toArray(),
+            echo $this->Form->control('file_type', [
+                'label' => 'Τύπος αρχείου',
+                'options' => [
+                    'εισερχομενο' => 'Εισερχόμενο',
+                    'εξερχομενο' => 'Εξερχόμενο'
+                ],
                 'empty'   => 'Εισάγετε τύπο',
+            ]);
+            echo $this->Form->control('type', [
+                'label'   => 'Είδος αλληλογραφίας',
+                'options' => ['new' => 'Άλλο'] + $types->toArray(),
+                'empty'   => 'Εισάγετε είδος',
             ]);
             echo $this->Form->control('sender', [
                 'label'   => 'Αποστολέας',

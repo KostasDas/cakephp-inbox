@@ -10,6 +10,7 @@ var created = $('#s_created');
 var user = $('#s_user');
 var before = $('#s_created_before');
 var after = $('#s_created_after');
+var fileType = $('#s_file_type');
 
 // REMOVES TEXT SELECTION
 function clearSelection() {
@@ -79,8 +80,11 @@ function getFiles(filters) {
         title: "Αριθμός Ταυτότητας",
         "data": "number"
       }, {
-        title: "Τύπος",
+        title: "Είδος Αλληλογραφίας",
         "data": "type"
+      }, {
+        title: "Τύπος Αρχείου",
+        "data": "file_type"
       }, {
         title: "Θέμα/Περίληψη",
         "data": "topic"
@@ -139,6 +143,9 @@ function filter() {
 
   if (type.val() !== '')
     filters.type = type.val();
+
+  if (fileType.val() !== '')
+    filters.fileType = type.val();
 
   if (topic.val() !== '')
     filters.topic = topic.val();

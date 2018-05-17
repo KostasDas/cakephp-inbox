@@ -40,15 +40,24 @@ echo $this->Flash->render();
                 <div class="select is-dark is-fullwidth">
                     <select id="s_type"
                             data-live-search="true"
-                            title="Επιλέξτε τύπο εγγράφου">
-                        <option value="">Όλοι οι τυποι</option>
+                            title="Επιλέξτε είδος αλληλογραφίας">
+                        <option value="">Όλα τα είδη αλληλογραφίας</option>
                     </select>
                 </div>
                 <div class="select is-dark is-fullwidth">
-                    <select id="s_sender" class="selectpicker"
+                    <select id="s_sender"
                             data-live-search="true"
                             title="Επιλέξτε Αποστολέα">
                         <option value="">Όλοι οι αποστολείς</option>
+                    </select>
+                </div>
+                <div class="select is-dark is-fullwidth">
+                    <select id="s_file_type"
+                            data-live-search="true"
+                            title="Επιλέξτε Τύπο αρχείου">
+                        <option value="">Όλοι οι τύποι αρχείων</option>
+                        <option value="εισερχομενο">Εισερχόμενο</option>
+                        <option value="εξερχομενο">Εξερχόμενο</option>
                     </select>
                 </div>
             </div>
