@@ -44,9 +44,20 @@ class HawkFilesControllerTest extends IntegrationTestCase
      *
      * @return void
      */
-    public function testIndex()
+    public function testIndexNotLoggedIn()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/hawk-files');
+        $this->assertRedirect();
+    }
+
+    public function testIndexJsonNotLoggedIn()
+    {
+        $this->configRequest([
+            'headers' => ['Accept' => 'application/json']
+        ]);
+        $this->get('/hawk-files.json');
+        $this->assertRedirect();
+
     }
 
     /**
