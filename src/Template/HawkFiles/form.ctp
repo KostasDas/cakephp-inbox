@@ -8,20 +8,20 @@
             echo $this->Form->control('number', [
                 'label'        => 'Αριθμός ταυτότητας',
                 'templateVars' => [
-                    'icon' => 'fa-id-card',
+                    'icon' => 'fas fa-id-card',
                 ],
             ]);
             echo $this->Form->control('topic', [
                 'label'        => 'Θέμα',
                 'templateVars' => [
-                    'icon' => 'fa-comment',
+                    'icon' => 'fas fa-comment',
                 ],
             ]);
 
             echo $this->Form->control('protocol', [
                 'label'        => 'Φ/SIC',
                 'templateVars' => [
-                    'icon' => 'fa-bars',
+                    'icon' => 'fas fa-bars',
                 ],
                 'default'      => '',
             ]);
@@ -36,8 +36,8 @@
                 'empty'   => 'Εισάγετε αποστολέα',
             ]);
             echo $this->Form->control('user_id', [
-                'label' => 'Υπόψιν',
-                'empty' => 'Εισάγετε χρήστη',
+                'label' => 'Χειριστής',
+                'multiple' => true,
             ]);
 
             echo $this->Form->control('comments', [

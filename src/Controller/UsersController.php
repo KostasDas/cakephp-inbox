@@ -29,7 +29,7 @@ class UsersController extends ApiController
      */
     public function index()
     {
-        $users = $this->Users->find();
+        $users = $this->paginate(($this->Users));
 
         $this->set(compact('users'));
     }

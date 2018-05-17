@@ -40,7 +40,7 @@
         <div class="navbar-menu">
             <div class="navbar-end">
                 <?php if ($authUser) :?>
-                <div class="navbar-item custom-nav">Καλώς ήρθες <?= $authUser['name'] ?></div>
+                <div class="navbar-item custom-nav">Καλώς ήρθατε <?= $authUser['name'] ?></div>
                 <?php endif; ?>
                 <?php
                 if ($this->request->getParam('action') != 'login') {

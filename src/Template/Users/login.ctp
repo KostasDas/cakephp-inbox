@@ -8,13 +8,13 @@
     echo $this->Form->control('username', [
         'label' => 'Όνομα χρήστη',
         'templateVars' => [
-            'icon' => 'fa-user'
+            'icon' => 'fas fa-user'
         ]
     ]);
     echo $this->Form->control('password', [
         'label' => 'Κωδικός',
         'templateVars' => [
-            'icon' => 'fa-lock'
+            'icon' => 'fas fa-lock'
         ]
     ]);
     echo $this->Form->button(__('Σύνδεση'));
