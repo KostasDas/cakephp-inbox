@@ -84,7 +84,10 @@ function getFiles(filters) {
         "data": "type"
       }, {
         title: "Τύπος Αρχείου",
-        "data": "file_type"
+        "data": "file_type",
+        "render": function (data, type, full) {
+          return data.toUpperCase();
+        }
       }, {
         title: "Θέμα/Περίληψη",
         "data": "topic"
