@@ -12,20 +12,21 @@ echo $this->Flash->render();
     <section class="section">
         <h3 class="title is-4 card-footer-item">Πρωτόκολλο εισερχομένων 180 ΜΚ/Β HAWK</h3>
         <form class="form-horizontal box"">
-
-            <div class="columns">
-                <div class="column">
-                    <input id="s_number" class="custom-input" type="text" placeholder="Αναζήτηση Αριθμού Εκδότου">
-                </div>
-                <div class="column">
-                    <input id="s_topic" class="custom-input" type="text" placeholder="Αναζήτηση Θέματος">
-                </div>
-                <div class="column">
-                    <input id="s_protocol" class="custom-input" type="text" placeholder="Αναζήτηση Φ/SIC">
-                </div>
+        <div class="columns">
+            <div class="column">
+                <input id="s_id" class="custom-input" type="text" placeholder="Αναζήτηση Αριθμού Πρωτοκόλλου">
             </div>
-
-            <div class="clearfix"></div>
+            <div class="column">
+                <input id="s_number" class="custom-input" type="text" placeholder="Αναζήτηση Αριθμού Εκδότου">
+            </div>
+            <div class="column">
+                <input id="s_topic" class="custom-input" type="text" placeholder="Αναζήτηση Θέματος">
+            </div>
+            <div class="column">
+                <input id="s_protocol" class="custom-input" type="text" placeholder="Αναζήτηση Φ/SIC">
+            </div>
+        </div>
+        <div class="clearfix"></div>
         <div class="columns">
             <div class="column">
                 <?php if ($isAdmin) :?>

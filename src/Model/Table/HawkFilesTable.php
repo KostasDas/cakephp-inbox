@@ -140,6 +140,7 @@ class HawkFilesTable extends Table
                 },
             ])
             ->value('type')
+            ->value('id')
             ->value('file_type')
             ->value('sender');
         return $searchManager;

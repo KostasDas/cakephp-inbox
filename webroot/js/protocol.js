@@ -11,6 +11,7 @@ var user = $('#s_user');
 var before = $('#s_created_before');
 var after = $('#s_created_after');
 var file_type = $('#s_file_type');
+var id = $('#s_id');
 
 
 
@@ -153,6 +154,9 @@ function filter() {
   if (sender.val() !== '')
     filters.sender = sender.val();
 
+  if (id.val() !== '')
+    filters.id = id.val();
+
   if (type.val() !== '')
     filters.type = type.val();
 
@@ -253,7 +257,7 @@ $(document).ready(function () {
   fillSenders();
   fillUsers();
 
-  $('#s_number, #s_protocol, #s_topic, #s_protocol').on('keyup', function () {
+  $('#s_number, #s_protocol, #s_topic, #s_protocol, #s_id').on('keyup', function () {
     filter();
   });
   $('#s_created_before, #s_created_after').on('change', function () {
