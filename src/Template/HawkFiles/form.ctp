@@ -39,9 +39,9 @@
                 'empty'   => 'Εισάγετε είδος',
             ]);
             echo $this->Form->control('sender', [
-                'label'   => 'Εκδότης',
+                'label'   => 'Αποστολέας/Παραλήπτης',
                 'options' => ['new' => 'Άλλο'] + $senders->toArray(),
-                'empty'   => 'Εισάγετε αποστολέα',
+                'empty'   => 'Εισάγετε αποστολέα/παραλήπτη',
             ]);
             echo $this->Form->control('user_id', [
                 'label' => 'Χειριστής',
