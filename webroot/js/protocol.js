@@ -77,7 +77,7 @@ function getFiles(filters) {
         "visible": false,
         "searchable": false
       }, {
-        title: "Αριθμός Ταυτότητας",
+        title: "Αριθμός Εκδότου",
         "data": "number"
       }, {
         title: "Είδος Αλληλογραφίας",

@@ -15,7 +15,7 @@ echo $this->Flash->render();
 
             <div class="columns">
                 <div class="column">
-                    <input id="s_number" class="custom-input" type="text" placeholder="Αναζήτηση Αριθμού Ταυτότητας">
+                    <input id="s_number" class="custom-input" type="text" placeholder="Αναζήτηση Αριθμού Εκδότου">
                 </div>
                 <div class="column">
                     <input id="s_topic" class="custom-input" type="text" placeholder="Αναζήτηση Θέματος">
