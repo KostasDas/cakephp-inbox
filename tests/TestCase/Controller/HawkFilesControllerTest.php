@@ -70,6 +70,7 @@ class HawkFilesControllerTest extends IntegrationTestCase
 
         $this->get('/hawk-files.json');
         $this->assertResponseSuccess();
+        $this->assertResponseContains('files');
     }
 
 
@@ -83,22 +84,57 @@ class HawkFilesControllerTest extends IntegrationTestCase
     public function testIndexJsonAuthor()
     {
         $this->logInAsAuthor();
-
         $this->get('/hawk-files.json');
         $this->assertResponseSuccess();
+
+        $data = json_decode($this->_response->getBody(), true);
+        foreach ($data['files'] as $hawkFile) {
+            $this->assertEquals($hawkFile['_matchingData']['Users']['username'], 'diavivaseis');
+        }
     }
 
-    public function testIndexSearchAsAdmin()
+    public function testIndexGenericSearchAsAdmin()
     {
         $this->addTestFiles(5);
-
         $this->logInAsAdmin();
+        $this->get('/hawk-files.json?number=321');
+        $data = json_decode($this->_response->getBody(), true);
+        foreach ($data['files'] as $file) {
+            $this->assertEquals($file['number'], 321);
+        }
     }
 
-    public function testIndexSearchAsAuthor()
+    public function testIndexGenericSearchAsAuthor()
     {
-
+        $this->addTestFiles(5);
+        $this->logInAsAuthor();
+        $this->get('/hawk-files.json?number=321');
+        $data = json_decode($this->_response->getBody(), true);
+        $this->assertTrue(empty($data['files']));
     }
+
+    public function testIndexSearchInboxOnly()
+    {
+        $this->addTestFiles(10);
+        $this->logInAsAdmin();
+        $this->get('/hawk-files.json?file_type=εισερχομενο');
+        $data = json_decode($this->_response->getBody(), true);
+        foreach ($data['files'] as $file) {
+            $this->assertEquals('εισερχομενο', $file['file_type']);
+        }
+    }
+    public function testIndexSearchInboxBelongsToDiavivaseis()
+    {
+        $this->addTestFiles(10);
+        $this->logInAsAdmin();
+        $this->get('/hawk-files.json?file_type=εισερχομενο&user=2');
+        $data = json_decode($this->_response->getBody(), true);
+        foreach ($data['files'] as $file) {
+            $this->assertEquals('εισερχομενο', $file['file_type']);
+            $this->assertEquals($file['_matchingData']['Users']['username'], 'diavivaseis');
+        }
+    }
+
     /**
      * Test view method
      *

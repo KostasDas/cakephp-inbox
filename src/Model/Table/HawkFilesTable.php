@@ -2,12 +2,10 @@
 namespace App\Model\Table;
 
 use Cake\Collection\Collection;
-use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\Http\Exception\UnauthorizedException;
 use Cake\I18n\Time;
 use Cake\ORM\Query;
-use Cake\ORM\ResultSet;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -136,10 +134,14 @@ class HawkFilesTable extends Table
                     return $query->andWhere([$this->aliasField('created') . ' >=' => new Time($args['after'])]);
                 },
             ])
+            ->add('user', 'Search.Callback', [
+                'callback' => function ($query, $args, $manager) {
+                    return $query->matching('Users')->where(['Users.id' => $args['user']]);
+                },
+            ])
             ->value('type')
             ->value('file_type')
-            ->value('sender')
-            ->value('Users.id');
+            ->value('sender');
         return $searchManager;
     }
 

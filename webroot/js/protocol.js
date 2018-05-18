@@ -10,7 +10,9 @@ var created = $('#s_created');
 var user = $('#s_user');
 var before = $('#s_created_before');
 var after = $('#s_created_after');
-var fileType = $('#s_file_type');
+var file_type = $('#s_file_type');
+
+
 
 // REMOVES TEXT SELECTION
 function clearSelection() {
@@ -154,8 +156,8 @@ function filter() {
   if (type.val() !== '')
     filters.type = type.val();
 
-  if (fileType.val() !== '')
-    filters.fileType = type.val();
+  if (file_type.val() !== '')
+    filters.file_type = file_type.val();
 
   if (topic.val() !== '')
     filters.topic = topic.val();
@@ -181,6 +183,9 @@ function filter() {
   getFiles(filters);
 }
 
+file_type.on('change', function () {
+  filter();
+});
 
 function fillTypes() {
   $.ajax({
