@@ -102,7 +102,14 @@ function getFiles(filters) {
         }
       },{
         title: 'Χειριστές',
-        "data": 'users[0].name'
+        "data": 'users',
+        "render": function (data, type, full) {
+          var users = '';
+          $.each(data, function (key, value) {
+            users += value.name + '</br>';
+          });
+          return users;
+        }
       },
         {
           title: "Ενέργειες",

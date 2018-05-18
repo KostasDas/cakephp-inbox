@@ -55,7 +55,9 @@ class HawkFilesController extends ApiController
      **/
     public function view($file_id = null)
     {
-        $hawkFile = $this->HawkFiles->get($file_id);
+        $hawkFile = $this->HawkFiles->HawkUsers->find()->where([
+            'hawk_file_id' => $file_id,
+        ])->first();
         return $this->getResponse()->withFile($hawkFile->location);
     }
 
@@ -188,7 +190,9 @@ class HawkFilesController extends ApiController
 
     public function download($file_id)
     {
-        $hawkFile = $this->HawkFiles->get($file_id);
+        $hawkFile = $this->HawkFiles->HawkUsers->find()->where([
+            'hawk_file_id' => $file_id,
+        ])->first();
         return $this->getResponse()->withFile($hawkFile->location, [
             'download' => true,
         ]);
