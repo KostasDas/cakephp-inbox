@@ -48,7 +48,7 @@ class AppController extends Controller
         $this->loadComponent('Auth', [
             'loginRedirect' => [
                 'controller' => 'HawkFiles',
-                'action' => 'inbox'
+                'action' => 'index'
             ],
             'logoutRedirect' => [
                 'controller' => 'Users',
@@ -64,9 +64,24 @@ class AppController extends Controller
         $this->loadComponent('Csrf');
     }
 
+    public function isAuthorized($user)
+    {
+        // Admin can access every action
+        if (isset($user['role']) && $user['role'] === 'admin') {
+            return true;
+        }
+        // Default deny
+        return false;
+    }
+
+    public function isAdmin($user)
+    {
+        return $user['role'] === 'admin';
+    }
+
     public function beforeFilter(Event $event)
     {
-        $this->Auth->allow(['index', 'view', 'display']);
         $this->set('authUser', $this->Auth->user());
+        $this->set('isAdmin', $this->Auth->user()['role'] === 'admin');
     }
 }

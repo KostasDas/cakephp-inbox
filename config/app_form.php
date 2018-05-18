@@ -36,7 +36,7 @@ return
             '<div class="control has-icons-left has-icons-right">
                 <input class="input is-medium" type="{{type}}" name="{{name}}"{{attrs}}/>
                 <span class="icon is-small is-left">
-                  <i class="fas {{icon}}"></i>
+                  <i class="{{icon}}"></i>
                 </span>
             </div>',
         // Submit input element.
@@ -62,13 +62,13 @@ return
         // Select element,
         'select' => '<div class="is-black is-fullwidth is-rounded select is-medium"><select name="{{name}}"{{attrs}}>{{content}}</select></div>',
         // Multi-select element,
-        'selectMultiple' => '<select name="{{name}}[]" multiple="multiple"{{attrs}}>{{content}}</select>',
+        'selectMultiple' => '<div class="is-black select is-multiple is-fullwidth is-medium"><select name="{{name}}[]" multiple="multiple"{{attrs}}>{{content}}</select></div>',
         // Radio input element,
         'radio' => '<input type="radio" name="{{name}}" value="{{value}}"{{attrs}}>',
         // Wrapping container for radio input/label,
         'radioWrapper' => '{{label}}',
         // Textarea input element,
-        'textarea' => '<div class=" col-md-5"><textarea class="form-control" name="{{name}}"{{attrs}}>{{value}}</textarea></div>',
+        'textarea' => '<div class="control"><textarea class="textarea" name="{{name}}"{{attrs}}>{{value}}</textarea></div>',
         // Container for submit buttons.
         'submitContainer' => '<div class="submit">{{content}}</div>',
     ];

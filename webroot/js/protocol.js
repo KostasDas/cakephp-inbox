@@ -7,9 +7,12 @@ var topic = $('#s_topic');
 var number = $('#s_number');
 var protocol = $('#s_protocol');
 var created = $('#s_created');
-var office = $('#s_office');
+var user = $('#s_user');
 var before = $('#s_created_before');
 var after = $('#s_created_after');
+var file_type = $('#s_file_type');
+
+
 
 // REMOVES TEXT SELECTION
 function clearSelection() {
@@ -27,7 +30,7 @@ function getFiles(filters) {
   $.ajax({
     // cache: false,
     type: "GET",
-    url: "/hawk-files/inbox",
+    url: "/hawk-files",
     data: filters,
     dataType: "json"
   }).done(function (response) {
@@ -76,13 +79,19 @@ function getFiles(filters) {
         "visible": false,
         "searchable": false
       }, {
-        title: "Αριθμός Ταυτότητας",
+        title: "Αριθμός Εκδότου",
         "data": "number"
       }, {
-        title: "Τύπος",
+        title: "Είδος Αλληλογραφίας",
         "data": "type"
       }, {
-        title: "Θέμα",
+        title: "Τύπος Αρχείου",
+        "data": "file_type",
+        "render": function (data, type, full) {
+          return data.toUpperCase();
+        }
+      }, {
+        title: "Θέμα/Περίληψη",
         "data": "topic"
       }, {
         title: "Αποστολέας",
@@ -97,8 +106,15 @@ function getFiles(filters) {
           return formatDate(data);
         }
       },{
-        title: 'Υπόψιν Γραφείου',
-        "data": 'office'
+        title: 'Χειριστές',
+        "data": 'users',
+        "render": function (data, type, full) {
+          var users = '';
+          $.each(data, function (key, value) {
+            users += value.name + '</br>';
+          });
+          return users;
+        }
       },
         {
           title: "Ενέργειες",
@@ -111,7 +127,7 @@ function getFiles(filters) {
             var links = '<div><a class="h3 well-sm" href=/hawk-files/download/' + data + '><span data-toggle="tooltip" title="Λήψη" class="icon"> <i class="fas fa-arrow-down"></i></span></a>' +
               '<a class="h3 well-sm" target="_blank" href=/hawk-files/view/' + data + '><span data-toggle="tooltip" title="Προβολή" class="icon"><i class="fas fa-eye"></i></span></a>';
             if (user) {
-              links += '<a class="h3 well-sm" href=/hawk-files/edit/' + data + '><span data-toggle="tooltip" title="Επεξεργασία" class="icon"><i class="fas fa-edit"></i> </span></a></div>';
+              links += '<a class="h3 well-sm" href=/hawk-files/inboxEdit/' + data + '><span data-toggle="tooltip" title="Επεξεργασία" class="icon"><i class="fas fa-edit"></i> </span></a></div>';
             }
             return links;
           }
@@ -140,6 +156,9 @@ function filter() {
   if (type.val() !== '')
     filters.type = type.val();
 
+  if (file_type.val() !== '')
+    filters.file_type = file_type.val();
+
   if (topic.val() !== '')
     filters.topic = topic.val();
 
@@ -152,8 +171,8 @@ function filter() {
   if (created.val() !== '')
     filters.created = created.val();
 
-  if (office.val() !== '')
-    filters.office = office.val();
+  if (user.val() !== '')
+    filters.user = user.val();
 
   if (before.val() !== '')
     filters.before = before.val();
@@ -164,6 +183,9 @@ function filter() {
   getFiles(filters);
 }
 
+file_type.on('change', function () {
+  filter();
+});
 
 function fillTypes() {
   $.ajax({
@@ -205,21 +227,21 @@ function fillSenders() {
   });
 }
 
-function fillOffices() {
+function fillUsers() {
   $.ajax({
     // cache: false,
     type: "GET",
-    url: "/hawk-files/offices",
+    url: "/users",
     dataType: "json"
   }).done(function (response) {
 
-    $.each(response.offices, function (index, element) {
-      office.append($("<option></option>")
-        .val(element.office)
-        .text(element.office));
+    $.each(response.users, function (index, element) {
+      user.append($("<option></option>")
+        .val(element.id)
+        .text(element.name));
     });
 
-    office.on('change', function () {
+    user.on('change', function () {
       filter();
     });
   });
@@ -229,7 +251,7 @@ $(document).ready(function () {
 
   fillTypes();
   fillSenders();
-  fillOffices();
+  fillUsers();
 
   $('#s_number, #s_protocol, #s_topic, #s_protocol').on('keyup', function () {
     filter();

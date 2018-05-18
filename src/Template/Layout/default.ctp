@@ -22,27 +22,16 @@
     <nav style="margin-bottom: 5%; background-color: black" class="navbar card is-fixed-top" role="navigation"
          aria-label="main navigation">
         <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link custom-nav">Εισερχόμενα</a>
+            <?php if ($this->request->getParam('action') != 'login'): ?>
+                <a class="navbar-link custom-nav">Αρχεία</a>
+            <?php endif; ?>
             <div class="navbar-dropdown">
                 <?= $this->Html->link('Λίστα',
-                    ['controller' => 'HawkFiles', 'action' => 'inbox'],
+                    ['controller' => 'HawkFiles', 'action' => 'index'],
                     ['class' => 'navbar-item']) ?>
                 <?php
-                if (!empty($authUser)) {
-                    echo $this->Html->link('Προσθήκη', ['controller' => 'HawkFiles', 'action' => 'inboxAdd'],
-                        ['class' => 'navbar-item']);
-                }
-                ?>
-            </div>
-        </div>
-        <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link custom-nav">Εξερχόμενα</a>
-            <div class="navbar-dropdown">
-                <?= $this->Html->link('Λίστα', ['controller' => 'HawkFiles', 'action' => 'outbox'],
-                    ['class' => 'navbar-item']) ?>
-                <?php
-                if (!empty($authUser)) {
-                    echo $this->Html->link('Προσθήκη', ['controller' => 'HawkFiles', 'action' => 'outboxAdd'],
+                if ($isAdmin) {
+                    echo $this->Html->link('Προσθήκη', ['controller' => 'HawkFiles', 'action' => 'add'],
                         ['class' => 'navbar-item']);
                 }
                 ?>
@@ -50,6 +39,9 @@
         </div>
         <div class="navbar-menu">
             <div class="navbar-end">
+                <?php if ($authUser) :?>
+                <div class="navbar-item custom-nav">Καλώς ήρθατε <?= $authUser['name'] ?></div>
+                <?php endif; ?>
                 <?php
                 if ($this->request->getParam('action') != 'login') {
                     $link = empty($authUser) ?

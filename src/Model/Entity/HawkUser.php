@@ -4,20 +4,16 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * HawkFile Entity
+ * HawkUser Entity
  *
  * @property int $id
- * @property string $number
- * @property string $type
- * @property string $topic
- * @property string $sender
- * @property string $protocol
- * @property string $office
- * @property string $location
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property int $user_id
+ * @property int $file_id
+ *
+ * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\HawkFile $hawk_file
  */
-class HawkFile extends Entity
+class HawkUser extends Entity
 {
 
     /**

@@ -1,45 +1,51 @@
-
-
 <section class="hawkFiles section">
+    <?= $this->Element('Buttons/back') ?>
     <div class="columns is-centered">
         <?= $this->Form->create($hawkFile, ['enctype' => 'multipart/form-data']) ?>
-        <h3 class="title is-3">Εισαγωγή εισερχομένου</h3>
+        <h3 class="title is-3">Εισαγωγή αρχείου</h3>
         <div class="column">
             <?php
             echo $this->Form->control('number', [
-                'label'        => 'Αριθμός ταυτότητας',
+                'label'        => 'Αριθμός Εκδότου',
                 'templateVars' => [
-                    'icon' => 'fa-id-card',
+                    'icon' => 'fas fa-id-card',
                 ],
             ]);
             echo $this->Form->control('topic', [
                 'label'        => 'Θέμα',
                 'templateVars' => [
-                    'icon' => 'fa-comment',
+                    'icon' => 'fas fa-comment',
                 ],
             ]);
 
             echo $this->Form->control('protocol', [
                 'label'        => 'Φ/SIC',
                 'templateVars' => [
-                    'icon' => 'fa-bars',
+                    'icon' => 'fas fa-bars',
                 ],
                 'default'      => '',
             ]);
+            echo $this->Form->control('file_type', [
+                'label' => 'Τύπος αρχείου',
+                'options' => [
+                    'εισερχομενο' => 'Εισερχόμενο',
+                    'εξερχομενο' => 'Εξερχόμενο'
+                ],
+                'empty'   => 'Εισάγετε τύπο',
+            ]);
             echo $this->Form->control('type', [
-                'label'        => 'Τύπος',
+                'label'   => 'Είδος αλληλογραφίας',
                 'options' => ['new' => 'Άλλο'] + $types->toArray(),
-                'empty' => 'Εισάγετε τύπο',
+                'empty'   => 'Εισάγετε είδος',
             ]);
             echo $this->Form->control('sender', [
-                'label'        => 'Αποστολέας',
+                'label'   => 'Εκδότης',
                 'options' => ['new' => 'Άλλο'] + $senders->toArray(),
-                'empty' => 'Εισάγετε αποστολέα',
+                'empty'   => 'Εισάγετε αποστολέα',
             ]);
-            echo $this->Form->control('office', [
-                'label'        => 'Υπόψιν γραφείου',
-                'options' => ['new' => 'Άλλο'] + $offices->toArray(),
-                'empty' => 'Εισάγετε γραφείο',
+            echo $this->Form->control('user_id', [
+                'label' => 'Χειριστής',
+                'multiple' => true,
             ]);
             ?>
             <div class="file is-black has-name required" style="margin-bottom: 10px">

@@ -21,8 +21,7 @@ class CreateHawkFiles extends AbstractMigration
             'null' => true,
             'default' => 'null'
         ]);
-        $table->addColumn('office', 'string');
-        $table->addColumn('location', 'string');
+        $table->addColumn('file_type', 'string');
         $table->addColumn('created', 'datetime');
         $table->addColumn('modified', 'datetime');
         $table->create();
