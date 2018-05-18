@@ -95,7 +95,7 @@ function getFiles(filters) {
         title: "Θέμα/Περίληψη",
         "data": "topic"
       }, {
-        title: "Αποστολέας",
+        title: "Αποστολέας/Αποδέκτης",
         "data": "sender"
       }, {
         title: 'Φ/SIC',

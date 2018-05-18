@@ -34,7 +34,7 @@ echo $this->Flash->render();
                     <select id="s_user"
                             data-live-search="true"
                             title="Χειριστής">
-                        <option value="">Όλοι οι χρήστες</option>
+                        <option value="">Όλοι οι χειριστές</option>
                     </select>
                 </div>
                 <?php endif; ?>
@@ -48,8 +48,8 @@ echo $this->Flash->render();
                 <div class="select is-dark is-fullwidth">
                     <select id="s_sender"
                             data-live-search="true"
-                            title="Επιλέξτε Αποστολέα">
-                        <option value="">Όλοι οι αποστολείς</option>
+                            title="Επιλέξτε Αποστολέα/Αποδέκτη">
+                        <option value="">Όλοι οι αποστολείς/αποδέκτες</option>
                     </select>
                 </div>
                 <div class="select is-dark is-fullwidth">
