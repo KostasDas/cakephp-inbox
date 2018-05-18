@@ -66,10 +66,6 @@ class HawkFilesController extends ApiController
      */
     public function add()
     {
-        // create folder with path /production_path/username/file_type/protocol
-        // if folder created move file there and return location
-        // save file entry in the database and save associated hawk_users
-        // if file entry is saved create file or if file entry is not saved delete file
         $hawkFile = $this->HawkFiles->newEntity();
         if ($this->getRequest()->is('post')) {
             $filesSaved = false;

@@ -174,7 +174,6 @@ class HawkFilesControllerTest extends IntegrationTestCase
         for ($i = 1; $i <= $times; $i++) {
             $data = $this->getFileData($users);
             $this->post('/hawk-files/add.json', $data);
-            eval(\Psy\sh());
         }
     }
 
