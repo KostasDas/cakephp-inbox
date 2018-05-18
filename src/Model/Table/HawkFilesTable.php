@@ -2,6 +2,7 @@
 namespace App\Model\Table;
 
 use Cake\Collection\Collection;
+use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\Http\Exception\UnauthorizedException;
 use Cake\I18n\Time;
@@ -98,20 +99,7 @@ class HawkFilesTable extends Table
             ->allowEmpty('protocol');
 
         $validator->notEmpty('file_type', 'Παρακαλώ διαλέξτε είδος αρχείου')
-            ->add('file_type', 'inList', [
-                'file_type' => ['inList', ['εισερχομενο', 'εξερχομενο']],
-                'message' => 'Παρακαλώ διαλέξτε ένα τύπο αρχείου μεταξύ εισερχόμενου και εξερχόμενου'
-            ]);
-        $validator
-            ->scalar('comments')
-            ->maxLength('comments', 255)
-            ->allowEmpty('comments');
-
-        $validator
-            ->scalar('location')
-            ->maxLength('location', 255)
-            ->requirePresence('location', 'create')
-            ->notEmpty('location');
+            ->requirePresence('file_type', 'create');
 
         return $validator;
     }

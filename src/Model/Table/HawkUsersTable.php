@@ -57,6 +57,13 @@ class HawkUsersTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
+
+        $validator
+            ->scalar('location')
+            ->maxLength('location', 255)
+            ->requirePresence('location', 'create')
+            ->notEmpty('location');
+
         return $validator;
     }
 

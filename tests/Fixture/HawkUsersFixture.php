@@ -19,6 +19,7 @@ class HawkUsersFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'user_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'location' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'hawk_file_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         '_indexes' => [
             'user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
@@ -47,37 +48,44 @@ class HawkUsersFixture extends TestFixture
             [
                 'id' => 1,
                 'user_id' => 2,
-                'hawk_file_id' => 1
+                'hawk_file_id' => 1,
+                'location' => '/tmp/1'
             ],
             [
                 'id' => 2,
                 'user_id' => 3,
-                'hawk_file_id' => 2
+                'hawk_file_id' => 2,
+                'location' => '/tmp/1'
             ],
             [
                 'id' => 3,
                 'user_id' => 3,
-                'hawk_file_id' => 3
+                'hawk_file_id' => 3,
+                'location' => '/tmp/1'
             ],
             [
                 'id' => 4,
                 'user_id' => 2,
-                'hawk_file_id' => 3
+                'hawk_file_id' => 3,
+                'location' => '/tmp/1'
             ],
             [
                 'id' => 5,
                 'user_id' => 2,
-                'hawk_file_id' => 4
+                'hawk_file_id' => 4,
+                'location' => '/tmp/1'
             ],
             [
                 'id' => 6,
                 'user_id' => 3,
-                'hawk_file_id' => 4
+                'hawk_file_id' => 4,
+                'location' => '/tmp/1'
             ],
             [
                 'id' => 7,
                 'user_id' => 4,
-                'hawk_file_id' => 4
+                'hawk_file_id' => 4,
+                'location' => '/tmp/1'
             ],
         ];
         parent::init();

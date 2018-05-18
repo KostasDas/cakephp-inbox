@@ -23,8 +23,6 @@ class HawkFilesFixture extends TestFixture
         'topic' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'sender' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'protocol' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => 'null', 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'comments' => 'text',
-        'location' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'created' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'modified' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         '_constraints' => [
@@ -52,8 +50,6 @@ class HawkFilesFixture extends TestFixture
                 'topic' => 'τεστ',
                 'sender' => 'ΓΕΣ/ΔΠΒ',
                 'protocol' => 'Φ.411',
-                'comments' => '',
-                'location' => '/tmp/test',
                 'created' => '2018-05-09 05:09:53',
                 'modified' => '2018-05-09 05:09:53'
             ],
@@ -64,8 +60,6 @@ class HawkFilesFixture extends TestFixture
                 'topic' => 'Τεστ2',
                 'sender' => 'ΑΣΔΥΣ/ΚΕΠΙΚ',
                 'protocol' => 'WAF',
-                'comments' => 'Ενα τεστ comment',
-                'location' => '/tmp/test2',
                 'created' => '2018-05-09 05:09:53',
                 'modified' => '2018-05-09 05:09:53'
             ],
@@ -76,8 +70,6 @@ class HawkFilesFixture extends TestFixture
                 'topic' => 'Τεστ3',
                 'sender' => 'ΑΣΔΥΣ/ΔΙΠα',
                 'protocol' => 'POF',
-                'comments' => '',
-                'location' => '/tmp/test3',
                 'created' => '2018-05-09 05:09:53',
                 'modified' => '2018-05-09 05:09:53'
             ],
@@ -88,8 +80,6 @@ class HawkFilesFixture extends TestFixture
                 'topic' => 'Τεστ4',
                 'sender' => 'ΑΣΔΥΣ/ΔΜΧ',
                 'protocol' => 'QAA',
-                'comments' => '',
-                'location' => '/tmp/test4',
                 'created' => '2018-05-09 05:09:53',
                 'modified' => '2018-05-09 05:09:53'
             ],

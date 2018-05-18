@@ -47,14 +47,10 @@
                 'label' => 'Χειριστής',
                 'multiple' => true,
             ]);
-
-            echo $this->Form->control('comments', [
-                'label' => 'Σχόλια',
-            ])
             ?>
             <div class="file is-black has-name required" style="margin-bottom: 10px">
                 <label class="file-label">
-                    <input class="file-input" id="file-upload-input" type="file" name="location">
+                    <input class="file-input" id="file-upload-input" type="file" name="hawk_file">
                     <span class="file-cta">
                       <span class="file-icon">
                         <i class="fas fa-upload"></i>

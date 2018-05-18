@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\HawkFilesController;
+use Cake\Filesystem\File;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -89,7 +90,9 @@ class HawkFilesControllerTest extends IntegrationTestCase
 
     public function testIndexSearchAsAdmin()
     {
+        $this->addTestFiles(5);
 
+        $this->logInAsAdmin();
     }
 
     public function testIndexSearchAsAuthor()
@@ -161,5 +164,47 @@ class HawkFilesControllerTest extends IntegrationTestCase
                 ]
             ]
         ]);
+    }
+
+    private function addTestFiles($times = 1, $users = [])
+    {
+        //only admins can add files
+        $this->logInAsAdmin();
+        $this->enableCsrfToken();
+        for ($i = 1; $i <= $times; $i++) {
+            $data = $this->getFileData($users);
+            $this->post('/hawk-files/add.json', $data);
+            eval(\Psy\sh());
+        }
+    }
+
+    private function getFileData($userIds = [])
+    {
+        $users = !empty($userIds) ? $userIds : [
+                0 => '3',
+                1 => '4'
+            ];
+        $faker = \Faker\Factory::create();
+        $fileName = $faker->word;
+        $file = new File('tmp/'.$fileName, true, 0644);
+        $protocol = ['Φ.410', 'Φ.420', 'Φ.430', 'Φ.200', 'Φ.210', 'Φ.340'];
+        $fileType = ['εξερχομενο', 'εισερχομενο'];
+        $file->create();
+        return [
+            'number' => $faker->numberBetween(10000, 99999),
+            'topic' => $faker->word,
+            'protocol' => $protocol[array_rand($protocol)],
+            'file_type' => $fileType[array_rand($fileType)],
+            'type' => 'ΔΒ',
+            'sender' => 'ΓΕΣ/ΔΠΒ',
+            'user_id' => $users,
+            'hawk_file' => [
+                'tmp_name' => 'tmp/'.$fileName,
+                'error' => (int) 0,
+                'name' => 'Φ.330_72_1461730_Σ.916_20 ΑΠΡ 2018_ΓΕΣ_ΔΙΔΕΚΠ_3β.pdf',
+                'type' => 'application/pdf',
+                'size' => (int) 136916
+            ]
+        ];
     }
 }

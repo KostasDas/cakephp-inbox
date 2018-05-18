@@ -9,57 +9,64 @@
 namespace App\Controller\Helpers;
 
 
-use App\Model\Entity\HawkFile;
+use Cake\Core\Configure;
+use Cake\Core\Exception\Exception;
 use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
-use Cake\I18n\Time;
+use Cake\ORM\TableRegistry;
+use Doctrine\Instantiator\Exception\InvalidArgumentException;
 
 class HawkFolder
 {
     protected $directory;
+    private $tempFile;
 
-    public function __construct($path)
+    public function setPath(array $data)
     {
-        $this->directory = new Folder($path, true, 0755);
-    }
-
-    public function moveToProduction(File $file, string $fileName): string
-    {
-        $fileName = $this->uniqueFileName($fileName);
-        if ($file->copy($this->directory->path . DS . $fileName)) {
-            return $this->directory->path . DS . $fileName;
+        Configure::load('file_directories', 'default');
+        $path = $this->createPathFromData($data);
+        $folder = new Folder('/');
+        $folder->create($path);
+        $this->directory = new Folder($path);
+        if (!$this->validateDirectory()) {
+            throw new Exception('Something went wrong when creating directories');
         }
-        return false;
     }
 
-    public function movePhoto(File $file): string
+    public function moveToProduction(array $fileInput): string
     {
-        $fileName = $this->uniqueFileName('.PNG', true);
-
-        return $this->moveToProduction($file, $fileName);
+        $file = $this->createFileFromInput($fileInput);
+        $fileName = $this->uniqueFileName($fileInput['name'], $this->directory);
+        if ($file->copy($this->directory->path . DS . $fileName)) {
+            $this->tempFile = new File($this->directory->path . DS . $fileName);
+        }
+        return $this->tempFile->path;
     }
 
-    public function delete(string $path): bool
+    public function deleteCurrentFile(): bool
     {
-        $file = new File($path);
-        return $file->delete();
+        if (empty($this->tempFile)) {
+            return false;
+        }
+        return $this->tempFile->delete();
     }
 
     public function deleteDir(): bool
     {
+        if (empty($this->directory)) {
+            return false;
+        }
         if (empty($this->directory->find())) {
-            $this->directory->find();
             return $this->directory->delete();
         }
         return false;
     }
 
-    private function uniqueFileName(string $fileName, $isPhoto = false): string
+    private function uniqueFileName(string $fileName, Folder $directory): string
     {
-        if (!in_array($fileName, $this->directory->find()) && !$isPhoto) {
+        if (!in_array($fileName, $directory->find())) {
             return $fileName;
         }
-
         $parts = pathinfo($fileName);
         $fileName = $parts['filename'];
         $fileName = $fileName . uniqid("", true);
@@ -69,9 +76,52 @@ class HawkFolder
         return $fileName;
     }
 
-    public function exists(): bool
+    private function createPathFromData(array $data): string
     {
-        return !empty($this->directory->path);
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        if (!$this->validatePathData($data)) {
+            throw new InvalidArgumentException('Please make sure you provided users, protocol and file type');
+        }
+        $protocol = $this->roundProtocol($data['protocol']);
+        $name = $usersTable->get($data['user_id'])->username;
+        return Configure::read('production_path') . DS . $name . DS . $data['file_type'] . DS . $protocol;
+    }
+
+    private function roundProtocol($protocol):string
+    {
+        $number = str_replace('Φ.', '', $protocol);
+        if ($number === $protocol) {
+            return $protocol;
+        }
+        return 'Φ.'.round((float) $number, -2, PHP_ROUND_HALF_DOWN);
+    }
+    private function validatePathData(array $data): bool
+    {
+        $pass = true;
+        $necessary = ['user_id', 'protocol', 'file_type'];
+        foreach ($necessary as $item) {
+            if (empty($data[$item])) {
+                $pass = false;
+            }
+        }
+        return $pass;
+    }
+
+    private function createFileFromInput(array $fileInput):File
+    {
+        if (empty($fileInput['tmp_name'])) {
+            throw new InvalidArgumentException('The provided file input is invalid');
+        }
+
+        return new File($fileInput['tmp_name']);
+    }
+
+    private function validateDirectory()
+    {
+        if (is_null($this->directory->path)) {
+            return false;
+        }
+        return true;
     }
 
 }
