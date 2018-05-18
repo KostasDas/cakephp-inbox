@@ -14,16 +14,16 @@ echo $this->Flash->render();
         <form class="form-horizontal box"">
         <div class="columns">
             <div class="column">
-                <input id="s_id" class="custom-input" type="text" placeholder="Αναζήτηση Αριθμού Πρωτοκόλλου">
+                <input id="s_id" class="custom-input" type="text" placeholder="Αριθμός Πρωτοκόλλου">
             </div>
             <div class="column">
-                <input id="s_number" class="custom-input" type="text" placeholder="Αναζήτηση Αριθμού Εκδότου">
+                <input id="s_number" class="custom-input" type="text" placeholder="Αριθμός Εκδότου">
             </div>
             <div class="column">
-                <input id="s_topic" class="custom-input" type="text" placeholder="Αναζήτηση Θέματος">
+                <input id="s_topic" class="custom-input" type="text" placeholder="Θέμα/Περίληψη">
             </div>
             <div class="column">
-                <input id="s_protocol" class="custom-input" type="text" placeholder="Αναζήτηση Φ/SIC">
+                <input id="s_protocol" class="custom-input" type="text" placeholder="Φ/SIC">
             </div>
         </div>
         <div class="clearfix"></div>
@@ -63,11 +63,11 @@ echo $this->Flash->render();
                 </div>
             </div>
             <div class="column is-block">
-                <label for="s_created_after" class="label">Από:</label>
+                <label for="s_created_after" class="label">Αποθηκεύτηκε από:</label>
                 <input id="s_created_after" class="is-dark input" type="date">
             </div>
             <div class="column">
-                <label for="s_created_before" class="label">Εώς:</label>
+                <label for="s_created_before" class="label">εώς:</label>
                 <input id="s_created_before" class="is-dark input" type="date">
             </div>
         </div>
