@@ -12,20 +12,21 @@ echo $this->Flash->render();
     <section class="section">
         <h3 class="title is-4 card-footer-item">Πρωτόκολλο εισερχομένων 180 ΜΚ/Β HAWK</h3>
         <form class="form-horizontal box"">
-
-            <div class="columns">
-                <div class="column">
-                    <input id="s_number" class="custom-input" type="text" placeholder="Αναζήτηση Αριθμού Εκδότου">
-                </div>
-                <div class="column">
-                    <input id="s_topic" class="custom-input" type="text" placeholder="Αναζήτηση Θέματος">
-                </div>
-                <div class="column">
-                    <input id="s_protocol" class="custom-input" type="text" placeholder="Αναζήτηση Φ/SIC">
-                </div>
+        <div class="columns">
+            <div class="column">
+                <input id="s_id" class="custom-input" type="text" placeholder="Αριθμός Πρωτοκόλλου">
             </div>
-
-            <div class="clearfix"></div>
+            <div class="column">
+                <input id="s_number" class="custom-input" type="text" placeholder="Αριθμός Εκδότου">
+            </div>
+            <div class="column">
+                <input id="s_topic" class="custom-input" type="text" placeholder="Θέμα/Περίληψη">
+            </div>
+            <div class="column">
+                <input id="s_protocol" class="custom-input" type="text" placeholder="Φ/SIC">
+            </div>
+        </div>
+        <div class="clearfix"></div>
         <div class="columns">
             <div class="column">
                 <?php if ($isAdmin) :?>
@@ -33,7 +34,7 @@ echo $this->Flash->render();
                     <select id="s_user"
                             data-live-search="true"
                             title="Χειριστής">
-                        <option value="">Όλοι οι χρήστες</option>
+                        <option value="">Όλοι οι χειριστές</option>
                     </select>
                 </div>
                 <?php endif; ?>
@@ -47,8 +48,8 @@ echo $this->Flash->render();
                 <div class="select is-dark is-fullwidth">
                     <select id="s_sender"
                             data-live-search="true"
-                            title="Επιλέξτε Αποστολέα">
-                        <option value="">Όλοι οι αποστολείς</option>
+                            title="Επιλέξτε Αποστολέα/Αποδέκτη">
+                        <option value="">Όλοι οι αποστολείς/αποδέκτες</option>
                     </select>
                 </div>
                 <div class="select is-dark is-fullwidth">
@@ -62,11 +63,11 @@ echo $this->Flash->render();
                 </div>
             </div>
             <div class="column is-block">
-                <label for="s_created_after" class="label">Από:</label>
+                <label for="s_created_after" class="label">Αποθηκεύτηκε από:</label>
                 <input id="s_created_after" class="is-dark input" type="date">
             </div>
             <div class="column">
-                <label for="s_created_before" class="label">Εώς:</label>
+                <label for="s_created_before" class="label">εώς:</label>
                 <input id="s_created_before" class="is-dark input" type="date">
             </div>
         </div>
