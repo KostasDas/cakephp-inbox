@@ -2,11 +2,11 @@
     <?= $this->Element('Buttons/back') ?>
     <div class="columns is-centered">
         <?= $this->Form->create($hawkFile, ['enctype' => 'multipart/form-data']) ?>
-        <h3 class="title is-3">Εισαγωγή εισερχομένου</h3>
+        <h3 class="title is-3">Εισαγωγή αρχείου</h3>
         <div class="column">
             <?php
             echo $this->Form->control('number', [
-                'label'        => 'Αριθμός ταυτότητας',
+                'label'        => 'Αριθμός Εκδότου',
                 'templateVars' => [
                     'icon' => 'fas fa-id-card',
                 ],
@@ -39,7 +39,7 @@
                 'empty'   => 'Εισάγετε είδος',
             ]);
             echo $this->Form->control('sender', [
-                'label'   => 'Αποστολέας',
+                'label'   => 'Εκδότης',
                 'options' => ['new' => 'Άλλο'] + $senders->toArray(),
                 'empty'   => 'Εισάγετε αποστολέα',
             ]);

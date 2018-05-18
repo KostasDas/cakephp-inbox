@@ -22,11 +22,6 @@ class HawkFilesControllerTest extends IntegrationTestCase
     ];
 
 
-    //index
-    // visit index not logged in
-    // visit index.json as author/admin
-    // visit index.json with search params as author/admin
-    // visit index as author/admin
 
     // add
     // visit add page not logged in
@@ -60,6 +55,47 @@ class HawkFilesControllerTest extends IntegrationTestCase
 
     }
 
+    public function testIndexAdmin()
+    {
+        $this->logInAsAdmin();
+
+        $this->get('/hawk-files');
+        $this->assertResponseSuccess();
+    }
+
+    public function testIndexJsonAdmin()
+    {
+        $this->logInAsAdmin();
+
+        $this->get('/hawk-files.json');
+        $this->assertResponseSuccess();
+    }
+
+
+    public function testIndexAuthor()
+    {
+        $this->logInAsAuthor();
+
+        $this->get('/hawk-files');
+        $this->assertResponseSuccess();
+    }
+    public function testIndexJsonAuthor()
+    {
+        $this->logInAsAuthor();
+
+        $this->get('/hawk-files.json');
+        $this->assertResponseSuccess();
+    }
+
+    public function testIndexSearchAsAdmin()
+    {
+
+    }
+
+    public function testIndexSearchAsAuthor()
+    {
+
+    }
     /**
      * Test view method
      *
@@ -98,5 +134,32 @@ class HawkFilesControllerTest extends IntegrationTestCase
     public function testDelete()
     {
         $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    private function logInAsAdmin()
+    {
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 1,
+                    'name' => 'γραμματεία',
+                    'username' => 'grammateia',
+                    'role' => 'admin'
+                ]
+            ]
+        ]);
+    }
+    private function logInAsAuthor()
+    {
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 2,
+                    'name' => 'Διαβιβάσεις',
+                    'username' => 'diavivaseis',
+                    'role' => 'author'
+                ]
+            ]
+        ]);
     }
 }
