@@ -34,9 +34,6 @@ class HawkFilesControllerTest extends IntegrationTestCase
 
 
     // add
-    // visit add page not logged in
-    // visit add page as author
-    // visit add page as admin
     // post add as author
     // post add as not logged in
     // post add as admin empty data
@@ -200,7 +197,7 @@ class HawkFilesControllerTest extends IntegrationTestCase
     public function testAddVisitNotLogged()
     {
         $this->get('/hawk-files/add');
-        $this->assertRedirect();
+        $this->assertRedirect('/?redirect=%2Fhawk-files%2Fadd');
 
     }
 
@@ -208,7 +205,7 @@ class HawkFilesControllerTest extends IntegrationTestCase
     {
         $this->logInAsAuthor();
         $this->get('/hawk-files/add');
-        $this->assertRedirect();
+        $this->assertRedirect(['controller' => 'HawkFiles', 'action' => 'index']);
 
     }
 
@@ -224,7 +221,22 @@ class HawkFilesControllerTest extends IntegrationTestCase
     {
         $this->enableCsrfToken();
         $this->post('/hawk-files/add', $this->getFileData());
-        $this->assertRedirect();
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+    }
+    public function testAddPostAsAuthor()
+    {
+        $this->logInAsAuthor();
+        $this->enableCsrfToken();
+        $this->post('/hawk-files/add', $this->getFileData());
+        $this->assertRedirect(['controller' => 'HawkFiles', 'action' => 'index']);
+    }
+
+    public function testAddPostAsAdminSuccess()
+    {
+        $this->logInAsAdmin();
+        $this->enableCsrfToken();
+        $this->post('/hawk-files/add', $this->getFileData());
+        $this->assertRedirect(['controller' => 'HawkFiles', 'action' => 'index']);
     }
 
     private function logInAsAdmin()

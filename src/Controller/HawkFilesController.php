@@ -73,8 +73,8 @@ class HawkFilesController extends ApiController
     public function add()
     {
         if (!$this->isAuthorized($this->Auth->user())) {
-            $this->Flash->error('Μόνο οι administrator εχουν δικαιωμα να προσθέτουν αρχεία');
-            return $this->redirect($this->referer());
+            $this->Flash->error(__('Μόνο οι administrator εχουν δικαιωμα να προσθέτουν αρχεία'));
+            return $this->redirect(['action' => 'index']);
         }
         $hawkFile = $this->HawkFiles->newEntity();
         if ($this->getRequest()->is('post')) {
@@ -151,23 +151,7 @@ class HawkFilesController extends ApiController
     {
         $hawkFile = $this->HawkFiles->get($id);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
-            $data = $this->getRequest()->getData();
-            $user = $this->HawkFiles->Users->get($data['user_id']);
-            $previousFolder = $user->username;
-            $hawkFolder = new HawkFolder(Configure::read('production_path') . DS . $user->username);
-            $hawkFolder->delete($hawkFile->location);
-            $data['location'] = $hawkFolder->moveToProduction(new File($data['location']['tmp_name']),
-                $data['location']['name']);
-            $hawkFile = $this->HawkFiles->patchEntity($hawkFile, $data);
-            if (in_array('user_id', $hawkFile->getDirty())) {
-                $hawkFolder = new HawkFolder(Configure::read('production_path') . DS . $previousFolder);
-                $hawkFolder->deleteDir();
-            }
-            if ($this->HawkFiles->save($hawkFile)) {
-                $this->Flash->success(__('Το αρχείο αποθηκεύτηκε με επιτυχία'));
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('Δεν καταφέραμε να αποθηκεύσουμε το αρχείο. Παρακαλώ προσπαθήστε ξανά'));
+
         }
         $this->loadOptions();
         $this->set(compact('hawkFile'));
