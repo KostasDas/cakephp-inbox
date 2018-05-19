@@ -25,6 +25,10 @@
                 ],
                 'default'      => '',
             ]);
+            echo $this->Form->control('user_id', [
+                'label' => 'Χειριστής',
+                'multiple' => true,
+            ]);
             echo $this->Form->control('file_type', [
                 'label' => 'Τύπος αρχείου',
                 'options' => [
@@ -42,10 +46,6 @@
                 'label'   => 'Αποστολέας/Παραλήπτης',
                 'options' => ['new' => 'Άλλο'] + $senders->toArray(),
                 'empty'   => 'Εισάγετε αποστολέα/παραλήπτη',
-            ]);
-            echo $this->Form->control('user_id', [
-                'label' => 'Χειριστής',
-                'multiple' => true,
             ]);
             ?>
             <div class="file is-black has-name required" style="margin-bottom: 10px">

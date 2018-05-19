@@ -72,30 +72,34 @@ class HawkFilesTable extends Table
             ->scalar('number')
             ->maxLength('number', 255)
             ->requirePresence('number', 'create')
-            ->notEmpty('number');
+            ->notEmpty('number', 'Παρακαλώ εισάγετε αριθμό εκδότου');
 
         $validator
             ->scalar('type')
             ->maxLength('type', 255)
             ->requirePresence('type', 'create')
-            ->notEmpty('type');
+            ->notEmpty('type', 'Παρακαλώ εισάγετε είδος αλληλογραφίας');
 
         $validator
             ->scalar('topic')
             ->maxLength('topic', 255)
             ->requirePresence('topic', 'create')
-            ->notEmpty('topic');
+            ->notEmpty('topic', 'Παρακαλώ εισάγετε Θέμα/Περίληψη');
 
         $validator
             ->scalar('sender')
             ->maxLength('sender', 255)
             ->requirePresence('sender', 'create')
-            ->notEmpty('sender');
+            ->notEmpty('sender', 'Παρακαλώ εισάγετε Αποστολέα/Παραλήπτη');
 
         $validator
             ->scalar('protocol')
             ->maxLength('protocol', 255)
-            ->allowEmpty('protocol');
+            ->requirePresence('protocol', 'create')
+            ->notEmpty('protocol', 'Παρακαλώ εισάγετε Φ/SIC');
+        $validator
+            ->requirePresence('user_id', 'create')
+            ->notEmpty('user_id', 'Παρακαλώ εισάγετε Χειριστή');
 
         $validator->notEmpty('file_type', 'Παρακαλώ διαλέξτε είδος αρχείου')
             ->requirePresence('file_type', 'create');
@@ -175,7 +179,7 @@ class HawkFilesTable extends Table
 
     public function isOwnedBy($file_id, $user_id)
     {
-        return $this->HawkUsers->exists(['file_id' => $file_id, 'user_id' => $user_id]);
+        return $this->HawkUsers->exists(['hawk_file_id' => $file_id, 'user_id' => $user_id]);
     }
 
     public function setUser($user)
