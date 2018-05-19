@@ -135,14 +135,57 @@ class HawkFilesControllerTest extends IntegrationTestCase
         }
     }
 
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
+    public function testIndexSearchProtocolTransitoryExactMatch()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->addTestFiles(10);
+        $this->logInAsAdmin();
+        $this->get('/hawk-files.json?protocol=410');
+        $data = json_decode($this->_response->getBody(), true);
+        $this->assertTrue(!empty($data['files']));
+        foreach ($data['files'] as $file) {
+            $this->assertEquals('Φ.410', $file['protocol']);
+        }
+        $this->get('/hawk-files.json?protocol=Φ.410');
+        $newData = json_decode($this->_response->getBody(), true);
+        $this->assertEquals($data['files'], $newData['files']);
+
+    }
+
+    public function testIndexSearchProtocolTransitoryRounded()
+    {
+        $this->addTestFiles(10);
+        $this->logInAsAuthor();
+        $this->get('/hawk-files.json?protocol=400');
+        $data = json_decode($this->_response->getBody(), true);
+        $this->assertTrue(!empty($data['files']));
+        foreach ($data['files'] as $file) {
+            $this->assertTrue($file['protocol'] >= 'Φ.400' && $file['protocol'] < 'Φ.499');
+        }
+        $this->get('/hawk-files.json?protocol=Φ.4');
+        $newData = json_decode($this->_response->getBody(), true);
+        $this->assertEquals($data['files'], $newData['files']);
+    }
+    public function testIndexSearchProtocolNotTransitory()
+    {
+        $this->logInAsAdmin();
+        $this->get('/hawk-files.json?protocol=WAF');
+        $data = json_decode($this->_response->getBody(), true);
+        $this->assertTrue(!empty($data['files']));
+        foreach ($data['files'] as $file) {
+            $this->assertEquals($file['protocol'], 'WAF');
+        }
+
+    }
+    public function testIndexSearchProtocolTransitoryRoundedWithUser()
+    {
+        $this->logInAsAdmin();
+        $this->get('/hawk-files.json?protocol=400&user=2');
+        $data = json_decode($this->_response->getBody(), true);
+        $this->assertTrue(!empty($data['files']));
+        foreach ($data['files'] as $file) {
+            $this->assertTrue($file['protocol'] >= 'Φ.400' && $file['protocol'] < 'Φ.499');
+            $this->assertEquals($file['_matchingData']['Users']['username'], 'diavivaseis');
+        }
     }
 
     private function logInAsAdmin()

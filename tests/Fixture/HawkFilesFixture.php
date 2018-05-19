@@ -84,7 +84,7 @@ class HawkFilesFixture extends TestFixture
                 'topic' => 'Τεστ4',
                 'file_type' => 'εξερχομενο',
                 'sender' => 'ΑΣΔΥΣ/ΔΜΧ',
-                'protocol' => 'QAA',
+                'protocol' => 'Φ.410',
                 'created' => '2018-05-09 05:09:53',
                 'modified' => '2018-05-09 05:09:53'
             ],

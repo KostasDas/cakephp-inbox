@@ -2,6 +2,7 @@
 namespace App\Model\Table;
 
 use Cake\Collection\Collection;
+use Cake\Database\Expression\QueryExpression;
 use Cake\Event\Event;
 use Cake\Http\Exception\UnauthorizedException;
 use Cake\I18n\Time;
@@ -109,11 +110,6 @@ class HawkFilesTable extends Table
     {
         $searchManager = $this->behaviors()->Search->searchManager();
         $searchManager
-            ->like('protocol', [
-                'before' => true,
-                'after'  => true,
-                'field'  => $this->aliasField('protocol'),
-            ])
             ->like('number', [
                 'before' => true,
                 'after'  => true,
@@ -126,13 +122,16 @@ class HawkFilesTable extends Table
             ])
             ->add('protocol', 'Search.Callback', [
                 'callback' => function ($query, $args, $manager) {
-                    if ($this->isExactTransitorySearch($args['protocol'])) {
-                        return $query->where([$this->aliasField('protocol').'LIKE' => '%'.$args['protocol'].'%']);
+                    if (!$this->isTransitory($args['protocol'])) {
+                        return $query->where([$this->aliasField('protocol').' LIKE ' => '%'.$args['protocol'].'%']);
                     }
-                    return true;
-                    // if no Φ. do a regular like
-                    // if rounded down to hundred protocol + Φ. != original do a regular like
-                    // if rounded down to hundred protocol + Φ. == original do a search between protocol and protocol + 99
+                    if ($this->isExactTransitorySearch($args['protocol'])) {
+                        return $query->where([$this->aliasField('protocol') => 'Φ.'.$args['protocol']]);
+                    }
+                    return $query->where(function (QueryExpression $exp) use ($args) {
+                        $rounded = $this->roundProtocol($args['protocol'], false);
+                        return $exp->between($this->aliasField('protocol'), 'Φ.'.$rounded, 'Φ.'. ($rounded+99));
+                    });
                 },
             ])
             ->add('before', 'Search.Callback', [
@@ -156,25 +155,20 @@ class HawkFilesTable extends Table
             ->value('sender');
         return $searchManager;
     }
+
     private function isTransitory($protocol)
     {
-        $number = str_replace('Φ.', '', $protocol);
-        return !($number === $protocol);
+        return is_numeric($protocol);
     }
 
     private function isExactTransitorySearch($protocol)
     {
-        $rounded = $this->roundProtocol($protocol);
-        return ($this->isTransitory($protocol) && $rounded !== $protocol);
+        return ($this->roundProtocol($protocol) !== $protocol);
     }
 
     private function roundProtocol($protocol):string
     {
-        $number = str_replace('Φ.', '', $protocol);
-        if ($number === $protocol) {
-            return $protocol;
-        }
-        return 'Φ.'.round((float) $number, -2, PHP_ROUND_HALF_DOWN);
+        return round((float) $protocol, -2, PHP_ROUND_HALF_DOWN);
     }
 
     // src/Model/Table/ArticlesTable.php
