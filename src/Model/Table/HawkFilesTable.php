@@ -2,6 +2,7 @@
 namespace App\Model\Table;
 
 use Cake\Collection\Collection;
+use Cake\Database\Expression\QueryExpression;
 use Cake\Event\Event;
 use Cake\Http\Exception\UnauthorizedException;
 use Cake\I18n\Time;
@@ -109,11 +110,6 @@ class HawkFilesTable extends Table
     {
         $searchManager = $this->behaviors()->Search->searchManager();
         $searchManager
-            ->like('protocol', [
-                'before' => true,
-                'after'  => true,
-                'field'  => $this->aliasField('protocol'),
-            ])
             ->like('number', [
                 'before' => true,
                 'after'  => true,
@@ -123,6 +119,20 @@ class HawkFilesTable extends Table
                 'before' => true,
                 'after'  => true,
                 'field'  => $this->aliasField('topic'),
+            ])
+            ->add('protocol', 'Search.Callback', [
+                'callback' => function ($query, $args, $manager) {
+                    if (!$this->isTransitory($args['protocol'])) {
+                        return $query->where([$this->aliasField('protocol').' LIKE ' => '%'.$args['protocol'].'%']);
+                    }
+                    if ($this->isExactTransitorySearch($args['protocol'])) {
+                        return $query->where([$this->aliasField('protocol') => 'Φ.'.$args['protocol']]);
+                    }
+                    return $query->where(function (QueryExpression $exp) use ($args) {
+                        $rounded = $this->roundProtocol($args['protocol'], false);
+                        return $exp->between($this->aliasField('protocol'), 'Φ.'.$rounded, 'Φ.'. ($rounded+99));
+                    });
+                },
             ])
             ->add('before', 'Search.Callback', [
                 'callback' => function ($query, $args, $manager) {
@@ -144,6 +154,21 @@ class HawkFilesTable extends Table
             ->value('file_type')
             ->value('sender');
         return $searchManager;
+    }
+
+    private function isTransitory($protocol)
+    {
+        return is_numeric($protocol);
+    }
+
+    private function isExactTransitorySearch($protocol)
+    {
+        return ($this->roundProtocol($protocol) !== $protocol);
+    }
+
+    private function roundProtocol($protocol):string
+    {
+        return round((float) $protocol, -2, PHP_ROUND_HALF_DOWN);
     }
 
     // src/Model/Table/ArticlesTable.php
