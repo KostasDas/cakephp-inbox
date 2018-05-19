@@ -60,6 +60,7 @@
                       </span>
                     </span>
                     <span class="file-name" id="file-upload-name">
+                        <p style="color: red">Δεν έχετε επιλέξει αρχείο</p>
                     </span>
                 </label>
             </div>
