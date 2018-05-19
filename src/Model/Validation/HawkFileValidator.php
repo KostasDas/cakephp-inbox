@@ -19,4 +19,19 @@ class HawkFileValidator extends Validator
     }
 
 
+    public static function transitory($protocol, $requestData)
+    {
+        if (!HawkFileValidator::isTransitory($requestData['data']['type'])) {
+            return true;
+        }
+        return strpos($protocol, 'Φ.') !== false;
+
+    }
+
+    private static function isTransitory($type)
+    {
+        return in_array($type, ['ΔΒ', 'ΔΙΑΒΙΒΑΣΤΙΚΟ', 'ΔΙΑΒ']);
+    }
+
+
 }

@@ -64,6 +64,8 @@ class HawkFilesTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
+        $validator->setProvider('hawkFile', 'App\Model\Validation\HawkFileValidator');
+
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
@@ -93,13 +95,20 @@ class HawkFilesTable extends Table
             ->notEmpty('sender', 'Παρακαλώ εισάγετε Αποστολέα/Παραλήπτη');
 
         $validator
-            ->scalar('protocol')
+            ->add('protocol', 'validateTransitory', [
+                'rule' => 'transitory',
+                'provider' => 'hawkFile',
+                'message' => 'Ο φάκελος πρέπει να έχει είναι της μορφής Φ.000'
+            ])
             ->maxLength('protocol', 255)
             ->requirePresence('protocol', 'create')
             ->notEmpty('protocol', 'Παρακαλώ εισάγετε Φ/SIC');
         $validator
             ->requirePresence('user_id', 'create')
             ->notEmpty('user_id', 'Παρακαλώ εισάγετε Χειριστή');
+        $validator
+            ->requirePresence('hawk_file', 'create')
+            ->notEmpty('hawk_file', 'Παρακαλώ εισάγετε Αρχείο');
 
         $validator->notEmpty('file_type', 'Παρακαλώ διαλέξτε είδος αρχείου')
             ->requirePresence('file_type', 'create');
