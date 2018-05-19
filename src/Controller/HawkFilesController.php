@@ -27,7 +27,7 @@ class HawkFilesController extends ApiController
      */
     public function isAuthorized($user)
     {
-        if (in_array($this->getRequest()->getParam('action'), ['view', 'edit'])) {
+        if (in_array($this->getRequest()->getParam('action'), ['view'])) {
             $file_id = (int)$this->getRequest()->getParam('pass.0');
             if ($this->HawkFiles->isOwnedBy($file_id, $user['id'])) {
                 return true;
@@ -55,6 +55,10 @@ class HawkFilesController extends ApiController
      **/
     public function view($file_id = null)
     {
+        if (!$this->isAuthorized($this->Auth->user())) {
+            $this->Flash->error('Δεν εχετε δικαιωμα να δειτε αυτο το αρχείο');
+            return $this->redirect(['index']);
+        }
         $hawkFile = $this->HawkFiles->HawkUsers->find()->where([
             'hawk_file_id' => $file_id,
         ])->first();
@@ -68,6 +72,10 @@ class HawkFilesController extends ApiController
      */
     public function add()
     {
+        if (!$this->isAuthorized($this->Auth->user())) {
+            $this->Flash->error('Μόνο οι administrator εχουν δικαιωμα να προσθέτουν αρχεία');
+            return $this->redirect($this->referer());
+        }
         $hawkFile = $this->HawkFiles->newEntity();
         if ($this->getRequest()->is('post')) {
             $filesSaved = false;
