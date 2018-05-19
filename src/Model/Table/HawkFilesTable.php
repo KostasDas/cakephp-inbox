@@ -124,6 +124,17 @@ class HawkFilesTable extends Table
                 'after'  => true,
                 'field'  => $this->aliasField('topic'),
             ])
+            ->add('protocol', 'Search.Callback', [
+                'callback' => function ($query, $args, $manager) {
+                    if ($this->isExactTransitorySearch($args['protocol'])) {
+                        return $query->where([$this->aliasField('protocol').'LIKE' => '%'.$args['protocol'].'%']);
+                    }
+                    return true;
+                    // if no Φ. do a regular like
+                    // if rounded down to hundred protocol + Φ. != original do a regular like
+                    // if rounded down to hundred protocol + Φ. == original do a search between protocol and protocol + 99
+                },
+            ])
             ->add('before', 'Search.Callback', [
                 'callback' => function ($query, $args, $manager) {
                     return $query->andWhere([$this->aliasField('created') . ' <=' => new Time($args['before'])]);
@@ -144,6 +155,26 @@ class HawkFilesTable extends Table
             ->value('file_type')
             ->value('sender');
         return $searchManager;
+    }
+    private function isTransitory($protocol)
+    {
+        $number = str_replace('Φ.', '', $protocol);
+        return !($number === $protocol);
+    }
+
+    private function isExactTransitorySearch($protocol)
+    {
+        $rounded = $this->roundProtocol($protocol);
+        return ($this->isTransitory($protocol) && $rounded !== $protocol);
+    }
+
+    private function roundProtocol($protocol):string
+    {
+        $number = str_replace('Φ.', '', $protocol);
+        if ($number === $protocol) {
+            return $protocol;
+        }
+        return 'Φ.'.round((float) $number, -2, PHP_ROUND_HALF_DOWN);
     }
 
     // src/Model/Table/ArticlesTable.php
