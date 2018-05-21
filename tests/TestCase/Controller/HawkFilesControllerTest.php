@@ -330,16 +330,42 @@ class HawkFilesControllerTest extends IntegrationTestCase
         $data['topic'] = 'topicFailFile';
         $this->post('/hawk-files/add', $data);
         $this->assertTrue($this->fileDoesNotExist('topic', $data['topic']));
+
+        $data['hawk_file'] = ['size' => 'bogus stuff'];
+        $this->post('/hawk-files/add', $data);
+        $this->assertTrue($this->fileDoesNotExist('topic', $data['topic']));
+
+        unset($data['hawk_file']);
+        $this->post('/hawk-files/add', $data);
+        $this->assertTrue($this->fileDoesNotExist('topic', $data['topic']));
     }
     public function testAddPostValidationFailType()
     {
         $this->logInAsAdmin();
         $this->enableCsrfToken();
+        $data = $this->getFileData();
+        $data['type'] = '';
+        $data['topic'] = 'topicFailType';
+        $this->post('/hawk-files/add', $data);
+        $this->assertTrue($this->fileDoesNotExist('topic', $data['topic']));
+
+        unset($data['type']);
+        $this->post('/hawk-files/add', $data);
+        $this->assertTrue($this->fileDoesNotExist('topic', $data['topic']));
     }
     public function testAddPostValidationFailSender()
     {
         $this->logInAsAdmin();
         $this->enableCsrfToken();
+        $data = $this->getFileData();
+        $data['sender'] = '';
+        $data['topic'] = 'topicFailSender';
+        $this->post('/hawk-files/add', $data);
+        $this->assertTrue($this->fileDoesNotExist('topic', $data['topic']));
+
+        unset($data['sender']);
+        $this->post('/hawk-files/add', $data);
+        $this->assertTrue($this->fileDoesNotExist('topic', $data['topic']));
     }
 
     private function fileDoesNotExist($field, $value)
