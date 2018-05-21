@@ -118,10 +118,7 @@ class HawkFolder
 
     private function validateDirectory()
     {
-        if (is_null($this->directory->path)) {
-            return false;
-        }
-        return true;
+        return !is_null($this->directory->path);
     }
 
 }
