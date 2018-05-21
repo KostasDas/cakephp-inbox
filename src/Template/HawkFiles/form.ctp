@@ -25,6 +25,10 @@
                 ],
                 'default'      => '',
             ]);
+            echo $this->Form->control('user_id', [
+                'label' => 'Χειριστής',
+                'multiple' => true,
+            ]);
             echo $this->Form->control('file_type', [
                 'label' => 'Τύπος αρχείου',
                 'options' => [
@@ -43,10 +47,6 @@
                 'options' => ['new' => 'Άλλο'] + $senders->toArray(),
                 'empty'   => 'Εισάγετε αποστολέα/παραλήπτη',
             ]);
-            echo $this->Form->control('user_id', [
-                'label' => 'Χειριστής',
-                'multiple' => true,
-            ]);
             ?>
             <div class="file is-black has-name required" style="margin-bottom: 10px">
                 <label class="file-label">
@@ -60,6 +60,7 @@
                       </span>
                     </span>
                     <span class="file-name" id="file-upload-name">
+                        <p style="color: red">Δεν έχετε επιλέξει αρχείο</p>
                     </span>
                 </label>
             </div>

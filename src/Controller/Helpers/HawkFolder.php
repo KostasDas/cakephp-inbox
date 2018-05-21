@@ -84,7 +84,7 @@ class HawkFolder
         }
         $protocol = $this->roundProtocol($data['protocol']);
         $name = $usersTable->get($data['user_id'])->username;
-        return Configure::read('production_path') . DS . $name . DS . $data['file_type'] . DS . $protocol;
+        return Configure::read('path') . DS . $name . DS . $data['file_type'] . DS . $protocol;
     }
 
     private function roundProtocol($protocol):string

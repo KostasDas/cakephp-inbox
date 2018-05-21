@@ -14,7 +14,7 @@ return
 //        'dateWidget' => '<div class="col-md-4"><input name="{{name}}" class="form-control" type="date" {{attrs}}></div>',
         'dateWidget' => '<div class="col-md-4">{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}{{meridian}}</div>',
         // Error message wrapper elements.
-        'error' => '<div class="error-message">{{content}}</div>',
+        'error' => '<p style="font-size: medium" class="help is-danger">{{content}}</p>',
         // Container for error items.
         'errorList' => '<ul>{{content}}</ul>',
         // Error item wrapper.
@@ -44,7 +44,7 @@ return
         // Container element used by control().
         'inputContainer' => '<div class="field {{required}}">{{content}}</div>',
         // Container element used by control() when a field has an error.
-        'inputContainerError' => '<div class="field {{type}}{{required}} error">{{content}}{{error}}</div>',
+        'inputContainerError' => '<div class="field {{required}} error">{{content}}{{error}}</div>',
         // Label element when inputs are not nested inside the label.
         'label' => '<label class="label" {{attrs}}>{{text}}</label>',
         // Label element used for radio and multi-checkbox inputs.
