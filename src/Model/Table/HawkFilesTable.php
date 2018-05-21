@@ -119,7 +119,7 @@ class HawkFilesTable extends Table
                 'message' => 'Κάτι πήγε στραβά με το εισαχθέν αρχείο'
             ])
             ->requirePresence('hawk_file', 'create')
-            ->notEmpty('hawk_file', 'Παρακαλώ εισάγετε Αρχείο');
+            ->notEmpty('hawk_file', 'create', 'Παρακαλώ εισάγετε Αρχείο');
 
         $validator->notEmpty('file_type', 'Παρακαλώ διαλέξτε είδος αρχείου')
             ->requirePresence('file_type', 'create');
