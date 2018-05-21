@@ -104,9 +104,20 @@ class HawkFilesTable extends Table
             ->requirePresence('protocol', 'create')
             ->notEmpty('protocol', 'Παρακαλώ εισάγετε Φ/SIC');
         $validator
+            ->add('user_id', 'validateUsers', [
+                'rule' => 'usersExist',
+                'provider' => 'hawkFile',
+                'message' => 'Οι χειριστές που εισήχθησαν δεν υπάρχουν'
+            ])
             ->requirePresence('user_id', 'create')
             ->notEmpty('user_id', 'Παρακαλώ εισάγετε Χειριστή');
+
         $validator
+            ->add('hawk_file', 'validateInputFile', [
+                'rule' => 'fileFormat',
+                'provider' => 'hawkFile',
+                'message' => 'Κάτι πήγε στραβά με το εισαχθέν αρχείο'
+            ])
             ->requirePresence('hawk_file', 'create')
             ->notEmpty('hawk_file', 'Παρακαλώ εισάγετε Αρχείο');
 

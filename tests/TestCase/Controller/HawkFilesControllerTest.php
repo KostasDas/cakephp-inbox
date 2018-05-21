@@ -1,9 +1,12 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
+use App\Model\Table\HawkFilesTable;
+use App\Model\Table\HawkUsersTable;
 use Cake\Core\Configure;
 use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -34,8 +37,6 @@ class HawkFilesControllerTest extends IntegrationTestCase
 
 
     // add
-    // post add as author
-    // post add as not logged in
     // post add as admin empty data
     // post add as admin for one user
     // post add as admin for two users
@@ -231,12 +232,149 @@ class HawkFilesControllerTest extends IntegrationTestCase
         $this->assertRedirect(['controller' => 'HawkFiles', 'action' => 'index']);
     }
 
-    public function testAddPostAsAdminSuccess()
+    public function testAddPostAsAdminSuccessOneUser()
     {
         $this->logInAsAdmin();
         $this->enableCsrfToken();
-        $this->post('/hawk-files/add', $this->getFileData());
+        $data = $this->getFileData();
+        $data['user_id'] = ['3'];
+        $data['topic'] = 'SpecificTopicOneUser';
+        $this->post('/hawk-files/add', $data);
         $this->assertRedirect(['controller' => 'HawkFiles', 'action' => 'index']);
+        $this->assertTrue($this->checkHawkUsersExist($data['topic'], $data['user_id']));
+    }
+
+    public function testAddPostAsAdminMultipleUsers()
+    {
+        $this->logInAsAdmin();
+        $this->enableCsrfToken();
+        $data = $this->getFileData();
+        $data['topic']  = 'SpecificTopicMultipleUsers';
+        $this->post('/hawk-files/add', $data);
+        $this->assertRedirect(['controller' => 'HawkFiles', 'action' => 'index']);
+        $this->assertTrue($this->checkHawkUsersExist($data['topic'], $data['user_id']));
+    }
+    public function testAddPostValidationFailTopic()
+    {
+        $this->logInAsAdmin();
+        $this->enableCsrfToken();
+        $data = $this->getFileData();
+        $data['topic'] = '';
+        $data['number'] = '132546879';
+        $this->post('/hawk-files/add', $data);
+        $this->assertResponseContains('error');
+        $this->assertTrue($this->fileDoesNotExist('number', $data['number']));
+
+        unset($data['topic']);
+        $this->post('hawk-files/add', $data);
+        $this->assertResponseContains('error');
+        $this->assertTrue($this->fileDoesNotExist('number', $data['number']));
+
+    }
+
+    public function testAddPostValidationFailProtocol()
+    {
+        $this->logInAsAdmin();
+        $this->enableCsrfToken();
+        $data = $this->getFileData();
+        $data['protocol'] = '';
+        $data['number'] = '132546879';
+        $this->post('/hawk-files/add', $data);
+        $this->assertResponseContains('error');
+        $this->assertTrue($this->fileDoesNotExist('number', $data['number']));
+
+        $data['protocol'] = '821';
+        $this->post('hawk-files/add', $data);
+        $this->assertResponseContains('error');
+        $this->assertTrue($this->fileDoesNotExist('number', $data['number']));
+
+
+        unset($data['protocol']);
+        $this->post('hawk-files/add', $data);
+        $this->assertResponseContains('error');
+        $this->assertTrue($this->fileDoesNotExist('number', $data['number']));
+
+    }
+
+    public function testAddPostValidationFailUsers()
+    {
+        $this->logInAsAdmin();
+        $this->enableCsrfToken();
+        $data = $this->getFileData();
+        $data['user_id'] = [];
+        $data['topic'] = 'topicFailUsers';
+        $this->post('/hawk-files/add', $data);
+        $this->assertResponseContains('error');
+        $this->assertTrue($this->fileDoesNotExist('topic', $data['topic']));
+
+        // user id doesn't exist
+        $data['user_id'] = ['999999'];
+        $this->post('/hawk-files/add', $data);
+        $this->assertResponseContains('error');
+        $this->assertTrue($this->fileDoesNotExist('topic', $data['topic']));
+
+        unset($data['user_id']);
+        $this->post('/hawk-files/add', $data);
+        $this->assertResponseContains('error');
+        $this->assertTrue($this->fileDoesNotExist('topic', $data['topic']));
+
+
+    }
+
+    public function testAddPostValidationFailFile()
+    {
+        $this->logInAsAdmin();
+        $this->enableCsrfToken();
+        $data = $this->getFileData();
+        $data['hawk_file'] = [];
+        $data['topic'] = 'topicFailFile';
+        $this->post('/hawk-files/add', $data);
+        $this->assertTrue($this->fileDoesNotExist('topic', $data['topic']));
+    }
+    public function testAddPostValidationFailType()
+    {
+        $this->logInAsAdmin();
+        $this->enableCsrfToken();
+    }
+    public function testAddPostValidationFailSender()
+    {
+        $this->logInAsAdmin();
+        $this->enableCsrfToken();
+    }
+
+    private function fileDoesNotExist($field, $value)
+    {
+        $config = TableRegistry::exists('HawkFiles') ? [] : ['className' => HawkFilesTable::class];
+        $hawkFilesTable = TableRegistry::get('HawkFiles', $config);
+
+        $addedFile = $hawkFilesTable->find()->where([$field => $value])->first();
+        return empty($addedFile);
+    }
+
+    private function checkHawkUsersExist($topic, $users)
+    {
+        $config = TableRegistry::exists('HawkFiles') ? [] : ['className' => HawkFilesTable::class];
+        $hawkFilesTable = TableRegistry::get('HawkFiles', $config);
+
+        $addedFile = $hawkFilesTable->find()->where(['topic' => $topic])->first();
+        if (empty($addedFile)) {
+            return false;
+        }
+
+        $config = TableRegistry::exists('HawkUsers') ? [] : ['className' => HawkUsersTable::class];
+        $hawkUsersTable = TableRegistry::get('HawkUsers', $config);
+
+        foreach ($users as $id) {
+            $entry = $hawkUsersTable->find()->where([
+                'user_id' => $id,
+                'hawk_file_id' => $addedFile->id
+            ])->first();
+            if (empty($entry)) {
+                return false;
+            }
+        }
+        return true;
+
     }
 
     private function logInAsAdmin()

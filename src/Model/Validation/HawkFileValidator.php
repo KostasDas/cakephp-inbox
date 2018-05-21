@@ -9,6 +9,7 @@
 namespace App\Model\Validation;
 
 
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 class HawkFileValidator extends Validator
@@ -19,8 +20,11 @@ class HawkFileValidator extends Validator
     }
 
 
-    public static function transitory($protocol, $requestData)
+    public static function transitory(string $protocol, array $requestData): bool
     {
+        if (!isset($requestData['data']['type'])) {
+            return true;
+        }
         if (!HawkFileValidator::isTransitory($requestData['data']['type'])) {
             return true;
         }
@@ -28,9 +32,35 @@ class HawkFileValidator extends Validator
 
     }
 
-    private static function isTransitory($type)
+    private static function isTransitory(string $type): bool
     {
         return in_array($type, ['ΔΒ', 'ΔΙΑΒΙΒΑΣΤΙΚΟ', 'ΔΙΑΒ']);
+    }
+
+    public static function usersExist(array $users): bool
+    {
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        foreach ($users as $id) {
+            $user = $usersTable->find()->where(['id' => $id])->first();
+            if (empty($user)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static function fileFormat(array $file): bool
+    {
+        $predefinedInputs = ['tmp_name', 'error', 'name', 'type', 'size'];
+        foreach ($file as $key => $value) {
+            if (!in_array($key, $predefinedInputs)) {
+                return false;
+            }
+        }
+        if (empty($file['tmp_name']) || empty($file['name'])) {
+            return false;
+        }
+        return true;
     }
 
 
