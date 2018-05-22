@@ -41,6 +41,9 @@ class UsersTable extends Table
         $this->belongsToMany('HawkFiles', [
             'joinTable' => 'hawk_users',
         ]);
+        $this->hasMany('HawkUsers', [
+            'table' => 'hawk_users',
+        ]);
     }
 
     /**

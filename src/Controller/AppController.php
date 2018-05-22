@@ -16,6 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
 
 /**
  * Application Controller
@@ -83,5 +84,16 @@ class AppController extends Controller
     {
         $this->set('authUser', $this->Auth->user());
         $this->set('isAdmin', $this->Auth->user()['role'] === 'admin');
+        $this->notifications();
+    }
+
+    private function notifications()
+    {
+        if ($this->Auth->user()) {
+            $notificationsTable = TableRegistry::getTableLocator()->get('Tasks');
+            $notificationsTable->setUser($this->Auth->user());
+            $notifications = $notificationsTable->find('unread')->count();
+            $this->set(compact('notifications'));
+        }
     }
 }

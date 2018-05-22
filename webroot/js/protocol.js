@@ -54,6 +54,7 @@ function getFiles(filters) {
       "deferRender": true,
       "destroy": true,
       "sort": true,
+      "order": [[7, "asc"]],
       select: {
         style: 'multi',
         selector: 'td:not(:last-child)'
@@ -75,10 +76,8 @@ function getFiles(filters) {
         "info": "Αποτελέσματα _START_ εώς _END_  από _TOTAL_"
       },
       "columns": [{
-        title: "id",
-        "data": "id",
-        "visible": false,
-        "searchable": false
+        title: "Αριθμός Πρωτοκόλου",
+        "data": "id"
       }, {
         title: "Αριθμός Εκδότου",
         "data": "number"
@@ -87,7 +86,7 @@ function getFiles(filters) {
         "data": "type"
       }, {
         title: "Θέμα/Περίληψη",
-        "data": "topic",
+        "data": "topic"
       }, {
         title: "Αποστολέας/Αποδέκτης",
         "data": "sender"
@@ -103,17 +102,18 @@ function getFiles(filters) {
         "render": function (data, type, full) {
           return formatDate(data);
         }
-      },{
-        title: 'Χειριστές',
-        "data": 'users',
-        "render": function (data, type, full) {
-          var users = '';
-          $.each(data, function (key, value) {
-            users += value.name + '</br>';
-          });
-          return users;
-        }
       },
+      //   {
+      //   title: 'Χειριστές',
+      //   "data": 'users',
+      //   "render": function (data, type, full) {
+      //     var users = '';
+      //     $.each(data, function (key, value) {
+      //       users += value.name + '</br>';
+      //     });
+      //     return users;
+      //   }
+      // },
         {
           title: "Ενέργειες",
           "data": "id",
@@ -121,7 +121,6 @@ function getFiles(filters) {
           "searchable": false,
           "sClass": 'options text-center',
           "render": function (data, type, full) {
-
             var links = '<div><a class="h3 well-sm" href=/hawk-files/download/' + data + '><span data-toggle="tooltip" title="Λήψη" class="icon"> <i class="fas fa-arrow-down"></i></span></a>' +
               '<a class="h3 well-sm" target="_blank" href=/hawk-files/view/' + data + '><span data-toggle="tooltip" title="Προβολή" class="icon"><i class="fas fa-eye"></i></span></a>';
             if (logged.role == 'admin') {

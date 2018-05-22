@@ -36,6 +36,21 @@
                 }
                 ?>
             </div>
+
+        </div>
+        <div class="navbar-item">
+            <?php if ($this->request->getParam('action') != 'login'): ?>
+            <?= $this->Html->link('Ενέργειες',
+                ['controller' => 'Tasks', 'action' => 'index'],
+                ['class' => 'navbar-item custom-nav'])
+            ?>
+            <?php endif; ?>
+            <?php if (!empty($notifications)): ?>
+            <span title="Αδιάβαστες μη ολοκληρωμένες ενέργειες: <?= $notifications ?>" class="icon has-text-info fa-spin">
+                <i class="fas fa-exclamation"></i>
+            </span>
+            <?php endif; ?>
+
         </div>
         <div class="navbar-menu">
             <div class="navbar-end">
