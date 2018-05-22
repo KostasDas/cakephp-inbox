@@ -3,6 +3,7 @@ namespace App\Model\Table;
 
 use Cake\Event\Event;
 use Cake\Http\Exception\UnauthorizedException;
+use Cake\I18n\Time;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -138,6 +139,15 @@ class TasksTable extends Table
         }
 
         return $query;
+    }
+
+    public function findUnread(Query $query)
+    {
+        return $query->where([
+            $this->aliasField('is_read') => 0,
+            $this->aliasField('done') => 0,
+            $this->aliasField('user_id') => $this->user['id']
+        ]);
     }
 
     /**

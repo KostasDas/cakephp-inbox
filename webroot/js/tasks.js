@@ -65,7 +65,7 @@ function getTasks(filters) {
         title: "Τιτλος Αρχείου",
         "data": "hawk_file.topic"
       }, {
-        title: "Περιγραφη εργασίας",
+        title: "Περιγραφη",
         "data": "description"
       }, {
         title: 'Χειριστής',
@@ -91,9 +91,12 @@ function getTasks(filters) {
           "searchable": false,
           "sClass": 'options text-center',
           "render": function (data) {
-            var icon = data.is_read ? 'fas fa-envelope-open' : 'fas fa-envelope';
-            var title = data.is_read ? 'Σημείωση ως αδιάβαστο' : 'Σημείωση ως διαβασμένο';
-            var links = '<div><a class="h3 well-sm" href=/tasks/read/' + data.id + '><span data-toggle="tooltip" title="'+title+'" class="icon"> <i class="'+icon+'"></i></span></a>';
+            var read_icon = data.is_read ? 'fas fa-envelope-open' : 'fas fa-envelope';
+            var read_title = data.is_read ? 'Σημείωση ως αδιάβαστη ενέργεια' : 'Σημείωση ως διαβασμένη ενέργεια';
+            var done_icon = data.done ? 'fas fa-times-circle' : 'fas fa-play';
+            var done_title = data.done ? 'Σημείωση ως ενεργή ενέργεια' : 'Σημείωση ως ολοκληρωμενη ενέργεια';
+            var links = '<div><a class="h3 well-sm" href=/tasks/read/' + data.id + '><span data-toggle="tooltip" title="'+read_title+'" class="icon"> <i class="'+read_icon+'"></i></span></a>';
+            links += '<a class="h3 well-sm" href=/tasks/do/' + data.id + '><span data-toggle="tooltip" title="'+done_title+'" class="icon"> <i class="'+done_icon+'"></i></span></a>';
             if (logged.role == 'admin') {
               links += '<a class="h3 well-sm" href=/tasks/edit/' + data.id + '><span data-toggle="tooltip" title="Επεξεργασία" class="icon"><i class="fas fa-edit"></i> </span></a></div>';
             }
@@ -104,7 +107,7 @@ function getTasks(filters) {
         {responsivePriority: 1, targets: 20},
         {responsivePriority: 2, targets: 1},
         {responsivePriority: 2, targets: 2}
-      ],W
+      ],
       dom: "<'columns'<'column'l><'column'f>>" +
       "<'columns'<'column'tr>>" +
       "<'columns'<'column'i><'column'p>>"

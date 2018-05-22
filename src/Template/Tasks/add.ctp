@@ -2,7 +2,7 @@
     <?= $this->Element('Buttons/back') ?>
     <div class="columns is-centered">
         <?= $this->Form->create($task) ?>
-        <h3 class="title is-3">Εισαγωγή εργασίας</h3>
+        <h3 class="title is-3">Εισαγωγή ενέργειας</h3>
         <div class="column">
             <?php
             echo $this->Form->hidden('hawk_file_id', [

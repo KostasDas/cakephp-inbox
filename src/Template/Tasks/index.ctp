@@ -10,7 +10,7 @@ echo $this->Flash->render();
 ?>
 
 <section class="section">
-    <h3 class="title is-4 card-footer-item">Εργασίες</h3>
+    <h3 class="title is-4 card-footer-item">Ενέργειες</h3>
     <form class="form-horizontal box"">
     <div class="columns">
         <?php if ($isAdmin) :?>
@@ -29,9 +29,9 @@ echo $this->Flash->render();
                 <select id="s_read"
                         data-live-search="true"
                         title="Επιλέξτε κατάσταση εργασίας">
-                    <option value="">Όλες οι εργασίες</option>
-                    <option value="0">Μη διαβασμένες εργασίες</option>
-                    <option value="1">Διαβασμένες εργασίες</option>
+                    <option value="">Όλες οι ενέργειες</option>
+                    <option value="0">Μη διαβασμένες ενέργειες</option>
+                    <option value="1">Διαβασμένες ενέργειες</option>
                 </select>
             </div>
         </div>
@@ -40,8 +40,8 @@ echo $this->Flash->render();
                 <select id="s_done"
                         data-live-search="true"
                         title="Επιλέξτε κατάσταση εργασίας">
-                    <option selected="selected" value="0">Τρεχουσες εργασίες</option>
-                    <option value="1">Ολοκληρομένες εργασίες</option>
+                    <option selected="selected" value="0">Τρεχουσες ενέργειες</option>
+                    <option value="1">Ολοκληρομένες ενέργειες</option>
                 </select>
             </div>
         </div>

@@ -102,17 +102,18 @@ function getFiles(filters) {
         "render": function (data, type, full) {
           return formatDate(data);
         }
-      },{
-        title: 'Χειριστές',
-        "data": 'users',
-        "render": function (data, type, full) {
-          var users = '';
-          $.each(data, function (key, value) {
-            users += value.name + '</br>';
-          });
-          return users;
-        }
       },
+      //   {
+      //   title: 'Χειριστές',
+      //   "data": 'users',
+      //   "render": function (data, type, full) {
+      //     var users = '';
+      //     $.each(data, function (key, value) {
+      //       users += value.name + '</br>';
+      //     });
+      //     return users;
+      //   }
+      // },
         {
           title: "Ενέργειες",
           "data": "id",
