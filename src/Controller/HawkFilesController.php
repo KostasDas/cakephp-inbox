@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\Helpers\HawkFolder;
+use Cake\Filesystem\File;
 use Cake\Utility\Hash;
 
 /**
@@ -101,6 +102,15 @@ class HawkFilesController extends ApiController
     {
         $saved = false;
         $users = $data['user_id'];
+        $toDeleteFiles = [];
+        if ($this->getRequest()->getParam('action') === 'edit') {
+            foreach ($hawkFile->hawk_users as $hawkUser) {
+                if (!in_array($hawkUser->user_id, $users)) {
+                    $toDeleteFiles[] = $hawkUser->location;
+                    $this->HawkFiles->HawkUsers->delete($hawkUser);
+                }
+            }
+        }
         foreach ($users as $userId) {
             $data['user_id'] = $userId;
             $hawkFolder = new HawkFolder();
@@ -108,11 +118,26 @@ class HawkFilesController extends ApiController
             $data['location'] = $hawkFolder->moveToProduction($data['hawk_file']);
             $saved = $this->saveHawkUsers($hawkFile->id, $userId, $data['location']);
         }
+        foreach ($toDeleteFiles as $url) {
+            $file = new File($url);
+            $file->delete();
+        }
+
         return $saved;
     }
 
     private function saveHawkUsers($fileId, $userId, $location)
     {
+        $entity = $this->HawkFiles->HawkUsers->find()
+            ->where([
+                'hawk_file_id' => $fileId,
+                'user_id' => $userId,
+            ])
+            ->first();
+        if (!empty($entity)) {
+            $entity->location = $location;
+            return $this->HawkFiles->HawkUsers->save($entity);
+        }
         $entity = $this->HawkFiles->HawkUsers->newEntity([
             'user_id' => $userId,
             'hawk_file_id' => $fileId,
@@ -150,30 +175,59 @@ class HawkFilesController extends ApiController
      */
     public function edit($id = null)
     {
+
         if (!$this->isAuthorized($this->Auth->user())) {
-            $this->Flash->error(__('Μόνο οι administrator εχουν δικαιωμα να προσθέτουν αρχεία'));
+            $this->Flash->error(__('Μόνο οι administrator εχουν δικαιωμα να επεξεργάζονται αρχεία'));
             return $this->redirect(['action' => 'index']);
         }
         $hawkFile = $this->HawkFiles->get($id, [
             'contain' => 'HawkUsers'
         ]);
         if ($this->getRequest()->is(['post', 'patch', 'put'])) {
-            $filesSaved = false;
-            $data = $this->getRequest()->getData();
-            $hawkFile = $this->HawkFiles->patchEntity($hawkFile, $data);
-            if ($this->HawkFiles->save($hawkFile)) {
-                $filesSaved = $this->saveHawkFile($data, $hawkFile);
+            $hawkFile = $this->HawkFiles->patchEntity($hawkFile, $this->getRequest()->getData());
+            if (!empty($hawkFile->getErrors())) {
+                $this->Flash->error(__('Δεν καταφέραμε να αποθηκεύσουμε σωστά το αρχείο. Παρακαλώ προσπαθήστε ξανά'));
+                return $this->redirect(['action' => 'index']);
             }
-            if ($filesSaved) {
+            $handled = $this->handleHawkUsersEdit($this->getRequest()->getData(), $hawkFile);
+            if ($this->HawkFiles->save($hawkFile) && $handled) {
                 $this->Flash->success(__('Το αρχείο αποθηκεύτηκε με επιτυχία'));
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Δεν καταφέραμε να αποθηκεύσουμε το αρχείο. Παρακαλώ προσπαθήστε ξανά'));
         }
         $this->loadOptions();
         $this->set('userIds', Hash::extract($hawkFile, 'hawk_users.{n}.user_id'));
         $this->set(compact('hawkFile'));
         $this->render('form');
+    }
+
+    private function handleHawkUsersEdit($data, $hawkFile)
+    {
+        if (empty($data['hawk_file']['tmp_name'])) {
+            // if no new file and no new users
+            if ($this->unchangedUsers($data['user_id'], $hawkFile->hawk_users)) {
+                return true;
+            }
+            // if no new file but new users
+            $file = new File($hawkFile->hawk_users[0]->location);
+            $data['hawk_file']['tmp_name'] =  $file->path;
+            $data['hawk_file']['name'] = $file->name;
+            return $this->saveHawkFile($data, $hawkFile);
+        }
+        // if new file delete old ones users will be handled elsewhere
+        foreach ($hawkFile->hawk_users as $entry) {
+            $file = new File($entry->location);
+            $file->delete();
+        }
+
+        return $this->saveHawkFile($data, $hawkFile);
+    }
+
+    private function unchangedUsers($users, $hawkUsers)
+    {
+        $hawkUsers = Hash::extract($hawkUsers, '{n}.id');
+        sort($hawkUsers); sort($users);
+        return ($hawkUsers == $users);
     }
 
     public function types()

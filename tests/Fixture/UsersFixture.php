@@ -80,6 +80,16 @@ class UsersFixture extends TestFixture
                 'created' => '2018-05-15 12:03:24',
                 'modified' => '2018-05-15 12:03:24'
 
+            ],
+            [
+                'id' => 5,
+                'name' => 'Διοικητης',
+                'username' => 'dioikitis',
+                'password' => '12345',
+                'role' => 'admin',
+                'created' => '2018-05-15 12:03:24',
+                'modified' => '2018-05-15 12:03:24'
+
             ]
         ];
         parent::init();

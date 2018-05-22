@@ -49,7 +49,7 @@ class HawkUsersFixture extends TestFixture
                 'id' => 1,
                 'user_id' => 2,
                 'hawk_file_id' => 1,
-                'location' => '/tmp/1'
+                'location' => '/diavivaseis/εισερχομενο/Φ.411/1.pdf'
             ],
             [
                 'id' => 2,
