@@ -36,6 +36,12 @@
                 }
                 ?>
             </div>
+
+        </div>
+        <div class="navbar-item">
+            <?= $this->Html->link('Εργασίες',
+                ['controller' => 'Tasks', 'action' => 'index'],
+                ['class' => 'navbar-item custom-nav']) ?>
         </div>
         <div class="navbar-menu">
             <div class="navbar-end">
