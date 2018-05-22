@@ -87,7 +87,7 @@ function getFiles(filters) {
         "data": "type"
       }, {
         title: "Θέμα/Περίληψη",
-        "data": "topic",
+        "data": "topic"
       }, {
         title: "Αποστολέας/Αποδέκτης",
         "data": "sender"
@@ -121,7 +121,6 @@ function getFiles(filters) {
           "searchable": false,
           "sClass": 'options text-center',
           "render": function (data, type, full) {
-
             var links = '<div><a class="h3 well-sm" href=/hawk-files/download/' + data + '><span data-toggle="tooltip" title="Λήψη" class="icon"> <i class="fas fa-arrow-down"></i></span></a>' +
               '<a class="h3 well-sm" target="_blank" href=/hawk-files/view/' + data + '><span data-toggle="tooltip" title="Προβολή" class="icon"><i class="fas fa-eye"></i></span></a>';
             if (logged.role == 'admin') {
