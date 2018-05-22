@@ -25,7 +25,8 @@ class HawkFilesControllerTest extends IntegrationTestCase
     public $fixtures = [
         'app.hawk_files',
         'app.users',
-        'app.hawk_users'
+        'app.hawk_users',
+        'app.tasks'
     ];
 
     public function tearDown()
