@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
+use App\Model\Entity\HawkUser;
 use App\Model\Table\HawkFilesTable;
 use App\Model\Table\HawkUsersTable;
 use Cake\Core\Configure;
@@ -8,6 +9,7 @@ use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
+use Cake\Utility\Hash;
 
 /**
  * App\Controller\HawkFilesController Test Case
@@ -25,6 +27,7 @@ class HawkFilesControllerTest extends IntegrationTestCase
         'app.users',
         'app.hawk_users'
     ];
+
     public function tearDown()
     {
         //delete generated folders after every test
@@ -36,12 +39,133 @@ class HawkFilesControllerTest extends IntegrationTestCase
 
 
 
-    // add
-    // post add as admin empty data
-    // post add as admin for one user
-    // post add as admin for two users
-    // post add as admin for multiple users
-    // post add as admin
+
+    // test post edit hawkfile old users new file
+    // test post edit hawkfile new users and new file
+    // test post edit validation errors
+    //
+    public function testVisitEditNotLogged()
+    {
+        $this->get('/hawk-files/edit/1');
+        $this->assertRedirect('/?redirect=%2Fhawk-files%2Fedit%2F1');
+    }
+    public function testVisitEditAsAuthor()
+    {
+        $this->logInAsAuthor();
+        $this->get('/hawk-files/edit/1');
+        $this->assertRedirect(['controller' => 'HawkFiles', 'action' => 'index']);
+    }
+    public function testVisitEditAsAdmin()
+    {
+        $this->logInAsAdmin();
+        $this->get('/hawk-files/edit/1');
+        $this->assertResponseSuccess();
+    }
+    public function testEditNewUsersOldFileSuccess()
+    {
+        $this->logInAsAdmin();
+        $this->enableCsrfToken();
+        $data = $this->getFileData();
+        $data['topic'] = 'testEditNewUsersSuccess';
+        $this->post('/hawk-files/add', $data);
+        $entry = $this->getRecord('topic', 'testEditNewUsersSuccess');
+        $data['user_id'] = [
+            5,
+            4
+        ];
+        $data['hawk_file'] = $this->getEmptyFileInput();
+        $this->patch('/hawk-files/edit/'. $entry->id, $data);
+        $newEntry = $this->getRecord('topic', 'testEditNewUsersSuccess');
+        $this->assertTrue($this->checkFileLocationExists($newEntry->hawk_users));
+        $this->assertTrue(!$this->checkFileLocationExists($entry->hawk_users));
+        $this->assertTrue($this->checkHawkUsersExist('testEditNewUsersSuccess', Hash::extract($newEntry->hawk_users, '{n}.user_id')));
+        foreach ($newEntry->hawk_users as $user) {
+            $this->assertTrue(in_array($user->user_id, $data['user_id']));
+        }
+    }
+    public function testEditOldUsersNewFileSuccess()
+    {
+        $this->logInAsAdmin();
+        $this->enableCsrfToken();
+        $data = $this->getFileData();
+        $data['topic'] = 'testEditNewUsersSuccess';
+        $this->post('/hawk-files/add', $data);
+        $entry = $this->getRecord('topic', 'testEditNewUsersSuccess');
+        $data['hawk_file'] = $this->getEmptyFileInput();
+        $newData = $this->getFileData();
+        $data['hawk_file'] = $newData['hawk_file'];
+        $data['hawk_file']['name'] = 'somethingelse.pdf';
+        $this->patch('/hawk-files/edit/'. $entry->id, $data);
+        $newEntry = $this->getRecord('topic', 'testEditNewUsersSuccess');
+        $this->assertTrue($this->checkFileLocationExists($newEntry->hawk_users));
+        $this->assertTrue(!$this->checkFileLocationExists($entry->hawk_users));
+    }
+    public function testEditNewUsersNewFileSuccess()
+    {
+        $this->logInAsAdmin();
+        $this->enableCsrfToken();
+        $data = $this->getFileData();
+        $data['topic'] = 'testEditNewUsersNewFileSuccess';
+        $this->post('/hawk-files/add', $data);
+        $entry = $this->getRecord('topic', 'testEditNewUsersNewFileSuccess');
+        $data['hawk_file'] = $this->getEmptyFileInput();
+        $newData = $this->getFileData();
+        $data['hawk_file'] = $newData['hawk_file'];
+        $data['hawk_file']['name'] = 'somethingelse.pdf';
+        $data['protocol'] = 'Φ.100';
+        $data['user_id'] = [
+            5,
+            4,
+            2
+        ];
+        $this->patch('/hawk-files/edit/'. $entry->id, $data);
+        $newEntry = $this->getRecord('topic', 'testEditNewUsersNewFileSuccess');
+        $this->assertTrue($this->checkFileLocationExists($newEntry->hawk_users));
+        $this->assertTrue(!$this->checkFileLocationExists($entry->hawk_users));
+        $this->assertTrue($this->checkHawkUsersExist('testEditNewUsersNewFileSuccess', Hash::extract($newEntry->hawk_users, '{n}.user_id')));
+        foreach ($newEntry->hawk_users as $user) {
+            $this->assertTrue(in_array($user->user_id, $data['user_id']));
+        }
+    }
+
+    public function testEditOnlyHawkFileSuccess()
+    {
+        $this->logInAsAdmin();
+        $this->enableCsrfToken();
+        $data = $this->getFileData();
+        $data['topic'] = 'testEditOnlyHawkFileSuccess';
+        $this->post('/hawk-files/add', $data);
+        $entry = $this->getRecord('topic', 'testEditOnlyHawkFileSuccess');
+        $data['protocol'] = 'Φ.300';
+        $this->patch('/hawk-files/edit/'. $entry->id, $data);
+        $newEntry = $this->getRecord('topic', 'testEditOnlyHawkFileSuccess');
+        $this->assertTrue($this->checkFileLocationExists($newEntry->hawk_users));
+        $this->assertEquals('Φ.300', $newEntry->protocol);
+    }
+
+    private function getRecord($field, $value)
+    {
+        $config = TableRegistry::exists('HawkFiles') ? [] : ['className' => HawkFilesTable::class];
+        $hawkFilesTable = TableRegistry::get('HawkFiles', $config);
+        $hawkFilesTable->setUser([
+            'id' => 1,
+            'name' => 'γραμματεία',
+            'username' => 'grammateia',
+            'role' => 'admin'
+        ]);
+        return $hawkFilesTable->find()->where([$field => $value])->contain(['HawkUsers'])->first();
+    }
+
+    private function getEmptyFileInput()
+    {
+        return [
+            'tmp_name' => '',
+            'error' => (int) 4,
+            'name' => '',
+            'type' => '',
+            'size' => (int) 0
+        ];
+    }
     /**
      * Test index method
      *
@@ -88,6 +212,7 @@ class HawkFilesControllerTest extends IntegrationTestCase
         $this->get('/hawk-files');
         $this->assertResponseSuccess();
     }
+
     public function testIndexJsonAuthor()
     {
         $this->logInAsAuthor();
@@ -107,7 +232,7 @@ class HawkFilesControllerTest extends IntegrationTestCase
         $this->get('/hawk-files.json?number=321');
         $data = json_decode($this->_response->getBody(), true);
         foreach ($data['files'] as $file) {
-            $this->assertEquals($file['number'], 321);
+            $this->assertTrue(strpos($file['number'], '321') !== false);
         }
     }
 
@@ -130,6 +255,7 @@ class HawkFilesControllerTest extends IntegrationTestCase
             $this->assertEquals('εισερχομενο', $file['file_type']);
         }
     }
+
     public function testIndexSearchInboxBelongsToDiavivaseis()
     {
         $this->addTestFiles(10);
@@ -172,6 +298,7 @@ class HawkFilesControllerTest extends IntegrationTestCase
         $newData = json_decode($this->_response->getBody(), true);
         $this->assertEquals($data['files'], $newData['files']);
     }
+
     public function testIndexSearchProtocolNotTransitory()
     {
         $this->logInAsAdmin();
@@ -183,6 +310,7 @@ class HawkFilesControllerTest extends IntegrationTestCase
         }
 
     }
+
     public function testIndexSearchProtocolTransitoryRoundedWithUser()
     {
         $this->logInAsAdmin();
@@ -224,6 +352,7 @@ class HawkFilesControllerTest extends IntegrationTestCase
         $this->post('/hawk-files/add', $this->getFileData());
         $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
     }
+
     public function testAddPostAsAuthor()
     {
         $this->logInAsAuthor();
@@ -249,11 +378,12 @@ class HawkFilesControllerTest extends IntegrationTestCase
         $this->logInAsAdmin();
         $this->enableCsrfToken();
         $data = $this->getFileData();
-        $data['topic']  = 'SpecificTopicMultipleUsers';
+        $data['topic'] = 'SpecificTopicMultipleUsers';
         $this->post('/hawk-files/add', $data);
         $this->assertRedirect(['controller' => 'HawkFiles', 'action' => 'index']);
         $this->assertTrue($this->checkHawkUsersExist($data['topic'], $data['user_id']));
     }
+
     public function testAddPostValidationFailTopic()
     {
         $this->logInAsAdmin();
@@ -339,6 +469,7 @@ class HawkFilesControllerTest extends IntegrationTestCase
         $this->post('/hawk-files/add', $data);
         $this->assertTrue($this->fileDoesNotExist('topic', $data['topic']));
     }
+
     public function testAddPostValidationFailType()
     {
         $this->logInAsAdmin();
@@ -353,6 +484,7 @@ class HawkFilesControllerTest extends IntegrationTestCase
         $this->post('/hawk-files/add', $data);
         $this->assertTrue($this->fileDoesNotExist('topic', $data['topic']));
     }
+
     public function testAddPostValidationFailSender()
     {
         $this->logInAsAdmin();
@@ -362,7 +494,6 @@ class HawkFilesControllerTest extends IntegrationTestCase
         $data['topic'] = 'topicFailSender';
         $this->post('/hawk-files/add', $data);
         $this->assertTrue($this->fileDoesNotExist('topic', $data['topic']));
-
         unset($data['sender']);
         $this->post('/hawk-files/add', $data);
         $this->assertTrue($this->fileDoesNotExist('topic', $data['topic']));
@@ -373,8 +504,19 @@ class HawkFilesControllerTest extends IntegrationTestCase
         $config = TableRegistry::exists('HawkFiles') ? [] : ['className' => HawkFilesTable::class];
         $hawkFilesTable = TableRegistry::get('HawkFiles', $config);
 
-        $addedFile = $hawkFilesTable->find()->where([$field => $value])->first();
+        $addedFile = $hawkFilesTable->find()->where([$field => $value])->contain(['HawkUsers'])->first();
         return empty($addedFile);
+    }
+
+    private function checkFileLocationExists($hawkUsers)
+    {
+        foreach ($hawkUsers as $entry) {
+            $file = new File($entry->location);
+            if (!$file->exists()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private function checkHawkUsersExist($topic, $users)
@@ -390,6 +532,7 @@ class HawkFilesControllerTest extends IntegrationTestCase
         $config = TableRegistry::exists('HawkUsers') ? [] : ['className' => HawkUsersTable::class];
         $hawkUsersTable = TableRegistry::get('HawkUsers', $config);
 
+        $entries = [];
         foreach ($users as $id) {
             $entry = $hawkUsersTable->find()->where([
                 'user_id' => $id,
@@ -398,8 +541,9 @@ class HawkFilesControllerTest extends IntegrationTestCase
             if (empty($entry)) {
                 return false;
             }
+            $entries[] = $entry;
         }
-        return true;
+        return $this->checkFileLocationExists($entries);
 
     }
 

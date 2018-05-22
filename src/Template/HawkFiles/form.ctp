@@ -28,6 +28,7 @@
             echo $this->Form->control('user_id', [
                 'label' => 'Χειριστής',
                 'multiple' => true,
+                'default' => isset($userIds) ? $userIds : []
             ]);
             echo $this->Form->control('file_type', [
                 'label' => 'Τύπος αρχείου',

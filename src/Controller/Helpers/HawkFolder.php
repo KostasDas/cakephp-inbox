@@ -36,10 +36,8 @@ class HawkFolder
     public function moveToProduction(array $fileInput): string
     {
         $file = $this->createFileFromInput($fileInput);
-        $fileName = $this->uniqueFileName($fileInput['name'], $this->directory);
-        if ($file->copy($this->directory->path . DS . $fileName)) {
-            $this->tempFile = new File($this->directory->path . DS . $fileName);
-        }
+        $file->copy($this->directory->path . DS . $fileInput['name']);
+        $this->tempFile = new File($this->directory->path . DS . $fileInput['name']);
         return $this->tempFile->path;
     }
 
@@ -61,20 +59,20 @@ class HawkFolder
         }
         return false;
     }
-
-    private function uniqueFileName(string $fileName, Folder $directory): string
-    {
-        if (!in_array($fileName, $directory->find())) {
-            return $fileName;
-        }
-        $parts = pathinfo($fileName);
-        $fileName = $parts['filename'];
-        $fileName = $fileName . uniqid("", true);
-        if (!empty($parts['extension'])) {
-            $fileName = $fileName . '.' . $parts['extension'];
-        }
-        return $fileName;
-    }
+// not used currently
+//    private function uniqueFileName(string $fileName, Folder $directory): string
+//    {
+//        if (!in_array($fileName, $directory->find())) {
+//            return $fileName;
+//        }
+//        $parts = pathinfo($fileName);
+//        $fileName = $parts['filename'];
+//        $fileName = $fileName . uniqid("", true);
+//        if (!empty($parts['extension'])) {
+//            $fileName = $fileName . '.' . $parts['extension'];
+//        }
+//        return $fileName;
+//    }
 
     private function createPathFromData(array $data): string
     {
@@ -118,10 +116,7 @@ class HawkFolder
 
     private function validateDirectory()
     {
-        if (is_null($this->directory->path)) {
-            return false;
-        }
-        return true;
+        return !is_null($this->directory->path);
     }
 
 }

@@ -128,7 +128,7 @@ function getFiles(filters) {
             var links = '<div><a class="h3 well-sm" href=/hawk-files/download/' + data + '><span data-toggle="tooltip" title="Λήψη" class="icon"> <i class="fas fa-arrow-down"></i></span></a>' +
               '<a class="h3 well-sm" target="_blank" href=/hawk-files/view/' + data + '><span data-toggle="tooltip" title="Προβολή" class="icon"><i class="fas fa-eye"></i></span></a>';
             if (user) {
-              links += '<a class="h3 well-sm" href=/hawk-files/inboxEdit/' + data + '><span data-toggle="tooltip" title="Επεξεργασία" class="icon"><i class="fas fa-edit"></i> </span></a></div>';
+              links += '<a class="h3 well-sm" href=/hawk-files/edit/' + data + '><span data-toggle="tooltip" title="Επεξεργασία" class="icon"><i class="fas fa-edit"></i> </span></a></div>';
             }
             return links;
           }
