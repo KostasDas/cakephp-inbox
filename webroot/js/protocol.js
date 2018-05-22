@@ -44,7 +44,7 @@ function getFiles(filters) {
     jQuery.fn.dataTableExt.oSort["custom-asc"] = function (x, y) {
       return x.localeCompare(y);
     };
-    var user = response.authUser;
+    var logged = response.authUser;
 
     // EMPTY AND REFILL DATATABLE
     protocolTable.dataTable({
@@ -86,20 +86,17 @@ function getFiles(filters) {
         title: "Είδος Αλληλογραφίας",
         "data": "type"
       }, {
-        title: "Τύπος Αρχείου",
-        "data": "file_type",
-        "render": function (data, type, full) {
-          return data.toUpperCase();
-        }
-      }, {
         title: "Θέμα/Περίληψη",
-        "data": "topic"
+        "data": "topic",
       }, {
         title: "Αποστολέας/Αποδέκτης",
         "data": "sender"
       }, {
         title: 'Φ/SIC',
         "data": 'protocol'
+      }, {
+        title: 'Παρατηρήσεις',
+        "data": 'comments'
       }, {
         title: 'Αποθηκεύτηκε',
         "data": 'created',
@@ -127,8 +124,9 @@ function getFiles(filters) {
 
             var links = '<div><a class="h3 well-sm" href=/hawk-files/download/' + data + '><span data-toggle="tooltip" title="Λήψη" class="icon"> <i class="fas fa-arrow-down"></i></span></a>' +
               '<a class="h3 well-sm" target="_blank" href=/hawk-files/view/' + data + '><span data-toggle="tooltip" title="Προβολή" class="icon"><i class="fas fa-eye"></i></span></a>';
-            if (user) {
+            if (logged.role == 'admin') {
               links += '<a class="h3 well-sm" href=/hawk-files/edit/' + data + '><span data-toggle="tooltip" title="Επεξεργασία" class="icon"><i class="fas fa-edit"></i> </span></a></div>';
+              links += '<a class="h3 well-sm" href=/tasks/add/' + data + '><span data-toggle="tooltip" title="Δημιουργία Εργασίας" class="icon"><i class="fas fa-plus"></i> </span></a></div>';
             }
             return links;
           }

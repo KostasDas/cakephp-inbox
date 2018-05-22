@@ -124,6 +124,9 @@ class HawkFilesTable extends Table
         $validator->notEmpty('file_type', 'Παρακαλώ διαλέξτε είδος αρχείου')
             ->requirePresence('file_type', 'create');
 
+        $validator->allowEmpty('comments')
+            ->requirePresence('comments', false);
+
         return $validator;
     }
 

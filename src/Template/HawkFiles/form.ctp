@@ -48,6 +48,9 @@
                 'options' => ['new' => 'Άλλο'] + $senders->toArray(),
                 'empty'   => 'Εισάγετε αποστολέα/παραλήπτη',
             ]);
+            echo $this->Form->control('comments', [
+                'label' => 'Παρατηρήσεις'
+            ]);
             ?>
             <div class="file is-black has-name required" style="margin-bottom: 10px">
                 <label class="file-label">
@@ -66,6 +69,7 @@
                 </label>
             </div>
             <?php
+
             echo $this->Form->button(__('Εισαγωγή'))
             ?>
         </div>
