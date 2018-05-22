@@ -112,6 +112,7 @@ class HawkFilesControllerTest extends IntegrationTestCase
         $newData = $this->getFileData();
         $data['hawk_file'] = $newData['hawk_file'];
         $data['hawk_file']['name'] = 'somethingelse.pdf';
+        $data['protocol'] = 'Φ.100';
         $data['user_id'] = [
             5,
             4,
