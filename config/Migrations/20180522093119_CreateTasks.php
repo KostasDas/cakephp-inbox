@@ -17,7 +17,7 @@ class CreateTasks extends AbstractMigration
         $table->addColumn('owner_id', 'integer');
         $table->addColumn('user_id', 'integer');
         $table->addColumn('description', 'text');
-        $table->addColumn('read', 'boolean', [
+        $table->addColumn('is_read', 'boolean', [
             'default' => 0
         ]);
         $table->addColumn('done', 'boolean',[

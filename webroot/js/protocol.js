@@ -54,6 +54,7 @@ function getFiles(filters) {
       "deferRender": true,
       "destroy": true,
       "sort": true,
+      "order": [[7, "asc"]],
       select: {
         style: 'multi',
         selector: 'td:not(:last-child)'
@@ -75,10 +76,8 @@ function getFiles(filters) {
         "info": "Αποτελέσματα _START_ εώς _END_  από _TOTAL_"
       },
       "columns": [{
-        title: "id",
-        "data": "id",
-        "visible": false,
-        "searchable": false
+        title: "Αριθμός Πρωτοκόλου",
+        "data": "id"
       }, {
         title: "Αριθμός Εκδότου",
         "data": "number"

@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Event\Event;
+use Cake\Http\Exception\UnauthorizedException;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -26,6 +28,7 @@ use Cake\Validation\Validator;
 class TasksTable extends Table
 {
 
+    protected $user;
     /**
      * Initialize method
      *
@@ -39,6 +42,7 @@ class TasksTable extends Table
         $this->setTable('tasks');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+        $this->addBehavior('Search.Search');
 
         $this->addBehavior('Timestamp');
 
@@ -70,6 +74,19 @@ class TasksTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
+            ->integer('user_id')
+            ->notEmpty('user_id')
+            ->requirePresence('user_id', 'create');
+        $validator
+            ->integer('owner_id')
+            ->notEmpty('owner_id')
+            ->requirePresence('owner_id', 'create');
+        $validator
+            ->integer('hawk_file_id')
+            ->notEmpty('hawk_file_id')
+            ->requirePresence('hawk_file_id', 'create');
+
+        $validator
             ->scalar('description')
             ->requirePresence('description', 'create')
             ->notEmpty('description');
@@ -95,5 +112,53 @@ class TasksTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @param Event        $event
+     * @param Query        $query
+     * @param \ArrayObject $object
+     * @param              $primary
+     *
+     * @return Query
+     */
+    public function beforeFind(Event $event, Query $query, \ArrayObject $object, $primary)
+    {
+        if (empty($this->user)) {
+            throw new UnauthorizedException('Δε μπορείτε να δείτε ενέργειες αν δεν συνδεθείτε');
+        }
+
+        if ($this->user['role'] === 'author') {
+            $query->matching('Users')->where(['Users.id' => $this->user['id']]);
+        }
+
+        return $query;
+    }
+
+    /**
+     * @return \Search\Manager
+     */
+    public function searchManager()
+    {
+        $searchManager = $this->behaviors()->Search->searchManager();
+        $searchManager
+            ->add('due', 'Search.Callback', [
+                'callback' => function ($query, $args, $manager) {
+                    return $query->andWhere([$this->aliasField('due') . ' <=' => new Time($args['due'])]);
+                },
+            ])
+            ->add('user', 'Search.Callback', [
+                'callback' => function ($query, $args, $manager) {
+                    return $query->matching('Users')->where(['Users.id' => $args['user']]);
+                },
+            ])
+            ->value('done')
+            ->value('is_read');
+        return $searchManager;
     }
 }

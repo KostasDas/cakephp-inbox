@@ -34,17 +34,7 @@ class Task extends Entity
      * @var array
      */
     protected $_accessible = [
-        'hawk_file_id' => true,
-        'owner_id' => true,
-        'user_id' => true,
-        'description' => true,
-        'read' => true,
-        'done' => true,
-        'due' => true,
-        'created' => true,
-        'modified' => true,
-        'hawk_file' => true,
-        'owner' => true,
-        'user' => true
+        '*' => true,
+        'id' => false,
     ];
 }
