@@ -75,45 +75,47 @@ function getFiles(filters) {
         "zeroRecords": "Δε βρέθηκαν αποτελέσματα",
         "info": "Αποτελέσματα _START_ εώς _END_  από _TOTAL_"
       },
-      "columns": [{
-        title: "Αριθμός Πρωτοκόλου",
-        "data": "id"
-      }, {
-        title: "Αριθμός Εκδότου",
-        "data": "number"
-      }, {
-        title: "Είδος Αλληλογραφίας",
-        "data": "type"
-      }, {
-        title: "Θέμα/Περίληψη",
-        "data": "topic"
-      }, {
-        title: "Αποστολέας/Αποδέκτης",
-        "data": "sender"
-      }, {
-        title: 'Φ/SIC',
-        "data": 'protocol'
-      }, {
-        title: 'Παρατηρήσεις',
-        "data": 'comments'
-      }, {
-        title: 'Αποθηκεύτηκε',
-        "data": 'created',
-        "render": function (data, type, full) {
-          return formatDate(data);
-        }
-      },
-      //   {
-      //   title: 'Χειριστές',
-      //   "data": 'users',
-      //   "render": function (data, type, full) {
-      //     var users = '';
-      //     $.each(data, function (key, value) {
-      //       users += value.name + '</br>';
-      //     });
-      //     return users;
-      //   }
-      // },
+      "columns":[
+        {
+          title: "Αριθμός Πρωτοκόλου",
+          "data": "id"
+        }, {
+          title: "Αριθμός Εκδότου",
+          "data": "number"
+        }, {
+          title: "Είδος Αλληλογραφίας",
+          "data": "type"
+        }, {
+          title: "Θέμα/Περίληψη",
+          "data": "topic",
+          "width" : "25%"
+        }, {
+          title: "Αποστολέας/Αποδέκτης",
+          "data": "sender"
+        }, {
+          title: 'Φ/SIC',
+          "data": 'protocol'
+        }, {
+          title: 'Παρατηρήσεις',
+          "data": 'comments'
+        }, {
+          title: 'Αποθηκεύτηκε',
+          "data": 'created',
+          "render": function (data, type, full) {
+            return formatDate(data);
+          }
+        },
+        //   {
+        //   title: 'Χειριστές',
+        //   "data": 'users',
+        //   "render": function (data, type, full) {
+        //     var users = '';
+        //     $.each(data, function (key, value) {
+        //       users += value.name + '</br>';
+        //     });
+        //     return users;
+        //   }
+        // },
         {
           title: "Ενέργειες",
           "data": "id",
