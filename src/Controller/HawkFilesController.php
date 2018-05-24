@@ -203,6 +203,9 @@ class HawkFilesController extends ApiController
 
     private function handleHawkUsersEdit($data, $hawkFile)
     {
+        if (empty($data)) {
+            return false;
+        }
         if (empty($data['hawk_file']['tmp_name'])) {
             // if no new file and no new users
             if ($this->unchangedUsers($data['user_id'], $hawkFile->hawk_users)) {
