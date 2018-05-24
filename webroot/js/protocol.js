@@ -54,7 +54,7 @@ function getFiles(filters) {
       "deferRender": true,
       "destroy": true,
       "sort": true,
-      "order": [[7, "asc"]],
+      "order": [[7, "desc"]],
       select: {
         style: 'multi',
         selector: 'td:not(:last-child)'

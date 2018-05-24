@@ -98,7 +98,7 @@ class HawkFilesTable extends Table
             ->add('protocol', 'validateTransitory', [
                 'rule' => 'transitory',
                 'provider' => 'hawkFile',
-                'message' => 'Ο φάκελος πρέπει να έχει είναι της μορφής Φ.000'
+                'message' => 'Ο φάκελος πρέπει να έχει είναι της μορφής Φ.ΧΧΧ π.χ. Φ.410'
             ])
             ->maxLength('protocol', 255)
             ->requirePresence('protocol', 'create')
@@ -163,11 +163,13 @@ class HawkFilesTable extends Table
             ])
             ->add('before', 'Search.Callback', [
                 'callback' => function ($query, $args, $manager) {
-                    return $query->andWhere([$this->aliasField('created') . ' <=' => new Time($args['before'])]);
+                    $today = new Time($args['before']);
+                    return $query->andWhere([$this->aliasField('created') . ' <=' => $today->addDay()]);
                 },
             ])
             ->add('after', 'Search.Callback', [
                 'callback' => function ($query, $args, $manager) {
+
                     return $query->andWhere([$this->aliasField('created') . ' >=' => new Time($args['after'])]);
                 },
             ])
