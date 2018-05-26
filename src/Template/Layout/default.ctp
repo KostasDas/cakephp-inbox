@@ -24,18 +24,18 @@
         <div class="navbar-item has-dropdown is-hoverable">
             <?php if ($this->request->getParam('action') != 'login'): ?>
                 <a class="navbar-link custom-nav">Αρχεία</a>
-            <?php endif; ?>
-            <div class="navbar-dropdown">
-                <?= $this->Html->link('Λίστα',
-                    ['controller' => 'HawkFiles', 'action' => 'index'],
-                    ['class' => 'navbar-item']) ?>
-                <?php
-                if ($isAdmin) {
-                    echo $this->Html->link('Προσθήκη', ['controller' => 'HawkFiles', 'action' => 'add'],
-                        ['class' => 'navbar-item']);
-                }
-                ?>
-            </div>
+				<div class="navbar-dropdown">
+					<?= $this->Html->link('Λίστα',
+						['controller' => 'HawkFiles', 'action' => 'index'],
+						['class' => 'navbar-item']) ?>
+					<?php
+					if ($isAdmin) {
+						echo $this->Html->link('Προσθήκη', ['controller' => 'HawkFiles', 'action' => 'add'],
+							['class' => 'navbar-item']);
+					}
+					?>
+				</div>
+			 <?php endif; ?>
 
         </div>
         <div class="navbar-item">
