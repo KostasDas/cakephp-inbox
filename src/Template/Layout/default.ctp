@@ -19,7 +19,8 @@
 </head>
 <body>
 <section class="section">
-    <nav style="margin-bottom: 5%; background-color: black" class="navbar card is-fixed-top" role="navigation"
+	
+    <nav style="margin-bottom: 5%; background-color: black" class=" navbar-brand navbar is-fixed-top" role="navigation"
          aria-label="main navigation">
         <div class="navbar-item has-dropdown is-hoverable">
             <?php if ($this->request->getParam('action') != 'login'): ?>
