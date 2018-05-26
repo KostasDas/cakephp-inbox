@@ -81,6 +81,9 @@
 </html>
 
 <style>
+    body {
+        overflow: scroll;
+    }
     .custom-nav {
         background-color: black !important;
         color:white !important;
