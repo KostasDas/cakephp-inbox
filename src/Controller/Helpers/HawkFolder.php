@@ -76,17 +76,12 @@ class HawkFolder
 
     private function createPathFromData(array $data): string
     {
-		$convert = [
-			'εισερχομενο' => 'eiserxomeno',
-			'εξερχομενο' => 'ekserxomeno',
-		];
         $usersTable = TableRegistry::getTableLocator()->get('Users');
         if (!$this->validatePathData($data)) {
             throw new InvalidArgumentException('Please make sure you provided users, protocol and file type');
         }
         $protocol = $this->roundProtocol($data['protocol']);
         $name = $usersTable->get($data['user_id'])->username;
-		$data['file_type'] = $convert[$data['file_type']];
         return Configure::read('path') . DS . $name . DS . $data['file_type'] . DS . $protocol;
     }
 
@@ -96,7 +91,7 @@ class HawkFolder
         if ($number === $protocol) {
             return $protocol;
         }
-        return 'f.'.round((float) $number, -2, PHP_ROUND_HALF_DOWN);
+        return 'Φ.' . floor((float) $number /100) * 100;
     }
     private function validatePathData(array $data): bool
     {

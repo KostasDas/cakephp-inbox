@@ -48,6 +48,7 @@ class HawkFilesController extends ApiController
         $hawkFile = $this->HawkFiles->HawkUsers->find()->where([
             'hawk_file_id' => $file_id,
         ])->first();
+
         return $this->getResponse()->withFile($hawkFile->location);
     }
 
@@ -228,7 +229,7 @@ class HawkFilesController extends ApiController
 
     private function unchangedUsers($users, $hawkUsers)
     {
-        $hawkUsers = Hash::extract($hawkUsers, '{n}.id');
+        $hawkUsers = Hash::extract($hawkUsers, '{n}.user_id');
         sort($hawkUsers); sort($users);
         return ($hawkUsers == $users);
     }
